@@ -5,7 +5,7 @@
   "main": "build/zcanvas.js",
   "scripts": {
     "build": "webpack --config webpack.config.js",
-    "watchdot" : "node dotwatch.js diagram.dot"
+    "watchdot": "node dotwatch.js diagram.dot"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
     "babel-core": "^6.22.1",
     "babel-loader": "^6.2.10",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.22.0",
+    "broadcode": "file:///home/jayesh/code/experiments/broadcode",
     "webpack": "^2.2.1"
   },
   "babel": {
@@ -28,5 +29,4 @@
       "transform-es2015-modules-commonjs"
     ]
   }
-
 }
