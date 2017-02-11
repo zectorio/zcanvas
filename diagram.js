@@ -11,6 +11,10 @@ let dot = generateDot({
     ],
     methods : {
       getLayer : {},
+      moveLayerUp : {},
+      moveLayerDown : {},
+      moveLayerTop : {},
+      moveLayerBottom : {},
       createLayer : {}
     }
   },
@@ -26,7 +30,10 @@ let dot = generateDot({
     }
   },
   Shape : {},
-  Film : {},
+  Film : {
+    comment : `
+      Contains a canvas size of bbox of Shape`
+  },
   PickCanvas : {}
 });
 
