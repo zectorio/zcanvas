@@ -18,6 +18,7 @@ function doWatch() {
         if(err) {
           console.error(err, serr);
         }
+        console.log(serr);
       });
       watcher.close();
       doWatch();
