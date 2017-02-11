@@ -1,4 +1,5 @@
 
+const CLSCOLOR = 'lightgray';
 
 function generateDot(def) {
 
@@ -18,14 +19,14 @@ function generateDot(def) {
       for(let method in methods) {
         tablemarkup += '<TR>';
         if(nmethods === 0) {
-          tablemarkup += `<TD PORT="cls" ROWSPAN="${Object.keys(methods).length}">${key}</TD>`;
+          tablemarkup += `<TD PORT="cls" BGCOLOR="${CLSCOLOR}" ROWSPAN="${Object.keys(methods).length}">${key}</TD>`;
         }
         tablemarkup += `<TD PORT="${method}">${method}</TD>\n`;
         tablemarkup += '</TR>';
         nmethods++;
       }
     } else {
-      tablemarkup = `<TR><TD PORT="cls">${key}</TD></TR>`;
+      tablemarkup = `<TR><TD PORT="cls" BGCOLOR="${CLSCOLOR}">${key}</TD></TR>`;
     }
     let label = `
 <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="3">
@@ -49,6 +50,7 @@ digraph ${def.title} {
 
 node [
   shape = plaintext;
+  fontsize = 12;
 ]
 rankdir = BT;
 
@@ -61,8 +63,14 @@ let dot = generateDot({
   title : 'ZCanvas',
   ZCanvas : {
     members : [
-      'Layer'
-    ]
+      'Layer',
+      'Film',
+      'PickCanvas'
+    ],
+    methods : {
+      getLayer : {},
+      createLayer : {}
+    }
   },
   Layer : {
     members : [
@@ -75,7 +83,9 @@ let dot = generateDot({
       removeShape : {}
     }
   },
-  Shape : {}
+  Shape : {},
+  Film : {},
+  PickCanvas : {}
 });
 
 console.log(dot);
