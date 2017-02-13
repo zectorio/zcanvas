@@ -27,6 +27,7 @@ class Layer {
   }
 
   render() {
+    this.ctx.clearRect(0,0,this.zcanvas.width,this.zcanvas.height);
     for(let shape of this.shapes) {
       shape.render(this.ctx); // TODO : use shape film
     }

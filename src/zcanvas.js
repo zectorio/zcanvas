@@ -21,6 +21,7 @@ class ZCanvas {
   render(eachFrameCallback=null) {
 
     let draw = () => {
+      this.ctx.clearRect(0,0,this.width,this.height);
 
       this.layers.forEach(layer => layer.render());
 

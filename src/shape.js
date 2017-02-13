@@ -18,6 +18,7 @@ class Shape {
 
         let line = curve;
         ctx.strokeStyle = '#000';
+        ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(...line.start);
         ctx.lineTo(...line.end);
