@@ -2,10 +2,11 @@
 var path = require('path');
 
 module.exports = {
-  entry : "./index",
+  entry : "./test/index",
+  devtool : "inline-source-map",
   output : {
     path : path.resolve(__dirname, "build"),
-    filename : "zcanvas.js"
+    filename : "zcanvas-test.js"
   },
   module: {
     loaders: [

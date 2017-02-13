@@ -1,28 +1,34 @@
 
+import Layer from './layer'
+
 class ZCanvas {
 
   constructor(canvasDom) {
+    this.elem = canvasDom;
     this.width = canvasDom.width;
     this.height = canvasDom.height;
+    this.ctx = this.elem.getContext('2d');
 
     this.layers = [];
+
+    this.layers.push(new Layer(this));
   }
 
-
-  getLayer(index) {
-
+  getLayer(index=0) {
+    return this.layers[index];
   }
-
 
   render(eachFrameCallback=null) {
 
-    function draw() {
+    let draw = () => {
+
+      this.layers.forEach(layer => layer.render());
 
       if(eachFrameCallback) { eachFrameCallback(); }
       requestAnimationFrame(draw);
+    };
 
-    }
-
+    draw();
 
   }
 }
