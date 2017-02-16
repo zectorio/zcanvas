@@ -1,35 +1,20 @@
 
-import Layer from './layer'
+import choice from './backend'
 
 class ZCanvas {
 
-  constructor(canvasDom) {
-    this.elem = canvasDom;
-    this.width = canvasDom.width;
-    this.height = canvasDom.height;
-    this.ctx = this.elem.getContext('2d');
-
-    this.layers = [];
-
-    this.layers.push(new Layer(this));
+  constructor(backend='svg') {
+    let {Backend,Group,Shape} = choice(backend);
+    this.backend = new Backend();
+    this.Group = Group;
+    this.Shape = Shape;
   }
 
-  getLayer(index=0) {
-    return this.layers[index];
+  getRoot() {
+    return this.backend.getRoot();
   }
 
   render(eachFrameCallback=null) {
-
-    let draw = () => {
-      this.ctx.clearRect(0,0,this.width,this.height);
-
-      this.layers.forEach(layer => layer.render());
-
-      if(eachFrameCallback) { eachFrameCallback(); }
-      requestAnimationFrame(draw);
-    };
-
-    draw();
 
   }
 }
