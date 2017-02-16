@@ -4,7 +4,10 @@ import ZCanvas from '../src/zcanvas';
 // import {geom} from 'zmath'
 
 window.onload = function () {
-  let zc = new ZCanvas('canvas');
+
+  let zc = new ZCanvas('svg', 640, 480);
+
+  document.body.appendChild(zc.getDOMElement());
 
   console.log(zc.getRoot());
 

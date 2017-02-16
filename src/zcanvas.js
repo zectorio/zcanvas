@@ -3,11 +3,15 @@ import choice from './backend'
 
 class ZCanvas {
 
-  constructor(backend='svg') {
+  constructor(backend='svg', width, height) {
     let {Backend,Group,Shape} = choice(backend);
-    this.backend = new Backend();
+    this.backend = new Backend(width, height);
     this.Group = Group;
     this.Shape = Shape;
+  }
+
+  getDOMElement() {
+    return this.backend.getDOMElement();
   }
 
   getRoot() {

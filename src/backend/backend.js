@@ -3,7 +3,9 @@ import Group from './group';
 
 class Backend {
 
-  constructor() {
+  constructor(width, height) {
+    this.width = width;
+    this.height = height;
   }
 
   getDOMElement() {
