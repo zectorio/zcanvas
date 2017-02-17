@@ -13,6 +13,7 @@ class Group extends Item {
    * @param child - Can be Shape or Group
    */
   add(child) {
+    this.backend.register(child);
     this.children.push(child);
     child._setBackend(this.backend);
     child._setParent(this);

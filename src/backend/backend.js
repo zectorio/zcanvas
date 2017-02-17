@@ -10,6 +10,16 @@ class Backend {
     this._idCounter = 0;
   }
 
+  register(item) {
+    let id = this.generateId();
+    this._items[id] = item;
+    item._assignId(id);
+  }
+
+  generateId() {
+    return this._idCounter++;
+  }
+
   getDOMElement() {
     throw new Error('Not implemented');
   }

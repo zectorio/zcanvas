@@ -14,9 +14,7 @@ class SVGBackend extends Backend {
     this.root._setBackend(this);
     this.root._setParent(this);
 
-    this._items[this._idCounter] = this.root;
-    this.root._assignId(this._idCounter);
-    this._idCounter++;
+    this.register(this.root);
   }
 
   getDOMElement() {
