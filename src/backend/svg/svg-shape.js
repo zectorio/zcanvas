@@ -1,6 +1,7 @@
 
 import Shape from '../shape'
 import zdom from 'zdom'
+import {Transform} from 'zmath'
 
 function stringifyStyle(obj) {
   let strings = [];
@@ -15,10 +16,21 @@ function stringifyStyle(obj) {
 
 class SVGShape extends Shape {
 
-  constructor(pathdef, style, callbacks) {
-    super(pathdef, style, callbacks);
+  constructor(pathdef, style, transform=Transform.IDENTITY, callbacks) {
+    super(pathdef, style, transform, callbacks);
 
-    this._stylestr = stringifyStyle(style);
+    this._transformstr = this.transform.toAttributeString();
+    this._stylestr = stringifyStyle(this.style);
+  }
+
+  updateStyle(style) {
+    super.updateStyle(style);
+    this._stylestr = stringifyStyle(this.style);
+  }
+
+  setTransform(transform) {
+    super.setTransform(transform);
+    this._transformstr = this.transform.toAttributeString();
   }
 
   render() {
@@ -35,6 +47,7 @@ class SVGShape extends Shape {
       } else {
         this.elem = zdom.createPath(this.pathdef, this._stylestr);
       }
+      zdom.set(this.elem, 'transform', this._transformstr);
       zdom.id(this.elem, `zci${this.id}`);
       zdom.add(this.parent.elem, this.elem);
     } else {
@@ -61,6 +74,7 @@ class SVGShape extends Shape {
         zdom.set(this.elem, 'd', this.pathdef);
       }
       zdom.set(this.elem, 'style', this._stylestr);
+      zdom.set(this.elem, 'transform', this._transformstr);
     }
 
 

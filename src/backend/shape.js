@@ -3,9 +3,12 @@ import Item from './item'
 
 class Shape extends Item {
 
-  constructor(pathdef, style, callbacks) {
+  constructor(pathdef, style, transform, callbacks) {
     super();
     this.pathdef = pathdef;
+    this.style = style;
+    this.transform = transform;
+    this.callbacks = callbacks;
     this._markDirty();
   }
 
@@ -21,15 +24,23 @@ class Shape extends Item {
     return this._dirty;
   }
 
-  setPathDef(geometry) {
+  setPathDef(pathdef) {
+    this.pathdef = pathdef;
     this._markDirty();
   }
 
-  updateStyle(key, value) {
+  updateStyle(style) {
+    this.style = Object.assign(this.style, style);
     this._markDirty();
   }
 
-  updateCallbacks(newCallbacks) {
+  setCallbacks(newCallbacks) {
+    this.callbacks = Object.assign(this.callbacks, newCallbacks);
+  }
+
+  setTransform(transform) {
+    this.transform = transform;
+    this._markDirty();
   }
 
   render() {
