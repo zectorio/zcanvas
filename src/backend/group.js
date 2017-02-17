@@ -1,5 +1,6 @@
 
 import Item from './item'
+import Shape from './shape'
 
 class Group extends Item {
 
@@ -21,7 +22,7 @@ class Group extends Item {
 
   render() {
     this.children.forEach(child => {
-      if(child._isDirty()) {
+      if(child instanceof Group || (child instanceof Shape && child._isDirty())) {
         child.render();
       }
     })

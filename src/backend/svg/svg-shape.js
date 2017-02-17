@@ -31,7 +31,7 @@ class SVGShape extends Shape {
         this.elem = zdom.createEllipse(cx,cy,rx,ry,this._stylestr);
       } else if(this.pathdef.startsWith('RECT')) {
         let [_,x,y,w,h,rx,ry] = this.pathdef.split(/[\s,]/).map(s => parseFloat(s));
-        this.elem = zdom.createRect(x,y,w,h,rx,ry,this._stylestr);
+        this.elem = zdom.createRect(x,y,w,h,rx||0,ry||0,this._stylestr);
       } else {
         this.elem = zdom.createPath(this.pathdef, this._stylestr);
       }
@@ -55,8 +55,8 @@ class SVGShape extends Shape {
         zdom.set(this.elem, 'y', y);
         zdom.set(this.elem, 'w', w);
         zdom.set(this.elem, 'h', h);
-        zdom.set(this.elem, 'rx', rx);
-        zdom.set(this.elem, 'ry', ry);
+        zdom.set(this.elem, 'rx', rx||0);
+        zdom.set(this.elem, 'ry', ry||0);
       } else {
         zdom.set(this.elem, 'd', this.pathdef);
       }
