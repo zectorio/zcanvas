@@ -6,6 +6,8 @@ class Backend {
   constructor(width, height) {
     this.width = width;
     this.height = height;
+    this._items = [];
+    this._idCounter = 0;
   }
 
   getDOMElement() {

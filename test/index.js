@@ -1,7 +1,6 @@
 
 import ZCanvas from '../src/zcanvas';
-// import Shape from '../src/shape';
-// import {geom} from 'zmath'
+import {geom} from 'zmath'
 
 window.onload = function () {
 
@@ -9,12 +8,12 @@ window.onload = function () {
 
   document.body.appendChild(zc.getDOMElement());
 
-  console.log(zc.getRoot());
-
-  /*
-  let shape = new Shape({curves:[new geom.Line([10,10],[100,200])]})
-  zc.getLayer(0).addShape(shape);
-  */
+  let shape1 = new ZCanvas.Shape('CIRCLE 100,100 50',
+    {stroke:'#000',fill:'#f00'});
+  let shape2 = new ZCanvas.Shape('CIRCLE 250,200 50',
+    {stroke:'#000',fill:'#00f'});
+  zc.getRoot().add(shape1);
+  zc.getRoot().add(shape2);
 
   zc.render();
 

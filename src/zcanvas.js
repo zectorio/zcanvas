@@ -6,8 +6,8 @@ class ZCanvas {
   constructor(backend='svg', width, height) {
     let {Backend,Group,Shape} = choice(backend);
     this.backend = new Backend(width, height);
-    this.Group = Group;
-    this.Shape = Shape;
+    ZCanvas.Group = Group;
+    ZCanvas.Shape = Shape;
   }
 
   getDOMElement() {
@@ -19,7 +19,7 @@ class ZCanvas {
   }
 
   render(eachFrameCallback=null) {
-
+    this.backend.render(eachFrameCallback);
   }
 }
 
