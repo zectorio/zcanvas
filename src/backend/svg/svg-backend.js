@@ -25,16 +25,6 @@ class SVGBackend extends Backend {
     return this.root;
   }
 
-  render(eachFrameCallback = null) {
-    let draw = () => {
-      this.root.render();
-      if(eachFrameCallback) {
-        eachFrameCallback();
-      }
-      requestAnimationFrame(draw);
-    };
-    draw();
-  }
 }
 
 export default SVGBackend;

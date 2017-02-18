@@ -28,8 +28,29 @@ class Backend {
     throw new Error('Not implemented');
   }
 
-  render(eachFrameCallback=null) {
-    throw new Error('Not implemented');
+  render(onTick = null) {
+    let t=null;
+    let tstart=null;
+
+    let tick = (tstamp) => {
+      if(!tstart) { tstart = tstamp }
+      if(t) {
+
+        let ev = {
+          delta : tstamp-t,
+          total : tstamp-tstart
+        };
+
+        this.root.render();
+
+        if(onTick) {
+          onTick(ev);
+        }
+      }
+      t = tstamp;
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
   }
 
 }

@@ -51,15 +51,11 @@ window.onload = function () {
   g1.add(rect1);
   g1.add(rect2);
 
-  let tlast = tstart;
-
-  zc.render(() => {
+  zc.render((ev) => {
 
     window.fpsStats.begin();
 
-    let tcur = new Date();
-    let dt = tcur-tlast;
-    let dpos = vec2.mul(velocity1, dt*0.001);
+    let dpos = vec2.mul(velocity1, ev.delta*0.001);
     position1 = vec2.add(position1, dpos);
 
     if(position1[0] > WIDTH || position1[0] < 0) {
@@ -71,7 +67,6 @@ window.onload = function () {
 
     shape1.setTransform(new Transform().translate(...position1));
 
-    tlast = tcur;
     window.fpsStats.end();
 
   });
