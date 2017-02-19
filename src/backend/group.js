@@ -26,10 +26,11 @@ class Group extends Item {
 
   render() {
     this.children.forEach(child => {
-      if(child._isDirty()) {
+      if(child._isDirty() || child instanceof Group) {
         child.render();
       }
-    })
+    });
+    this._markClean();
   }
 
   static walk(node, callback) {

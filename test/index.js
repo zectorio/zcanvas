@@ -65,6 +65,17 @@ window.onload = function () {
       velocity1[1] *= -1;
     }
 
+    if(Math.round(ev.total*0.001) % 2) {
+      rect1.hide();
+    } else {
+      rect1.show();
+    }
+    if(Math.round(ev.total*0.001) % 4) {
+      g1.show();
+    } else {
+      g1.hide();
+    }
+
     shape1.setTransform(new Transform().translate(...position1));
 
     window.fpsStats.end();

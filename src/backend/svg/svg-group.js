@@ -26,6 +26,11 @@ class SVGGroup extends Group {
       zdom.add(this.parent.elem, this.elem);
     }
     zdom.set(this.elem, 'transform', this._transformstr);
+    if(this.isVisible()) {
+      zdom.show(this.elem);
+    } else {
+      zdom.hide(this.elem);
+    }
     super.render();
   }
 }

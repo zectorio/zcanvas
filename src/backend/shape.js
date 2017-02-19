@@ -27,7 +27,7 @@ class Shape extends Item {
   }
 
   render() {
-    throw new Error('Not implemented');
+    this._markClean();
   }
 }
 

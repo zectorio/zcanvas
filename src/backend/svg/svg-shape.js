@@ -76,9 +76,12 @@ class SVGShape extends Shape {
       zdom.set(this.elem, 'style', this._stylestr);
       zdom.set(this.elem, 'transform', this._transformstr);
     }
-
-
-    this._markClean();
+    if(this.isVisible()) {
+      zdom.show(this.elem);
+    } else {
+      zdom.hide(this.elem);
+    }
+    super.render();
   }
 }
 
