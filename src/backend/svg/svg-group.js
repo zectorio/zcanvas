@@ -23,9 +23,9 @@ class SVGGroup extends Group {
     if(!this.elem) {
       this.elem = zdom.createG();
       zdom.id(this.elem, `zci${this.id}`);
-      zdom.set(this.elem, 'transform', this._transformstr);
       zdom.add(this.parent.elem, this.elem);
     }
+    zdom.set(this.elem, 'transform', this._transformstr);
     super.render();
   }
 }
