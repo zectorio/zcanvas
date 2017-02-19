@@ -1,12 +1,12 @@
 
 import Item from './item'
-import Shape from './shape'
 
 class Group extends Item {
 
-  constructor() {
-    super();
+  constructor(transform) {
+    super(transform);
     this.children = [];
+    this._markDirty();
   }
 
   /**
@@ -22,7 +22,7 @@ class Group extends Item {
 
   render() {
     this.children.forEach(child => {
-      if(child instanceof Group || (child instanceof Shape && child._isDirty())) {
+      if(child._isDirty()) {
         child.render();
       }
     })

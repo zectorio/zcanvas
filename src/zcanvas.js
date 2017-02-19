@@ -14,8 +14,8 @@ class ZCanvas {
     return this.backend.getDOMElement();
   }
 
-  getRoot() {
-    return this.backend.getRoot();
+  root() {
+    return this.backend.root();
   }
 
   render(eachFrameCallback=null) {

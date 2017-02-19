@@ -9,15 +9,15 @@ class CanvasBackend extends Backend {
     super(width, height);
 
     this.dom = zdom.createCanvas(width, height);
-    this.root = new CanvasGroup();
+    this._root = new CanvasGroup();
   }
 
   getDOMElement() {
     return this.dom;
   }
 
-  getRoot() {
-    return this.root;
+  root() {
+    return this._root;
   }
 
 }

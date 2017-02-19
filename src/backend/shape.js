@@ -4,25 +4,13 @@ import Item from './item'
 class Shape extends Item {
 
   constructor(pathdef, style, transform, callbacks) {
-    super();
+    super(transform);
     this.pathdef = pathdef;
     this.style = style;
-    this.transform = transform;
     this.callbacks = callbacks;
     this._markDirty();
   }
 
-  _markDirty() {
-    this._dirty = true;
-  }
-
-  _markClean() {
-    this._dirty = false;
-  }
-
-  _isDirty() {
-    return this._dirty;
-  }
 
   setPathDef(pathdef) {
     this.pathdef = pathdef;
@@ -36,11 +24,6 @@ class Shape extends Item {
 
   setCallbacks(newCallbacks) {
     this.callbacks = Object.assign(this.callbacks, newCallbacks);
-  }
-
-  setTransform(transform) {
-    this.transform = transform;
-    this._markDirty();
   }
 
   render() {

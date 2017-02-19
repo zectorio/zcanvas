@@ -24,7 +24,7 @@ class Backend {
     throw new Error('Not implemented');
   }
 
-  getRoot() {
+  root() {
     throw new Error('Not implemented');
   }
 
@@ -41,7 +41,7 @@ class Backend {
           total : tstamp-tstart
         };
 
-        this.root.render();
+        this._root.render();
 
         if(onTick) {
           onTick(ev);

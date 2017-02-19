@@ -10,19 +10,19 @@ class SVGBackend extends Backend {
     super(width, height);
 
     this.elem = zdom.createSVG(width, height);
-    this.root = new SVGGroup();
-    this.root._setBackend(this);
-    this.root._setParent(this);
+    this._root = new SVGGroup();
+    this._root._setBackend(this);
+    this._root._setParent(this);
 
-    this.register(this.root);
+    this.register(this._root);
   }
 
   getDOMElement() {
     return this.elem;
   }
 
-  getRoot() {
-    return this.root;
+  root() {
+    return this._root;
   }
 
 }
