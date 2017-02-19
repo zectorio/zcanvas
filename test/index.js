@@ -46,10 +46,10 @@ window.onload = function () {
   let rect2 = new ZCanvas.Shape('RECT 300,300 30,60',
     {stroke:'#000',fill:'#f0f', strokeWidth:4});
 
-  zc.root().add(g1);
-
   g1.add(rect1);
   g1.add(rect2);
+
+  zc.root().add(g1);
 
   zc.render((ev) => {
 
