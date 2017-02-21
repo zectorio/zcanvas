@@ -10,10 +10,6 @@ class SVGGroup extends Group {
     this._transformstr = this.transform.toAttributeString();
   }
 
-  add(child) {
-    super.add(child);
-  }
-
   setTransform(transform) {
     super.setTransform(transform);
     this._transformstr = this.transform.toAttributeString();
