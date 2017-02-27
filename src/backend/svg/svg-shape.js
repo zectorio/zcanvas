@@ -34,52 +34,52 @@ class SVGShape extends Shape {
   }
 
   render() {
-    if(!this.elem) {
+    if(!this._elem) {
       if(this.pathdef.startsWith('CIRCLE')) {
         let [_,cx,cy,r] = this.pathdef.split(/[\s,]/).map(s => parseFloat(s));
-        this.elem = zdom.createCircle(cx,cy,r,this._stylestr);
+        this._elem = zdom.createCircle(cx,cy,r,this._stylestr);
       } else if(this.pathdef.startsWith('ELLIPSE')) {
         let [_,cx,cy,rx,ry] = this.pathdef.split(/[\s,]/).map(s => parseFloat(s));
-        this.elem = zdom.createEllipse(cx,cy,rx,ry,this._stylestr);
+        this._elem = zdom.createEllipse(cx,cy,rx,ry,this._stylestr);
       } else if(this.pathdef.startsWith('RECT')) {
         let [_,x,y,w,h,rx,ry] = this.pathdef.split(/[\s,]/).map(s => parseFloat(s));
-        this.elem = zdom.createRect(x,y,w,h,rx||0,ry||0,this._stylestr);
+        this._elem = zdom.createRect(x,y,w,h,rx||0,ry||0,this._stylestr);
       } else {
-        this.elem = zdom.createPath(this.pathdef, this._stylestr);
+        this._elem = zdom.createPath(this.pathdef, this._stylestr);
       }
-      zdom.set(this.elem, 'transform', this._transformstr);
-      zdom.id(this.elem, `zci${this.id}`);
-      zdom.add(this.parent.elem, this.elem);
+      zdom.set(this._elem, 'transform', this._transformstr);
+      zdom.id(this._elem, `zci${this.id}`);
+      zdom.add(this.parent._elem, this._elem);
     } else {
       if(this.pathdef.startsWith('CIRCLE')) {
         let [_,cx,cy,r] = this.pathdef.split(/[\s,]/).map(s => parseFloat(s));
-        zdom.set(this.elem, 'cx', cx);
-        zdom.set(this.elem, 'cy', cy);
-        zdom.set(this.elem, 'r', r);
+        zdom.set(this._elem, 'cx', cx);
+        zdom.set(this._elem, 'cy', cy);
+        zdom.set(this._elem, 'r', r);
       } else if(this.pathdef.startsWith('ELLIPSE')) {
         let [_,cx,cy,rx,ry] = this.pathdef.split(/[\s,]/).map(s => parseFloat(s));
-        zdom.set(this.elem, 'cx', cx);
-        zdom.set(this.elem, 'cy', cy);
-        zdom.set(this.elem, 'rx', rx);
-        zdom.set(this.elem, 'ry', ry);
+        zdom.set(this._elem, 'cx', cx);
+        zdom.set(this._elem, 'cy', cy);
+        zdom.set(this._elem, 'rx', rx);
+        zdom.set(this._elem, 'ry', ry);
       } else if(this.pathdef.startsWith('RECT')) {
         let [_,x,y,w,h,rx,ry] = this.pathdef.split(/[\s,]/).map(s => parseFloat(s));
-        zdom.set(this.elem, 'x', x);
-        zdom.set(this.elem, 'y', y);
-        zdom.set(this.elem, 'w', w);
-        zdom.set(this.elem, 'h', h);
-        zdom.set(this.elem, 'rx', rx||0);
-        zdom.set(this.elem, 'ry', ry||0);
+        zdom.set(this._elem, 'x', x);
+        zdom.set(this._elem, 'y', y);
+        zdom.set(this._elem, 'w', w);
+        zdom.set(this._elem, 'h', h);
+        zdom.set(this._elem, 'rx', rx||0);
+        zdom.set(this._elem, 'ry', ry||0);
       } else {
-        zdom.set(this.elem, 'd', this.pathdef);
+        zdom.set(this._elem, 'd', this.pathdef);
       }
-      zdom.set(this.elem, 'style', this._stylestr);
-      zdom.set(this.elem, 'transform', this._transformstr);
+      zdom.set(this._elem, 'style', this._stylestr);
+      zdom.set(this._elem, 'transform', this._transformstr);
     }
     if(this.isVisible()) {
-      zdom.show(this.elem);
+      zdom.show(this._elem);
     } else {
-      zdom.hide(this.elem);
+      zdom.hide(this._elem);
     }
     super.render();
   }

@@ -16,16 +16,16 @@ class SVGGroup extends Group {
   }
 
   render() {
-    if(!this.elem) {
-      this.elem = zdom.createG();
-      zdom.id(this.elem, `zci${this.id}`);
-      zdom.add(this.parent.elem, this.elem);
+    if(!this._elem) {
+      this._elem = zdom.createG();
+      zdom.id(this._elem, `zci${this.id}`);
+      zdom.add(this.parent._elem, this._elem);
     }
-    zdom.set(this.elem, 'transform', this._transformstr);
+    zdom.set(this._elem, 'transform', this._transformstr);
     if(this.isVisible()) {
-      zdom.show(this.elem);
+      zdom.show(this._elem);
     } else {
-      zdom.hide(this.elem);
+      zdom.hide(this._elem);
     }
     super.render();
   }

@@ -9,7 +9,7 @@ class SVGBackend extends Backend {
   constructor(width, height) {
     super(width, height);
 
-    this.elem = zdom.createSVG(width, height);
+    this._elem = zdom.createSVG(width, height);
     this._root = new SVGGroup();
     this._root._setBackend(this);
     this._root._setParent(this);
@@ -18,7 +18,7 @@ class SVGBackend extends Backend {
   }
 
   getDOMElement() {
-    return this.elem;
+    return this._elem;
   }
 
   root() {
