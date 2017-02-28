@@ -35,10 +35,12 @@ class Item {
 
   show() {
     this._isVisible = true;
+    this._markDirty();
   }
 
   hide() {
     this._isVisible = false;
+    this._markDirty();
   }
 
   isVisible() {

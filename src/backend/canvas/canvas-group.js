@@ -39,21 +39,22 @@ class CanvasGroup extends Group {
   }
 
   render() {
-
     if(!this._canvas) {
       this._initCanvas();
     }
 
-    if(this._isDirty() && this.isVisible()) {
-      // console.log('group render',this.id);
-      super.render();
-
+    if(this._isDirty()) {
       this._clearCanvas();
-      this._pushContext();
-      this.children.forEach(child => {
-        this._ctx.drawImage(child._canvas,0,0);
-      });
-      this._popContext();
+      if(this.isVisible()) {
+
+        super.render();
+
+        this._pushContext();
+        this.children.forEach(child => {
+          this._ctx.drawImage(child._canvas,0,0);
+        });
+        this._popContext();
+      }
     }
   }
 }

@@ -70,11 +70,10 @@ class CanvasShape extends Shape {
       this._initCanvas();
     }
 
+    this._clearCanvas();
 
     if(this.isVisible()) {
-      // console.log('shape render',this.id);
 
-      this._clearCanvas();
       this._pushContext();
 
       if(this.pathdef.startsWith('CIRCLE')) {
@@ -99,7 +98,6 @@ class CanvasShape extends Shape {
       this._paint();
       this._popContext();
     }
-
     super.render();
   }
 }
