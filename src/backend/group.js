@@ -6,7 +6,6 @@ class Group extends Item {
   constructor(transform) {
     super(transform);
     this.children = [];
-    this._markDirty();
   }
 
   /**
@@ -39,13 +38,16 @@ class Group extends Item {
     }
   }
 
+  _isDirty() {
+    return this.children.some(child => child._isDirty());
+  }
+
   render() {
     this.children.forEach(child => {
-      if(child._isDirty() || child instanceof Group) {
+      if(child._isDirty()) {
         child.render();
       }
     });
-    this._markClean();
   }
 
   static walk(node, callback) {

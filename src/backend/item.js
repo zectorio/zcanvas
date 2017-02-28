@@ -16,18 +16,6 @@ class Item {
     this.parent = parent;
   }
 
-  _markDirty() {
-    this._dirty = true;
-  }
-
-  _markClean() {
-    this._dirty = false;
-  }
-
-  _isDirty() {
-    return this._dirty;
-  }
-
   setTransform(transform) {
     this.transform = transform;
     this._markDirty();

@@ -22,16 +22,19 @@ class CanvasGroup extends Group {
     this._ctx = this._canvas.getContext('2d');
   }
 
+
   render() {
-    super.render();
 
     if(!this._canvas) {
       this._initCanvas();
     }
 
-    this.children.forEach(child => {
-      this._ctx.drawImage(child._canvas,0,0);
-    });
+    if(this._isDirty()) {
+      super.render();
+      this.children.forEach(child => {
+        this._ctx.drawImage(child._canvas,0,0);
+      });
+    }
   }
 }
 

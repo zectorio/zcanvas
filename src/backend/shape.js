@@ -11,6 +11,18 @@ class Shape extends Item {
     this._markDirty();
   }
 
+  _markDirty() {
+    this._dirty = true;
+  }
+
+  _markClean() {
+    this._dirty = false;
+  }
+
+  _isDirty() {
+    return this._dirty;
+  }
+
 
   setPathDef(pathdef) {
     this.pathdef = pathdef;

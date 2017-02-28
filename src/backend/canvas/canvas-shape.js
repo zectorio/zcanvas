@@ -7,17 +7,10 @@ class CanvasShape extends Shape {
 
   constructor(pathdef, style, transform=Transform.IDENTITY, callbacks) {
     super(pathdef, style, transform, callbacks);
-    this._transformstr = this.transform.toAttributeString();
-
   }
 
   updateStyle(style) {
     super.updateStyle(style);
-  }
-
-  setTransform(transform) {
-    super.setTransform(transform);
-    this._transformstr = this.transform.toAttributeString();
   }
 
   _applyStyle() {
@@ -29,6 +22,12 @@ class CanvasShape extends Shape {
       } else if(key === 'strokeWidth') {
         this._ctx.lineWidth = this.style.strokeWidth;
       }
+    }
+  }
+
+  _applyTransform() {
+    if(!this.transform.isIdentity()) {
+      this._ctx.transform(...this.transform.toArray());
     }
   }
 
@@ -48,11 +47,23 @@ class CanvasShape extends Shape {
     this._ctx = this._canvas.getContext('2d');
   }
 
+  _pushContext() {
+    this._ctx.save();
+    this._applyStyle();
+    this._applyTransform();
+  }
+
+  _popContext() {
+    this._ctx.restore();
+  }
+
   render() {
 
     if(!this._canvas) {
       this._initCanvas();
     }
+
+    this._pushContext();
 
     if(this.pathdef.startsWith('CIRCLE')) {
       let [_,cx,cy,r] = this.pathdef.split(/[\s,]/).map(s => parseFloat(s));
@@ -62,8 +73,9 @@ class CanvasShape extends Shape {
     } else {
     }
 
-    this._applyStyle();
     this._paint();
+    this._popContext();
+
     super.render();
   }
 }
