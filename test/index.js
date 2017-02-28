@@ -38,8 +38,6 @@ window.onload = function () {
   zc.root().add(shape1);
   zc.root().add(shape2);
 
-
-  /*
   let g1 = new ZCanvas.Group(new Rotation(-Math.PI/6));
   let rect1 = new ZCanvas.Shape('RECT 100,300 30,60',
     {stroke:'#000',fill:'#ff0', strokeWidth:4});
@@ -50,13 +48,11 @@ window.onload = function () {
   g1.add(rect2);
 
   zc.root().add(g1);
-  */
 
   zc.render((ev) => {
 
     window.fpsStats.begin();
 
-    /*
     let dpos = vec2.mul(velocity1, ev.delta*0.001);
     position1 = vec2.add(position1, dpos);
 
@@ -79,7 +75,6 @@ window.onload = function () {
     }
 
     shape1.setTransform(new Transform().translate(...position1));
-    */
 
     window.fpsStats.end();
 

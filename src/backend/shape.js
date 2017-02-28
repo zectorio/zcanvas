@@ -11,19 +11,6 @@ class Shape extends Item {
     this._markDirty();
   }
 
-  _markDirty() {
-    this._dirty = true;
-  }
-
-  _markClean() {
-    this._dirty = false;
-  }
-
-  _isDirty() {
-    return this._dirty;
-  }
-
-
   setPathDef(pathdef) {
     this.pathdef = pathdef;
     this._markDirty();
@@ -32,10 +19,6 @@ class Shape extends Item {
   updateStyle(style) {
     this.style = Object.assign(this.style, style);
     this._markDirty();
-  }
-
-  setCallbacks(newCallbacks) {
-    this.callbacks = Object.assign(this.callbacks, newCallbacks);
   }
 
   render() {

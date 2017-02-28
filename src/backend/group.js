@@ -39,7 +39,7 @@ class Group extends Item {
   }
 
   _isDirty() {
-    return this.children.some(child => child._isDirty());
+    return this._dirty || this.children.some(child => child._isDirty());
   }
 
   render() {

@@ -7,12 +7,6 @@ class CanvasGroup extends Group {
 
   constructor(transform=Transform.IDENTITY) {
     super(transform);
-    this._transformstr = this.transform.toAttributeString();
-  }
-
-  setTransform(transform) {
-    super.setTransform(transform);
-    this._transformstr = this.transform.toAttributeString();
   }
 
   _initCanvas() {
@@ -22,6 +16,27 @@ class CanvasGroup extends Group {
     this._ctx = this._canvas.getContext('2d');
   }
 
+  _applyTransform() {
+    if(!this.transform.isIdentity()) {
+      this._ctx.transform(...this.transform.toArray());
+    }
+  }
+
+  _clearCanvas() {
+    this._ctx.save();
+    this._ctx.setTransform(...Transform.IDENTITY.toArray());
+    this._ctx.clearRect(0,0,this.backend.width, this.backend.height);
+    this._ctx.restore();
+  }
+
+  _pushContext() {
+    this._ctx.save();
+    this._applyTransform();
+  }
+
+  _popContext() {
+    this._ctx.restore();
+  }
 
   render() {
 
@@ -29,11 +44,16 @@ class CanvasGroup extends Group {
       this._initCanvas();
     }
 
-    if(this._isDirty()) {
+    if(this._isDirty() && this.isVisible()) {
+      // console.log('group render',this.id);
       super.render();
+
+      this._clearCanvas();
+      this._pushContext();
       this.children.forEach(child => {
         this._ctx.drawImage(child._canvas,0,0);
       });
+      this._popContext();
     }
   }
 }
