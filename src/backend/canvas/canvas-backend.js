@@ -13,11 +13,13 @@ class CanvasBackend extends Backend {
     this._root._setBackend(this);
     this._root._setParent(this);
 
+    this._root._initCanvas();
+
     this.register(this._root);
   }
 
   getDOMElement() {
-    return this._elem;
+    return this._root._canvas;
   }
 
   root() {

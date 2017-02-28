@@ -22,11 +22,10 @@ window.onload = function () {
   const WIDTH=640;
   const HEIGHT=480;
 
-  let zc = new ZCanvas('svg', WIDTH, HEIGHT);
+  let zc = new ZCanvas('canvas', WIDTH, HEIGHT);
 
   document.body.appendChild(zc.getDOMElement());
 
-  let tstart = new Date();
   let velocity1 = [100,160];
   let position1 = [100,100];
 
@@ -40,6 +39,7 @@ window.onload = function () {
   zc.root().add(shape2);
 
 
+  /*
   let g1 = new ZCanvas.Group(new Rotation(-Math.PI/6));
   let rect1 = new ZCanvas.Shape('RECT 100,300 30,60',
     {stroke:'#000',fill:'#ff0', strokeWidth:4});
@@ -50,11 +50,13 @@ window.onload = function () {
   g1.add(rect2);
 
   zc.root().add(g1);
+  */
 
   zc.render((ev) => {
 
     window.fpsStats.begin();
 
+    /*
     let dpos = vec2.mul(velocity1, ev.delta*0.001);
     position1 = vec2.add(position1, dpos);
 
@@ -77,6 +79,7 @@ window.onload = function () {
     }
 
     shape1.setTransform(new Transform().translate(...position1));
+    */
 
     window.fpsStats.end();
 
