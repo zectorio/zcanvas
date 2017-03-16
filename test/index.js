@@ -22,7 +22,7 @@ window.onload = function () {
   const WIDTH=640;
   const HEIGHT=480;
 
-  let zc = new ZCanvas('canvas', WIDTH, HEIGHT);
+  let zc = new ZCanvas('svg', WIDTH, HEIGHT);
 
   document.body.appendChild(zc.getDOMElement());
 

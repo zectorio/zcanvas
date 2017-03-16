@@ -8,6 +8,7 @@ class Backend {
     this.height = height;
     this._items = [];
     this._idCounter = 0;
+    this._needsRedraw = true;
   }
 
   register(item) {
@@ -28,26 +29,32 @@ class Backend {
     throw new Error('Not implemented');
   }
 
+  _setNeedsRedraw() {
+    this._needsRedraw = true;
+  }
+
   render(onTick = null) {
     let t=null;
     let tstart=null;
 
     let tick = (tstamp) => {
-      if(!tstart) { tstart = tstamp }
-      if(t) {
+      if(!tstart) { tstart = tstamp; }
+      if(!t) { t = tstart; }
 
-        let ev = {
-          delta : tstamp-t,
-          total : tstamp-tstart
-        };
-
+      if(this._needsRedraw) {
         this._root.render();
+        this._needsRedraw = false;
+      }
 
-        if(onTick) {
-          onTick(ev);
-        }
+      let ev = {
+        delta : tstamp-t,
+        total : tstamp-tstart
+      };
+      if(onTick) {
+        onTick(ev);
       }
       t = tstamp;
+
       requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);

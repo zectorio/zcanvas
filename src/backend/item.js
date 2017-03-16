@@ -18,6 +18,9 @@ class Item {
 
   _markDirty() {
     this._dirty = true;
+    if(this.backend) {
+      this.backend._setNeedsRedraw();
+    }
   }
 
   _markClean() {
@@ -31,16 +34,17 @@ class Item {
   setTransform(transform) {
     this.transform = transform;
     this._markDirty();
+    this.parent._markDirty();
   }
 
   show() {
     this._isVisible = true;
-    this._markDirty();
+    this.parent._markDirty();
   }
 
   hide() {
     this._isVisible = false;
-    this._markDirty();
+    this.parent._markDirty();
   }
 
   isVisible() {

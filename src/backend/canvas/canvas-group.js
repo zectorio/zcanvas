@@ -45,16 +45,16 @@ class CanvasGroup extends Group {
 
     if(this._isDirty()) {
       this._clearCanvas();
-      if(this.isVisible()) {
 
-        super.render();
+      super.render();
 
-        this._pushContext();
-        this.children.forEach(child => {
+      this._pushContext();
+      this.children.forEach(child => {
+        if(child.isVisible()) {
           this._ctx.drawImage(child._canvas,0,0);
-        });
-        this._popContext();
-      }
+        }
+      });
+      this._popContext();
     }
   }
 }

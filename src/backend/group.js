@@ -21,6 +21,7 @@ class Group extends Item {
         node._setBackend(this.backend);
       });
     }
+    this._markDirty();
   }
 
   /**
@@ -36,10 +37,7 @@ class Group extends Item {
         node._setBackend(this.backend);
       });
     }
-  }
-
-  _isDirty() {
-    return this._dirty || this.children.some(child => child._isDirty());
+    this._markDirty();
   }
 
   render() {
@@ -48,6 +46,7 @@ class Group extends Item {
         child.render();
       }
     });
+    this._markClean();
   }
 
   static walk(node, callback) {
