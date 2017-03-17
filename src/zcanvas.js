@@ -1,5 +1,6 @@
 
 import choice from './backend'
+import constants from './constants'
 
 class ZCanvas {
 
@@ -22,5 +23,7 @@ class ZCanvas {
     this.backend.render(eachFrameCallback);
   }
 }
+
+ZCanvas.K = constants;
 
 export default ZCanvas;

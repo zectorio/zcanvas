@@ -2,6 +2,7 @@
 import Shape from '../shape'
 import zdom from 'zdom'
 import {Transform} from 'zmath'
+import K from '../../constants'
 
 class CanvasShape extends Shape {
 
@@ -76,23 +77,33 @@ class CanvasShape extends Shape {
 
       this._pushContext();
 
-      if(this.pathdef.startsWith('CIRCLE')) {
-        let [_,cx,cy,r] = this.pathdef.split(/[\s,]/).map(s => parseFloat(s));
-        this._ctx.beginPath();
-        this._ctx.arc(cx,cy, r, 0, 2*Math.PI);
-      } else if(this.pathdef.startsWith('ELLIPSE')) {
-      } else if(this.pathdef.startsWith('RECT')) {
-        let [_,x,y,w,h,rx,ry] = this.pathdef.split(/[\s,]/).map(s => parseFloat(s));
-        this._ctx.beginPath();
-        this._ctx.moveTo(x,y);
-        this._ctx.lineTo(x+w,y);
-        this._ctx.lineTo(x+w,y+h);
-        this._ctx.lineTo(x,y+h);
-        this._ctx.lineTo(x,y);
-        if(rx || ry) {
-          console.warn('TODO: rounded rectangle');
-        }
-      } else {
+      let D = this.pathdef;
+      switch(D.type) {
+        case K.LINE:
+          break;
+        case K.RECT:
+          this._ctx.beginPath();
+          this._ctx.moveTo(D.x,D.y);
+          this._ctx.lineTo(D.x+D.w,D.y);
+          this._ctx.lineTo(D.x+D.w,D.y+D.h);
+          this._ctx.lineTo(D.x,D.y+D.h);
+          this._ctx.lineTo(D.x,D.y);
+          if(D.rx || D.ry) {
+            console.warn('TODO: rounded rectangle');
+          }
+          break;
+        case K.CIRCLE:
+          this._ctx.beginPath();
+          this._ctx.arc(D.cx,D.cy, D.r, 0, 2*Math.PI);
+          break;
+        case K.ELLIPSE:
+          break;
+        case K.QUADBEZ:
+          break;
+        case K.CUBICBEZ:
+          break;
+        default:
+          throw new Error('Unknown type');
       }
 
       this._paint();

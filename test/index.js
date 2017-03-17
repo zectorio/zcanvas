@@ -15,33 +15,35 @@ function setupFPSStats() {
   document.body.appendChild( window.fpsStats.domElement );
 }
 
-window.onload = function () {
-
-  setupFPSStats();
+function testBlinking() {
 
   const WIDTH=640;
   const HEIGHT=480;
 
-  let zc = new ZCanvas('svg', WIDTH, HEIGHT);
+  let zc = new ZCanvas('canvas', WIDTH, HEIGHT);
 
   document.body.appendChild(zc.getDOMElement());
 
   let velocity1 = [100,160];
   let position1 = [100,100];
 
-  let shape1 = new ZCanvas.Shape('CIRCLE 0,0 50',
+  let shape1 = new ZCanvas.Shape(
+    {type:ZCanvas.K.CIRCLE, cx:0,cy:0,r:50},
     {stroke:'#000',fill:'#f00', strokeWidth:4},
     new Transform().translate(...position1)
   );
-  let shape2 = new ZCanvas.Shape('CIRCLE 250,200 50',
+  let shape2 = new ZCanvas.Shape(
+    {type:ZCanvas.K.CIRCLE, cx:250, cy:200, r:50},
     {stroke:'#000',fill:'#00f', strokeWidth:4});
   zc.root().add(shape1);
   zc.root().add(shape2);
 
   let g1 = new ZCanvas.Group(new Rotation(-Math.PI/6));
-  let rect1 = new ZCanvas.Shape('RECT 100,300 30,60',
+  let rect1 = new ZCanvas.Shape(
+    {type:ZCanvas.K.RECT, x:100, y:300, w:30, h:60},
     {stroke:'#000',fill:'#ff0', strokeWidth:4});
-  let rect2 = new ZCanvas.Shape('RECT 300,300 30,60',
+  let rect2 = new ZCanvas.Shape(
+    {type:ZCanvas.K.RECT, x:300, y:300, w:30, h:60},
     {stroke:'#000',fill:'#f0f', strokeWidth:4});
 
   g1.add(rect1);
@@ -79,5 +81,12 @@ window.onload = function () {
     window.fpsStats.end();
 
   });
+}
+
+window.onload = function () {
+
+  setupFPSStats();
+
+  testBlinking();
 
 };
