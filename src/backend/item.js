@@ -19,7 +19,7 @@ class Item {
   _markDirty() {
     this._dirty = true;
     if(this.backend) {
-      this.backend._setNeedsRedraw();
+      this.backend._markDirty();
     }
   }
 

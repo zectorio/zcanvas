@@ -29,7 +29,7 @@ class Backend {
     throw new Error('Not implemented');
   }
 
-  _setNeedsRedraw() {
+  _markDirty() {
     this._needsRedraw = true;
   }
 
