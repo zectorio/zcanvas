@@ -1,6 +1,6 @@
 {
   "name": "zcanvas",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "The canvas that powers Zector Apps",
   "main": "build/zcanvas.js",
   "scripts": {
