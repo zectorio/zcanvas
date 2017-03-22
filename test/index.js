@@ -20,7 +20,7 @@ function testBlinking() {
   const WIDTH=640;
   const HEIGHT=480;
 
-  let zc = new ZCanvas('canvas', WIDTH, HEIGHT);
+  let zc = new ZCanvas('svg', WIDTH, HEIGHT);
 
   document.body.appendChild(zc.getDOMElement());
 
@@ -46,10 +46,22 @@ function testBlinking() {
     {type:ZCanvas.K.RECT, x:300, y:300, w:30, h:60},
     {stroke:'#000',fill:'#f0f', strokeWidth:4});
 
+  let pathshape = new ZCanvas.Shape(
+    {type:ZCanvas.K.PATHSEQ, commands : [
+      ['M',20,20],
+      ['L',100,130],
+      ['L',230,20],
+      ['L',20,20],
+      ['Z']
+    ]},
+    {stroke:'#000',fill:'#f0f', strokeWidth:4}
+  );
+
   g1.add(rect1);
   g1.add(rect2);
 
   zc.root().add(g1);
+  zc.root().add(pathshape);
 
   zc.render((ev) => {
 

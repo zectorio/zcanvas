@@ -6,7 +6,8 @@ const constants = {
   ELLIPSE : 4,
   ARC : 5,
   QUADBEZ : 6,
-  CUBICBEZ : 7
+  CUBICBEZ : 7,
+  PATHSEQ : 8
 };
 
 export default constants;

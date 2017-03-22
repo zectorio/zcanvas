@@ -102,6 +102,8 @@ class CanvasShape extends Shape {
           break;
         case K.CUBICBEZ:
           break;
+        case K.PATHSEQ:
+          break;
         default:
           throw new Error('Unknown type');
       }

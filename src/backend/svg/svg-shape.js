@@ -55,9 +55,20 @@ class SVGShape extends Shape {
           throw new Error('Not implemented');
           break;
         case K.CUBICBEZ:
-          let [[x0,y0],[x1,y1],[x2,y2],[x3,y3]] = K.cpoints;
+        {
+          let [[x0,y0],[x1,y1],[x2,y2],[x3,y3]] = D.cpoints;
           let pathdata = `M ${x0},${y0} C ${x1},${y1} ${x2},${y2} ${x3},${y3}`;
           this._elem = zdom.createPath(pathdata, this._stylestr);
+        }
+          break;
+        case K.PATHSEQ:
+        {
+          let pathdata = '';
+          for(let pathcmd of D.commands) {
+            pathdata += pathcmd.join(' ');
+          }
+          this._elem = zdom.createPath(pathdata, this._stylestr);
+        }
           break;
         default:
           throw new Error("Unknown type");
@@ -92,9 +103,20 @@ class SVGShape extends Shape {
         case K.QUADBEZ:
           break;
         case K.CUBICBEZ:
-          let [[x0,y0],[x1,y1],[x2,y2],[x3,y3]] = K.cpoints;
+        {
+          let [[x0,y0],[x1,y1],[x2,y2],[x3,y3]] = D.cpoints;
           let pathdata = `M ${x0},${y0} C ${x1},${y1} ${x2},${y2} ${x3},${y3}`;
           zdom.set(this._elem, 'd', pathdata);
+        }
+          break;
+        case K.PATHSEQ:
+        {
+          let pathdata = '';
+          for(let pathcmd of D.commands) {
+            pathdata += pathcmd.join(' ');
+          }
+          zdom.set(this._elem, 'd', pathdata);
+        }
           break;
         default:
           throw new Error('Unknown type');
