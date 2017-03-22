@@ -34,7 +34,9 @@ class Item {
   setTransform(transform) {
     this.transform = transform;
     this._markDirty();
-    this.parent._markDirty();
+    if(this.parent) {
+      this.parent._markDirty();
+    }
   }
 
   show() {
