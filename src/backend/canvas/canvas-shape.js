@@ -6,8 +6,8 @@ import K from '../../constants'
 
 class CanvasShape extends Shape {
 
-  constructor(pathdef, style, transform=Transform.IDENTITY, callbacks) {
-    super(pathdef, style, transform, callbacks);
+  constructor(pathdef, style, transform=Transform.IDENTITY) {
+    super(pathdef, style, transform);
   }
 
   updateStyle(style) {

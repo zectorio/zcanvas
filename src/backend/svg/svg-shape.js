@@ -17,8 +17,8 @@ function stringifyStyle(obj) {
 
 class SVGShape extends Shape {
 
-  constructor(pathdef, style, transform=Transform.IDENTITY, callbacks) {
-    super(pathdef, style, transform, callbacks);
+  constructor(pathdef, style, transform=Transform.IDENTITY) {
+    super(pathdef, style, transform);
 
     this._transformstr = this.transform.toAttributeString();
     this._stylestr = stringifyStyle(this.style);
