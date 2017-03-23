@@ -13,7 +13,9 @@ class Shape extends Item {
   updateStyle(style) {
     this.style = Object.assign(this.style, style);
     this._markDirty();
-    this.parent._markDirty();
+    if(this.parent) {
+      this.parent._markDirty();
+    }
   }
 
   clone() {
