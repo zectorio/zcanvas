@@ -16,6 +16,14 @@ class Shape extends Item {
     this.parent._markDirty();
   }
 
+  clone() {
+    return new this.constructor(
+      JSON.parse(JSON.stringify(this.pathdef)),
+      JSON.parse(JSON.stringify(this.style)),
+      this.transform.clone()
+    );
+  }
+
   render() {
     this._markClean();
   }
