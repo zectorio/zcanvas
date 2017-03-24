@@ -25,6 +25,11 @@ class SVGBackend extends Backend {
     return this._root;
   }
 
+  resize(width, height) {
+    super.resize(width, height);
+    zdom.set(this._elem, 'width', width);
+    zdom.set(this._elem, 'height', height);
+  }
 }
 
 export default SVGBackend;

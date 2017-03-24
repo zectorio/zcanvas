@@ -60,6 +60,11 @@ class Backend {
     requestAnimationFrame(tick);
   }
 
+  resize(width, height) {
+    this.width = width;
+    this.height = height;
+  }
+
 }
 
 export default Backend;

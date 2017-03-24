@@ -22,6 +22,10 @@ class ZCanvas {
   render(eachFrameCallback=null) {
     this.backend.render(eachFrameCallback);
   }
+
+  resize(width, height) {
+    this.backend.resize(width, height);
+  }
 }
 
 ZCanvas.K = constants;
