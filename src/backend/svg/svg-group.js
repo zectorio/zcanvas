@@ -15,6 +15,18 @@ class SVGGroup extends Group {
     this._transformstr = this.transform.toAttributeString();
   }
 
+  makeVisible() {
+    if(this._elem) {
+      zdom.show(this._elem);
+    }
+  }
+
+  makeInvisible() {
+    if(this._elem) {
+      zdom.hide(this._elem);
+    }
+  }
+
   render() {
     if(!this._elem) {
       this._elem = zdom.createG();
@@ -22,11 +34,13 @@ class SVGGroup extends Group {
       zdom.add(this.parent._elem, this._elem);
     }
     zdom.set(this._elem, 'transform', this._transformstr);
-    if(this.isVisible()) {
-      zdom.show(this._elem);
-    } else {
-      zdom.hide(this._elem);
-    }
+    this.children.forEach(child => {
+      if(child.isVisible()) {
+        child.makeVisible();
+      } else {
+        child.makeInvisible();
+      }
+    });
     super.render();
   }
 }

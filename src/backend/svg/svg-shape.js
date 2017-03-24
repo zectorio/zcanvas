@@ -34,6 +34,18 @@ class SVGShape extends Shape {
     this._transformstr = this.transform.toAttributeString();
   }
 
+  makeVisible() {
+    if(this._elem) {
+      zdom.show(this._elem);
+    }
+  }
+
+  makeInvisible() {
+    if(this._elem) {
+      zdom.hide(this._elem);
+    }
+  }
+
   render() {
     if(!this._elem) {
       let D = this.pathdef;
@@ -123,11 +135,6 @@ class SVGShape extends Shape {
       }
       zdom.set(this._elem, 'style', this._stylestr);
       zdom.set(this._elem, 'transform', this._transformstr);
-    }
-    if(this.isVisible()) {
-      zdom.show(this._elem);
-    } else {
-      zdom.hide(this._elem);
     }
     super.render();
   }
