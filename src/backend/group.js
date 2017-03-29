@@ -1,8 +1,14 @@
 
 import Item from './item'
 
+/**
+ * @class
+ */
 class Group extends Item {
 
+  /**
+   * @param {Transform} transform
+   */
   constructor(transform) {
     super(transform);
     this.children = [];
@@ -10,7 +16,7 @@ class Group extends Item {
 
   /**
    * Append child to the list of children
-   * @param child - Can be Shape or Group
+   * @param {Item} child - Can be Shape or Group
    */
   add(child) {
     this.children.push(child);
@@ -26,7 +32,7 @@ class Group extends Item {
 
   /**
    * Prepend child to the list of children
-   * @param child
+   * @param {Item} child
    */
   prepend(child) {
     this.children.unshift(child);
@@ -40,6 +46,9 @@ class Group extends Item {
     this._markDirty();
   }
 
+  /**
+   * Render
+   */
   render() {
     this.children.forEach(child => {
       if(child._isDirty()) {
@@ -49,6 +58,11 @@ class Group extends Item {
     this._markClean();
   }
 
+  /**
+   * Walk nodes under this group recursively
+   * @param {Item} node
+   * @param {function(Item)} callback
+   */
   static walk(node, callback) {
     let step = n => {
       if(n instanceof Group) {

@@ -1,6 +1,9 @@
 
 import Item from './item'
 
+/**
+ * @class
+ */
 class Shape extends Item {
 
   /**
