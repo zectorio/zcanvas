@@ -11,8 +11,8 @@ const IDENTITY = Transform.identity();
 class CanvasShape extends Shape {
 
   /**
-   * @param {Object} pathdef
-   * @param {Object} style
+   * @param {ZCanvas~PathDefinition} pathdef
+   * @param {ZCanvas~Style} style
    * @param {Transform} transform
    */
   constructor(pathdef, style, transform) {
@@ -21,7 +21,7 @@ class CanvasShape extends Shape {
 
   /**
    * Updates style of this Shape by merging input style to it
-   * @param {Object} style
+   * @param {ZCanvas~Style} style
    */
   updateStyle(style) {
     super.updateStyle(style);

@@ -7,20 +7,20 @@ import Item from './item'
 class Shape extends Item {
 
   /**
-   * @param {Object} pathdef
-   * @param {Object} style
+   * @param {ZCanvas~PathDefinition} pathdef
+   * @param {ZCanvas~Style} style
    * @param {Transform} transform
    */
   constructor(pathdef, style, transform) {
     super(transform);
     /**
      * Path definition
-     * @type {Object}
+     * @type {ZCanvas~PathDefinition}
      */
     this.pathdef = pathdef;
     /**
      * Style
-     * @type {Object}
+     * @type {ZCanvas~Style}
      */
     this.style = style;
     this._markDirty();
@@ -28,7 +28,7 @@ class Shape extends Item {
 
   /**
    * Updates style of this Shape by merging input style to it
-   * @param {Object} style
+   * @param {ZCanvas~Style} style
    */
   updateStyle(style) {
     this.style = Object.assign(this.style, style);
