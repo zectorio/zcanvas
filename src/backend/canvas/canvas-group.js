@@ -3,6 +3,8 @@ import Group from '../group'
 import {Transform} from 'zmath'
 import zdom from 'zdom'
 
+const IDENTITY = Transform.identity();
+
 /**
  * @class
  */
@@ -30,7 +32,7 @@ class CanvasGroup extends Group {
 
   _clearCanvas() {
     this._ctx.save();
-    this._ctx.setTransform(...Transform.IDENTITY.toArray());
+    this._ctx.setTransform(...IDENTITY.toArray());
     this._ctx.clearRect(0,0,this.backend.width, this.backend.height);
     this._ctx.restore();
   }

@@ -20,7 +20,7 @@ function testBlinking() {
   const WIDTH=640;
   const HEIGHT=480;
 
-  let zc = new ZCanvas('svg', WIDTH, HEIGHT);
+  let zc = new ZCanvas('canvas', WIDTH, HEIGHT);
 
   document.body.appendChild(zc.getDOMElement());
 
@@ -28,26 +28,26 @@ function testBlinking() {
   let position1 = [100,100];
 
   let shape1 = new ZCanvas.Shape(
-    {type:ZCanvas.K.CIRCLE, cx:0,cy:0,r:50},
+    {type:'circle', cx:0,cy:0,r:50},
     {stroke:'#000',fill:'#f00', strokeWidth:4},
     new Transform().translate(...position1)
   );
   let shape2 = new ZCanvas.Shape(
-    {type:ZCanvas.K.CIRCLE, cx:250, cy:200, r:50},
+    {type:'circle', cx:250, cy:200, r:50},
     {stroke:'#000',fill:'#00f', strokeWidth:4});
   zc.root().add(shape1);
   zc.root().add(shape2);
 
   let g1 = new ZCanvas.Group(new Rotation(-Math.PI/6));
   let rect1 = new ZCanvas.Shape(
-    {type:ZCanvas.K.RECT, x:100, y:300, w:30, h:60},
+    {type:'rect', x:100, y:300, w:30, h:60},
     {stroke:'#000',fill:'#ff0', strokeWidth:4});
   let rect2 = new ZCanvas.Shape(
-    {type:ZCanvas.K.RECT, x:300, y:300, w:30, h:60},
+    {type:'rect', x:300, y:300, w:30, h:60},
     {stroke:'#000',fill:'#f0f', strokeWidth:4});
 
   let pathshape = new ZCanvas.Shape(
-    {type:ZCanvas.K.PATHSEQ, commands : [
+    {type:'pathseq', commands : [
       ['M',20,20],
       ['L',100,130],
       ['L',230,20],

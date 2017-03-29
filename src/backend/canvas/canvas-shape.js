@@ -3,6 +3,8 @@ import Shape from '../shape'
 import zdom from 'zdom'
 import {Transform} from 'zmath'
 
+const IDENTITY = Transform.identity();
+
 /**
  * @class
  */
@@ -54,7 +56,7 @@ class CanvasShape extends Shape {
 
   _clearCanvas() {
     this._ctx.save();
-    this._ctx.setTransform(...Transform.IDENTITY.toArray());
+    this._ctx.setTransform(...IDENTITY.toArray());
     this._ctx.clearRect(0,0,this.backend.width, this.backend.height);
     this._ctx.restore();
   }
