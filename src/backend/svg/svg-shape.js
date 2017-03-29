@@ -69,7 +69,7 @@ class SVGShape extends Shape {
       let D = this.pathdef;
       switch(D.type) {
         case 'line':
-          throw new Error('Not implemented');
+          this._elem = zdom.createLine(D.x1,D.y1,D.x2,D.y2,this._stylestr);
           break;
         case 'rect':
           this._elem = zdom.createRect(D.x,D.y,D.w,D.h,D.rx||0,D.ry||0,

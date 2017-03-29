@@ -20,7 +20,7 @@ function testBlinking() {
   const WIDTH=640;
   const HEIGHT=480;
 
-  let zc = new ZCanvas('canvas', WIDTH, HEIGHT);
+  let zc = new ZCanvas('svg', WIDTH, HEIGHT);
 
   document.body.appendChild(zc.getDOMElement());
 
@@ -35,8 +35,12 @@ function testBlinking() {
   let shape2 = new ZCanvas.Shape(
     {type:'circle', cx:250, cy:200, r:50},
     {stroke:'#000',fill:'#00f', strokeWidth:4});
+  let shape3 = new ZCanvas.Shape(
+    {type:'line',x1:300,y1:300,x2:350,y2:350},
+    {stroke:'#000',fill:'#00f', strokeWidth:4});
   zc.root().add(shape1);
   zc.root().add(shape2);
+  zc.root().add(shape3);
 
   let g1 = new ZCanvas.Group(new Rotation(-Math.PI/6));
   let rect1 = new ZCanvas.Shape(
