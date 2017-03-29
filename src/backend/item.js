@@ -1,7 +1,20 @@
 
+import {Transform} from 'zmath'
+
+/**
+ * @class
+ */
 class Item {
+
+  /**
+   * @param {Transform} [transform]
+   */
   constructor(transform) {
-    this.transform = transform;
+    /**
+     * Transform
+     * @type {Transform}
+     */
+    this.transform = transform || Transform.identity();
     this._isVisible = true;
   }
   _assignId(id) {
@@ -31,6 +44,10 @@ class Item {
     return this._dirty;
   }
 
+  /**
+   * Set Transform
+   * @param {Transform} transform
+   */
   setTransform(transform) {
     this.transform = transform;
     this._markDirty();
@@ -39,16 +56,26 @@ class Item {
     }
   }
 
+  /**
+   * Make the item visible
+   */
   show() {
     this._isVisible = true;
     this.parent._markDirty();
   }
 
+  /**
+   * Make the item invisible
+   */
   hide() {
     this._isVisible = false;
     this.parent._markDirty();
   }
 
+  /**
+   * Is this item visible?
+   * @returns {boolean}
+   */
   isVisible() {
     return this._isVisible;
   }

@@ -2,14 +2,25 @@
 import Shape from '../shape'
 import zdom from 'zdom'
 import {Transform} from 'zmath'
-import K from '../../constants'
 
+/**
+ * @class
+ */
 class CanvasShape extends Shape {
 
-  constructor(pathdef, style, transform=Transform.IDENTITY) {
+  /**
+   * @param {Object} pathdef
+   * @param {Object} style
+   * @param {Transform} transform
+   */
+  constructor(pathdef, style, transform) {
     super(pathdef, style, transform);
   }
 
+  /**
+   * Updates style of this Shape by merging input style to it
+   * @param {Object} style
+   */
   updateStyle(style) {
     super.updateStyle(style);
   }
@@ -65,6 +76,9 @@ class CanvasShape extends Shape {
     this._ctx.restore();
   }
 
+  /**
+   * Render
+   */
   render() {
 
     if(!this._canvas) {
@@ -79,9 +93,9 @@ class CanvasShape extends Shape {
 
       let D = this.pathdef;
       switch(D.type) {
-        case K.LINE:
+        case 'line':
           break;
-        case K.RECT:
+        case 'rect':
           this._ctx.beginPath();
           this._ctx.moveTo(D.x,D.y);
           this._ctx.lineTo(D.x+D.w,D.y);
@@ -92,17 +106,17 @@ class CanvasShape extends Shape {
             console.warn('TODO: rounded rectangle');
           }
           break;
-        case K.CIRCLE:
+        case 'circle':
           this._ctx.beginPath();
           this._ctx.arc(D.cx,D.cy, D.r, 0, 2*Math.PI);
           break;
-        case K.ELLIPSE:
+        case 'ellipse':
           break;
-        case K.QUADBEZ:
+        case 'qbez':
           break;
-        case K.CUBICBEZ:
+        case 'cbez':
           break;
-        case K.PATHSEQ:
+        case 'pathseq':
           break;
         default:
           throw new Error('Unknown type');

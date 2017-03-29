@@ -1,4 +1,6 @@
-
+/**
+ * @module zcanvas/backend/canvas
+ */
 import CanvasBackend from './canvas-backend'
 import CanvasGroup from './canvas-group'
 import CanvasShape from './canvas-shape'

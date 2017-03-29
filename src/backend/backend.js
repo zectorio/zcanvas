@@ -1,6 +1,4 @@
 
-import Group from './group';
-
 class Backend {
 
   constructor(width, height) {

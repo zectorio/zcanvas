@@ -1,8 +1,9 @@
-
+/**
+ * @module zcanvas/backend
+ */
 
 import {SVGBackend, SVGGroup, SVGShape} from './svg'
 import {CanvasBackend, CanvasGroup, CanvasShape} from './canvas'
-
 
 function choice(backendName='svg') {
   if(backendName === 'svg') {

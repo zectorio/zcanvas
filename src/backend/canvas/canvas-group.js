@@ -3,9 +3,15 @@ import Group from '../group'
 import {Transform} from 'zmath'
 import zdom from 'zdom'
 
+/**
+ * @class
+ */
 class CanvasGroup extends Group {
 
-  constructor(transform=Transform.IDENTITY) {
+  /**
+   * @param {Transform} transform
+   */
+  constructor(transform) {
     super(transform);
   }
 

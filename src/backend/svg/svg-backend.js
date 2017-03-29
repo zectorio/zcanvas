@@ -17,14 +17,27 @@ class SVGBackend extends Backend {
     this.register(this._root);
   }
 
+  /**
+   * Return SVG DOM element implementing the Canvas backend
+   * @returns {Element}
+   */
   getDOMElement() {
     return this._elem;
   }
 
+  /**
+   * Get root item
+   * @returns {SVGGroup}
+   */
   root() {
     return this._root;
   }
 
+  /**
+   * Resize
+   * @param {number} width
+   * @param {number} height
+   */
   resize(width, height) {
     super.resize(width, height);
     zdom.set(this._elem, 'width', width);
