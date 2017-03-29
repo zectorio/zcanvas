@@ -86,6 +86,7 @@ class ZCanvas {
    * @property {number} x2 Line end
    * @property {number} y2 Line end
    * @property {Array.<Array.<string|number>>} commands Path data commands for `pathseq`
+   * @property {Array.<Array.number>} cpoints For `qbez` and `cbez`
    */
 }
 
