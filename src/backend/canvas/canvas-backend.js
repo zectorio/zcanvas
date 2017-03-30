@@ -3,6 +3,11 @@ import zdom from 'zdom'
 import Backend from '../backend'
 import CanvasGroup from './canvas-group'
 
+/**
+ * @class
+ * @extends Backend
+ * @memberof zcanvas.backend.canvas
+ */
 class CanvasBackend extends Backend {
 
   constructor(width, height) {

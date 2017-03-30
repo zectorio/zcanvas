@@ -16,6 +16,8 @@ function stringifyStyle(obj) {
 
 /**
  * @class
+ * @extends Shape
+ * @memberof zcanvas.backend.svg
  */
 class SVGShape extends Shape {
 

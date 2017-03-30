@@ -4,6 +4,11 @@ import zdom from 'zdom'
 import Backend from '../backend'
 import SVGGroup from './svg-group'
 
+/**
+ * @class
+ * @extends Backend
+ * @memberof zcanvas.backend.svg
+ */
 class SVGBackend extends Backend {
 
   constructor(width, height) {

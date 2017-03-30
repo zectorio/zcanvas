@@ -1,5 +1,6 @@
 /**
  * @class
+ * @memberof zcanvas.backend
  */
 class Backend {
 
@@ -31,14 +32,14 @@ class Backend {
   }
 
   /**
-   * Abstract method - child class should implement it
+   * @abstract
    */
   getDOMElement() {
     throw new Error('Not implemented');
   }
 
   /**
-   * Abstract method - child class should implement it
+   * @abstract
    */
   root() {
     throw new Error('Not implemented');

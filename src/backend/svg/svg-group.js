@@ -2,6 +2,11 @@
 import Group from '../group'
 import zdom from 'zdom'
 
+/**
+ * @class
+ * @extends Group
+ * @memberof zcanvas.backend.svg
+ */
 class SVGGroup extends Group {
 
   /**

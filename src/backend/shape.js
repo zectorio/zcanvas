@@ -3,6 +3,7 @@ import Item from './item'
 
 /**
  * @class
+ * @memberof zcanvas.backend
  */
 class Shape extends Item {
 

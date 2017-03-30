@@ -7,6 +7,8 @@ const IDENTITY = Transform.identity();
 
 /**
  * @class
+ * @extends Shape
+ * @memberof zcanvas.backend.canvas
  */
 class CanvasShape extends Shape {
 

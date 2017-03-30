@@ -1,5 +1,6 @@
 /**
- * @module zcanvas/backend/svg
+ * @namespace {Object} svg
+ * @memberof zcanvas.backend
  */
 import SVGBackend from './svg-backend'
 import SVGGroup from './svg-group'

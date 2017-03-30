@@ -4,6 +4,7 @@ import constants from './constants'
 
 /**
  * @class
+ * @memberof zcanvas
  */
 class ZCanvas {
 
@@ -29,7 +30,7 @@ class ZCanvas {
 
   /**
    * Return root item
-   * @returns {SVGGroup}
+   * @returns {Group}
    */
   root() {
     return this.backend.root();

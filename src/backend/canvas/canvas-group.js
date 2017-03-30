@@ -7,6 +7,8 @@ const IDENTITY = Transform.identity();
 
 /**
  * @class
+ * @extends Group
+ * @memberof zcanvas.backend.canvas
  */
 class CanvasGroup extends Group {
 

@@ -3,6 +3,7 @@ import {Transform} from 'zmath'
 
 /**
  * @class
+ * @memberof zcanvas
  */
 class Item {
 
