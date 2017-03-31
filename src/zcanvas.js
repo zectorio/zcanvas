@@ -67,8 +67,21 @@ class ZCanvas {
    */
 
   /**
+   * The PathDefinition data structure is used to specify the geometry of the
+   * {@link RenderShape}. It can be used to create basic shapes as well as
+   * complex shapes made of multiple curve (possibly having holes).
+   *
+   * Type - required properties of PathDefinition
+   * * `line` - `x1`,`x2`,`y1`,`y2`
+   * * `circle` - `cx`,`cy`,`r`
+   * * `ellipse` - `cx`,`cy`,`rx`,`ry`
+   * * `rect` - `x`,`y`,`w`,`h`
+   * * `qbez` - `cpoints` (Array of 3 points)
+   * * `cbez` - `cpoints` (Array of 4 points)
+   * * `path` - `curveseq`
+   *
    * @typedef {Object} ZCanvas~PathDefinition
-   * @property {string} type `line`,`rect`,`circle`,`ellipse`,`qbez`,`cbez`,`pathseq`
+   * @property {string} type `line`,`rect`,`circle`,`ellipse`,`qbez`,`cbez`,`path`
    * @property {number} cx Circle/Ellipse center
    * @property {number} cy Circle/Ellipse center
    * @property {number} rx Ellipse radius
@@ -82,11 +95,35 @@ class ZCanvas {
    * @property {number} y1 Line start
    * @property {number} x2 Line end
    * @property {number} y2 Line end
-   * @property {Array.<Array.<string|number>>} commands Path data commands for `pathseq`
    * @property {Array.<Array.number>} cpoints For `qbez` and `cbez`
+   * @property {Array.<ZCanvas~CurveSequence>} curveseq Sequence of Curves
+   *
+   */
+
+  /**
+   * @typedef {Array.<ZCanvas~CurveCommand>} ZCanvas~CurveSequence
+   */
+
+  /**
+   * @typedef {Array.<string|number>} ZCanvas~CurveCommand
+   * Following formats are supported
+   * @example
+   * ['M',x,y] // Move context to point [x,y]
+   * ['L',x,y] // Straight line from current point to [x,y]
+   * ['Q',x1,y1,x2,y2] // Quadratic bezier curve from current point to [x2,y2]
+   *           // with control point at [x1,y1]
+   * ['C',x1,y1,x2,y2,x3,y3] // Cubic bezier curve from current point to [x3,y3]
+   *           // with control points at [x1,y1] and [x2,y2]
+   * ['E',cx,cy,rx,ry,start,end,ccw] // Elliptical arc with center at [cx,cy],
+   *           // of radius rx,ry, from angle start to end (in radians) in
+   *           // counter-clockwise or clockwise sense. It's the caller's
+   *           // responsibility to make sure that `start` evaluates to current
+   *           // point of the context and `end` corresponds to the point at
+   *           // which context will move to before processing next curve command.
+   *           // If that's not the case, there won't be any error, but the
+   *           // rendered output won't be desirable
+   * ['Z']     // End Curve Sequence
    */
 }
-
-ZCanvas.K = constants;
 
 export default ZCanvas;
