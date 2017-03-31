@@ -1,5 +1,5 @@
 
-import Shape from '../shape'
+import RenderShape from '../rshape'
 import zdom from 'zdom'
 import {Transform} from 'zmath'
 
@@ -14,12 +14,7 @@ function stringifyStyle(obj) {
   return strings.join(';');
 }
 
-/**
- * @class
- * @extends Shape
- * @memberof zcanvas.backend.svg
- */
-class SVGShape extends Shape {
+class SVGShape extends RenderShape {
 
   /**
    * @param {ZCanvas~PathDefinition} pathdef
@@ -34,7 +29,7 @@ class SVGShape extends Shape {
   }
 
   /**
-   * Updates style of this Shape by merging input style to it
+   * Updates style of this RenderShape by merging input style to it
    * @param {ZCanvas~Style} style
    */
   updateStyle(style) {

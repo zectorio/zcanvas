@@ -1,15 +1,11 @@
 
-import Group from '../group'
+import RenderGroup from '../rgroup'
 import zdom from 'zdom'
 
-/**
- * @class
- * @extends Group
- * @memberof zcanvas.backend.svg
- */
-class SVGGroup extends Group {
+class SVGGroup extends RenderGroup {
 
   /**
+   * Extends {@link RenderGroup}
    * @param {Transform} transform
    */
   constructor(transform) {

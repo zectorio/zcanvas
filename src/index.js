@@ -1,5 +1,5 @@
 /**
- * @namespace {Object} zcanvas
+ * @module zcanvas
  */
 import ZCanvas from './zcanvas';
 

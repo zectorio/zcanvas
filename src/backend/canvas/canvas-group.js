@@ -1,16 +1,11 @@
 
-import Group from '../group'
+import RenderGroup from '../rgroup'
 import {Transform} from 'zmath'
 import zdom from 'zdom'
 
 const IDENTITY = Transform.identity();
 
-/**
- * @class
- * @extends Group
- * @memberof zcanvas.backend.canvas
- */
-class CanvasGroup extends Group {
+class CanvasGroup extends RenderGroup {
 
   /**
    * @param {Transform} transform

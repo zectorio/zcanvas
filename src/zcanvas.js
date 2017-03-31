@@ -2,10 +2,6 @@
 import choice from './backend'
 import constants from './constants'
 
-/**
- * @class
- * @memberof zcanvas
- */
 class ZCanvas {
 
   /**
@@ -14,10 +10,10 @@ class ZCanvas {
    * @param {number=} height
    */
   constructor(backend='svg', width=640, height=480) {
-    let {Backend,Group,Shape} = choice(backend);
-    this.backend = new Backend(width, height);
-    ZCanvas.Group = Group;
-    ZCanvas.Shape = Shape;
+    let {RenderBackend,RenderGroup,RenderShape} = choice(backend);
+    this.backend = new RenderBackend(width, height);
+    ZCanvas.RenderGroup = RenderGroup;
+    ZCanvas.RenderShape = RenderShape;
   }
 
   /**
@@ -30,7 +26,7 @@ class ZCanvas {
 
   /**
    * Return root item
-   * @returns {Group}
+   * @returns {RenderGroup}
    */
   root() {
     return this.backend.root();

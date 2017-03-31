@@ -1,10 +1,6 @@
 
 import {Transform} from 'zmath'
 
-/**
- * @class
- * @memberof zcanvas
- */
 class Item {
 
   /**
@@ -17,6 +13,11 @@ class Item {
      */
     this.transform = transform || Transform.identity();
     this._isVisible = true;
+
+    /**
+     * @member {?Item} zcanvas.Item#parent
+     */
+    this.parent = null;
   }
   _assignId(id) {
     this.id = id;

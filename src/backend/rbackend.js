@@ -1,8 +1,5 @@
-/**
- * @class
- * @memberof zcanvas.backend
- */
-class Backend {
+
+class RenderBackend {
 
   /**
    * @param {number} width
@@ -52,9 +49,9 @@ class Backend {
   /**
    * Start render Loop
    * If ontick callback is passed, it's invoked at every tick
-   * @param {ZCanvas~ontick} [ontick]
+   * @param {ZCanvas~ontick} [onTick]
    */
-  render(onTick = null) {
+  render(onTick=null) {
     let t=null;
     let tstart=null;
 
@@ -93,4 +90,4 @@ class Backend {
 
 }
 
-export default Backend;
+export default RenderBackend;

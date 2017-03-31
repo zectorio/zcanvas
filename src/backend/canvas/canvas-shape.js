@@ -1,16 +1,11 @@
 
-import Shape from '../shape'
+import RenderShape from '../rshape'
 import zdom from 'zdom'
 import {Transform} from 'zmath'
 
 const IDENTITY = Transform.identity();
 
-/**
- * @class
- * @extends Shape
- * @memberof zcanvas.backend.canvas
- */
-class CanvasShape extends Shape {
+class CanvasShape extends RenderShape {
 
   /**
    * @param {ZCanvas~PathDefinition} pathdef
@@ -22,7 +17,7 @@ class CanvasShape extends Shape {
   }
 
   /**
-   * Updates style of this Shape by merging input style to it
+   * Updates style of this RenderShape by merging input style to it
    * @param {ZCanvas~Style} style
    */
   updateStyle(style) {

@@ -27,30 +27,30 @@ function testBlinking() {
   let velocity1 = [100,160];
   let position1 = [100,100];
 
-  let shape1 = new ZCanvas.Shape(
+  let shape1 = new ZCanvas.RenderShape(
     {type:'circle', cx:0,cy:0,r:50},
     {stroke:'#000',fill:'#f00', strokeWidth:4},
     new Transform().translate(...position1)
   );
-  let shape2 = new ZCanvas.Shape(
+  let shape2 = new ZCanvas.RenderShape(
     {type:'circle', cx:250, cy:200, r:50},
     {stroke:'#000',fill:'#00f', strokeWidth:4});
-  let shape3 = new ZCanvas.Shape(
+  let shape3 = new ZCanvas.RenderShape(
     {type:'line',x1:300,y1:300,x2:350,y2:350},
     {stroke:'#000',fill:'#00f', strokeWidth:4});
   zc.root().add(shape1);
   zc.root().add(shape2);
   zc.root().add(shape3);
 
-  let g1 = new ZCanvas.Group(new Rotation(-Math.PI/6));
-  let rect1 = new ZCanvas.Shape(
+  let g1 = new ZCanvas.RenderGroup(new Rotation(-Math.PI/6));
+  let rect1 = new ZCanvas.RenderShape(
     {type:'rect', x:100, y:300, w:30, h:60},
     {stroke:'#000',fill:'#ff0', strokeWidth:4});
-  let rect2 = new ZCanvas.Shape(
+  let rect2 = new ZCanvas.RenderShape(
     {type:'rect', x:300, y:300, w:30, h:60},
     {stroke:'#000',fill:'#f0f', strokeWidth:4});
 
-  let pathshape = new ZCanvas.Shape(
+  let pathshape = new ZCanvas.RenderShape(
     {type:'pathseq', commands : [
       ['M',20,20],
       ['L',100,130],

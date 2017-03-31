@@ -1,15 +1,10 @@
 
 import zdom from 'zdom'
 
-import Backend from '../backend'
+import RenderBackend from '../rbackend'
 import SVGGroup from './svg-group'
 
-/**
- * @class
- * @extends Backend
- * @memberof zcanvas.backend.svg
- */
-class SVGBackend extends Backend {
+class SVGBackend extends RenderBackend {
 
   constructor(width, height) {
     super(width, height);

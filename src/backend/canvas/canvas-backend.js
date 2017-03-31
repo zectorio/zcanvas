@@ -1,14 +1,9 @@
 
 import zdom from 'zdom'
-import Backend from '../backend'
+import RenderBackend from '../rbackend'
 import CanvasGroup from './canvas-group'
 
-/**
- * @class
- * @extends Backend
- * @memberof zcanvas.backend.canvas
- */
-class CanvasBackend extends Backend {
+class CanvasBackend extends RenderBackend {
 
   constructor(width, height) {
     super(width, height);

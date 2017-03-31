@@ -20,7 +20,7 @@ let dot = generateDot({
   },
   Layer : {
     members : [
-      'Shape'
+      'RenderShape'
     ],
     methods : {
       addShape : {

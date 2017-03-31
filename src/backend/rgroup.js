@@ -1,11 +1,7 @@
 
 import Item from './item'
 
-/**
- * @class
- * @memberof zcanvas.backend
- */
-class Group extends Item {
+class RenderGroup extends Item {
 
   /**
    * @param {Transform} transform
@@ -17,13 +13,13 @@ class Group extends Item {
 
   /**
    * Append child to the list of children
-   * @param {Item} child - Can be Shape or Group
+   * @param {Item} child - Can be RenderShape or RenderGroup
    */
   add(child) {
     this.children.push(child);
     child._setParent(this);
     if(this.backend) {
-      Group.walk(child, node => {
+      RenderGroup.walk(child, node => {
         this.backend.register(node);
         node._setBackend(this.backend);
       });
@@ -39,7 +35,7 @@ class Group extends Item {
     this.children.unshift(child);
     child._setParent(this);
     if(this.backend) {
-      Group.walk(child, node => {
+      RenderGroup.walk(child, node => {
         this.backend.register(node);
         node._setBackend(this.backend);
       });
@@ -66,7 +62,7 @@ class Group extends Item {
    */
   static walk(node, callback) {
     let step = n => {
-      if(n instanceof Group) {
+      if(n instanceof RenderGroup) {
         n.children.forEach(c => step(c))
       }
       callback(n);
@@ -76,4 +72,4 @@ class Group extends Item {
 
 }
 
-export default Group;
+export default RenderGroup;

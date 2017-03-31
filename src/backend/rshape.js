@@ -1,13 +1,10 @@
 
 import Item from './item'
 
-/**
- * @class
- * @memberof zcanvas.backend
- */
-class Shape extends Item {
+class RenderShape extends Item {
 
   /**
+   * @memberof zcanvas.backend
    * @param {ZCanvas~PathDefinition} pathdef
    * @param {ZCanvas~Style} style
    * @param {Transform} transform
@@ -28,7 +25,7 @@ class Shape extends Item {
   }
 
   /**
-   * Updates style of this Shape by merging input style to it
+   * Updates style of this RenderShape by merging input style to it
    * @param {ZCanvas~Style} style
    */
   updateStyle(style) {
@@ -40,8 +37,8 @@ class Shape extends Item {
   }
 
   /**
-   * Clone this Shape
-   * @returns {Shape}
+   * Clone this RenderShape
+   * @returns {RenderShape}
    */
   clone() {
     return new this.constructor(
@@ -59,4 +56,4 @@ class Shape extends Item {
   }
 }
 
-export default Shape;
+export default RenderShape;
