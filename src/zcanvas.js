@@ -95,13 +95,9 @@ class ZCanvas {
    * @property {number} y1 Line start
    * @property {number} x2 Line end
    * @property {number} y2 Line end
-   * @property {Array.<Array.number>} cpoints For `qbez` and `cbez`
-   * @property {Array.<ZCanvas~CurveSequence>} curveseq Sequence of Curves
+   * @property {Array.<Point2D>} cpoints For `qbez` and `cbez`
+   * @property {Array.<ZCanvas~CurveCommand>} curveseq Sequence of Curves
    *
-   */
-
-  /**
-   * @typedef {Array.<ZCanvas~CurveCommand>} ZCanvas~CurveSequence
    */
 
   /**

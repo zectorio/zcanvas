@@ -99,10 +99,111 @@ function testBlinking() {
   });
 }
 
+function testBasicShapes() {
+  const WIDTH=640;
+  const HEIGHT=480;
+  let zc = new ZCanvas('canvas', WIDTH, HEIGHT);
+  document.body.appendChild(zc.getDOMElement());
+
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'rect',
+    x:100,y:100,
+    w:200,h:200
+  },{
+    stroke:'none',
+    fill : '#ffef3e'
+  }));
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'line',
+    x1:100,y1:100,
+    x2:200,y2:200
+  },{
+    stroke:'#000'
+  }));
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'circle',
+    cx:200,cy:200,r:50
+  },{
+    stroke:'#000'
+  }));
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'ellipse',
+    cx:200,cy:200,rx:75,ry:25
+  },{
+    stroke:'#000'
+  }));
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'qbez',
+    cpoints : [[100,100],[150,200],[300,100]]
+  },{
+    stroke:'#000'
+  }));
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'cbez',
+    cpoints : [[100,100],[150,100],[200,150],[250,300]]
+  },{
+    stroke:'#000'
+  }));
+
+
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'path',
+    curveseq : [
+      ['M',400,100],
+      ['L',450,100],
+      ['L',450,150],
+      ['Q',430,200,400,100]
+    ]
+  },{
+    stroke:'none',
+    fill : '#f00'
+  }));
+
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'path',
+    curveseq : [
+      ['M',400,200],
+      ['C',400,250,450,250,500,200],
+    ]
+  },{
+    stroke:'#000',
+    strokeWidth : 3,
+    fill : '#f70'
+  }));
+
+  zc.render();
+}
+
+function testComplexShapes() {
+  const WIDTH=640;
+  const HEIGHT=480;
+  let zc = new ZCanvas('canvas', WIDTH, HEIGHT);
+  document.body.appendChild(zc.getDOMElement());
+
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'path',
+    curveseq : [
+      ['M',100,100],
+      ['L',400,100],
+      ['L',400,400],
+      ['L',100,400],
+      ['L',100,100],
+
+      ['M',200,200],
+      ['L',200,300],
+      ['L',300,300],
+      ['L',300,200],
+      ['L',200,200]
+    ]
+  },{
+    stroke:'#000',
+    strokeWidth : 3,
+    fill : '#f70'
+  }));
+  zc.render();
+}
+
 window.onload = function () {
-
   setupFPSStats();
-
-  testBlinking();
-
+  testComplexShapes();
 };

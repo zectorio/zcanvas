@@ -43,10 +43,14 @@ class CanvasShape extends RenderShape {
   }
 
   _paint() {
-    if(this.style.hasOwnProperty('fill')) {
+    if(this.style.hasOwnProperty('fill') &&
+      this.style['fill'] !== 'none')
+    {
       this._ctx.fill();
     }
-    if(this.style.hasOwnProperty('stroke')) {
+    if(this.style.hasOwnProperty('stroke') &&
+      this.style['stroke'] !== 'none')
+    {
       this._ctx.stroke();
     }
   }
@@ -75,6 +79,17 @@ class CanvasShape extends RenderShape {
     this._ctx.restore();
   }
 
+  _validateCPoints(cpoints, n) {
+    if(!Array.isArray(cpoints) || cpoints.length<n) {
+      throw new Error("Invalid 'cpoints' property");
+    }
+    for(let i=0; i<n; i++) {
+      if(!Array.isArray(cpoints[i]) || cpoints[i].length<2) {
+        throw new Error(`Invalid coordinate 'cpoints[${i}]'`);
+      }
+    }
+  }
+
   /**
    * Render
    */
@@ -93,6 +108,9 @@ class CanvasShape extends RenderShape {
       let D = this.pathdef;
       switch(D.type) {
         case 'line':
+          this._ctx.beginPath();
+          this._ctx.moveTo(D.x1, D.y1);
+          this._ctx.lineTo(D.x2, D.y2);
           break;
         case 'rect':
           this._ctx.beginPath();
@@ -110,12 +128,81 @@ class CanvasShape extends RenderShape {
           this._ctx.arc(D.cx,D.cy, D.r, 0, 2*Math.PI);
           break;
         case 'ellipse':
+          this._ctx.beginPath();
+          this._ctx.ellipse(D.cx,D.cy,D.rx,D.ry,0,0,2*Math.PI,true);
           break;
         case 'qbez':
+          {
+
+            this._validateCPoints(D.cpoints, 3);
+            this._ctx.beginPath();
+            let [[x0,y0],[x1,y1],[x2,y2]] = D.cpoints;
+            this._ctx.moveTo(x0,y0);
+            this._ctx.quadraticCurveTo(x1,y1,x2,y2);
+          }
           break;
         case 'cbez':
+          {
+            this._validateCPoints(D.cpoints, 4);
+            this._ctx.beginPath();
+            let [[x0,y0],[x1,y1],[x2,y2],[x3,y3]] = D.cpoints;
+            this._ctx.moveTo(x0,y0);
+            this._ctx.bezierCurveTo(x1,y1,x2,y2,x3,y3);
+          }
           break;
-        case 'pathseq':
+        case 'path':
+          {
+            if(!Array.isArray(D.curveseq)) {
+              throw new Error("Invalid 'curveseq' format");
+            }
+            this._ctx.beginPath();
+            for(let i=0; i<D.curveseq.length; i++) {
+              let curvecmd = D.curveseq[i];
+              if(!Array.isArray(curvecmd)) {
+                throw new Error(
+                  `Invalid curve command format at 'curveseq[${i}][${j}]'`);
+              }
+              let verb = curvecmd[0].toUpperCase();
+              switch(verb) {
+                case 'M':
+                  {
+                    let [_,x,y] = curvecmd;
+                    this._ctx.moveTo(x,y);
+                  }
+                  break;
+                case 'L':
+                  {
+                    let [_,x,y] = curvecmd;
+                    this._ctx.lineTo(x,y);
+                  }
+                  break;
+                case 'Q':
+                  {
+                    let [_,cpx,cpy,x,y] = curvecmd;
+                    this._ctx.quadraticCurveTo(cpx,cpy,x,y);
+                  }
+                  break;
+                case 'C':
+                  {
+                    let [_,cp1x,cp1y,cp2x,cp2y, x,y] = curvecmd;
+                    this._ctx.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,x,y);
+                  }
+                  break;
+                case 'E':
+                  {
+                  }
+                  break;
+                case 'Z':
+                  {
+                    this._ctx.closePath();
+                  }
+                  break;
+                default:
+                  throw new Error(
+                    `Invalid verb in curve command 'curveseq[${i}]]'`);
+              }
+            }
+          }
           break;
         default:
           throw new Error('Unknown type');
