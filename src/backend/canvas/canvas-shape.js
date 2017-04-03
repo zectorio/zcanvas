@@ -79,7 +79,7 @@ class CanvasShape extends RenderShape {
     this._ctx.restore();
   }
 
-  _validateCPoints(cpoints, n) {
+  static _validateCPoints(cpoints, n) {
     if(!Array.isArray(cpoints) || cpoints.length<n) {
       throw new Error("Invalid 'cpoints' property");
     }
@@ -134,7 +134,7 @@ class CanvasShape extends RenderShape {
         case 'qbez':
           {
 
-            this._validateCPoints(D.cpoints, 3);
+            CanvasShape._validateCPoints(D.cpoints, 3);
             this._ctx.beginPath();
             let [[x0,y0],[x1,y1],[x2,y2]] = D.cpoints;
             this._ctx.moveTo(x0,y0);
@@ -160,7 +160,7 @@ class CanvasShape extends RenderShape {
               let curvecmd = D.curveseq[i];
               if(!Array.isArray(curvecmd)) {
                 throw new Error(
-                  `Invalid curve command format at 'curveseq[${i}][${j}]'`);
+                  `Invalid curve command format at 'curveseq[${i}]'`);
               }
               let verb = curvecmd[0].toUpperCase();
               switch(verb) {
@@ -184,7 +184,7 @@ class CanvasShape extends RenderShape {
                   break;
                 case 'C':
                   {
-                    let [_,cp1x,cp1y,cp2x,cp2y, x,y] = curvecmd;
+                    let [_,cp1x,cp1y,cp2x,cp2y,x,y] = curvecmd;
                     this._ctx.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,x,y);
                   }
                   break;
