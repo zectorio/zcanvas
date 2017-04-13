@@ -190,6 +190,8 @@ class CanvasShape extends RenderShape {
                   break;
                 case 'E':
                   {
+                    let [_,cx,cy,rx,ry,start,end,ccw] = curvecmd;
+                    this._ctx.ellipse(cx,cy,rx,ry,0,start,end,ccw);
                   }
                   break;
                 case 'Z':

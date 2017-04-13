@@ -1,6 +1,6 @@
 
 import ZCanvas from '../src/zcanvas';
-import {vec2, Transform, Rotation} from 'zmath'
+import {vec2, geom, Transform, Rotation} from 'zmath'
 
 import Stats from 'stats.js'
 
@@ -180,9 +180,12 @@ function testComplexShapes() {
   let zc = new ZCanvas('canvas', WIDTH, HEIGHT);
   document.body.appendChild(zc.getDOMElement());
 
+  let earc = geom.EllipseArc.circularArcFrom3Points([220,220],[270,250],[220,320]);
+
   zc.root().add(new ZCanvas.RenderShape({
     type : 'path',
     curveseq : [
+      // Outer boundary
       ['M',100,100],
       ['L',400,100],
       ['L',400,400],
@@ -190,11 +193,18 @@ function testComplexShapes() {
       ['L',100,100],
       ['Z'],
 
-      ['M',200,200],
-      ['L',200,300],
-      ['L',300,300],
-      ['L',300,200],
-      ['L',200,200],
+      // Square hole
+      ['M',110,110],
+      ['L',110,210],
+      ['L',210,210],
+      ['L',210,110],
+      ['L',110,110],
+      ['Z'],
+
+      // Semicircular hole
+      ['M',220,220],
+      ['E',earc.center[0],earc.center[1],earc.rx,earc.ry,
+            earc.start, earc.end, earc.ccw],
       ['Z']
     ]
   },{
@@ -202,8 +212,10 @@ function testComplexShapes() {
     strokeWidth : 3,
     fill : '#f70'
   }));
+
   zc.render();
 }
+
 
 window.onload = function () {
   setupFPSStats();

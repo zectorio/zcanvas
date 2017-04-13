@@ -112,7 +112,7 @@ class ZCanvas {
    *           // with control points at [x1,y1] and [x2,y2]
    * ['E',cx,cy,rx,ry,start,end,ccw] // Elliptical arc with center at [cx,cy],
    *           // of radius rx,ry, from angle start to end (in radians) in
-   *           // counter-clockwise or clockwise sense. It's the caller's
+   *           // counter-clockwise or clockwise sense (boolean).It's the caller's
    *           // responsibility to make sure that `start` evaluates to current
    *           // point of the context and `end` corresponds to the point at
    *           // which context will move to before processing next curve command.
