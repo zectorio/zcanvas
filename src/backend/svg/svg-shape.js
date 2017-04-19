@@ -88,11 +88,11 @@ class SVGShape extends RenderShape {
           this._elem = zdom.createPath(pathdata, this._stylestr);
         }
           break;
-        case 'pathseq':
+        case 'path':
         {
           let pathdata = '';
-          for(let pathcmd of D.commands) {
-            pathdata += pathcmd.join(' ');
+          for(let pathcmd of D.curveseq) {
+            pathdata += pathcmd.join(' ')+' ';
           }
           this._elem = zdom.createPath(pathdata, this._stylestr);
         }
@@ -136,11 +136,11 @@ class SVGShape extends RenderShape {
           zdom.set(this._elem, 'd', pathdata);
         }
           break;
-        case 'pathseq':
+        case 'path':
         {
           let pathdata = '';
-          for(let pathcmd of D.commands) {
-            pathdata += pathcmd.join(' ');
+          for(let pathcmd of D.curveseq) {
+            pathdata += pathcmd.join(' ')+' ';
           }
           zdom.set(this._elem, 'd', pathdata);
         }

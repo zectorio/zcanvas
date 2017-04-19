@@ -204,7 +204,7 @@ function testComplexShapes() {
       // Semicircular hole
       ['M',220,220],
       ['E',earc.center[0],earc.center[1],earc.rx,earc.ry,
-            earc.start, earc.end, earc.ccw],
+            earc.start, earc.end, earc.ccw?1:0],
       ['Z']
     ]
   },{
