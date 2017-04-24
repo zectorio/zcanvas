@@ -1,9 +1,10 @@
 
 import RenderShape from '../rshape'
 import zdom from 'zdom'
-import {Transform} from 'zmath'
+import {vec2, AABB, Transform} from 'zmath'
 
 const IDENTITY = Transform.identity();
+const CANVAS_PADDING = 0;
 
 class CanvasShape extends RenderShape {
 
@@ -14,6 +15,17 @@ class CanvasShape extends RenderShape {
    */
   constructor(pathdef, style, transform) {
     super(pathdef, style, transform);
+    
+    let lineWidth = this.style['strokeWidth'] || 1;
+    
+    let aabb = this._calculateAABB();
+    this.localWidth = aabb.width() + 2*lineWidth + 2*CANVAS_PADDING;
+    this.localHeight = aabb.height() + 2*lineWidth + 2*CANVAS_PADDING;
+    
+    this.localTransform = new Transform().translate(
+      vec2.mul(vec2.sub(aabb.min,
+        [lineWidth+CANVAS_PADDING, lineWidth+CANVAS_PADDING]), -1)
+    );
   }
 
   /**
@@ -64,8 +76,8 @@ class CanvasShape extends RenderShape {
 
   _initCanvas() {
     this._canvas = zdom.createCanvas();
-    this._canvas.width = this.backend.width;
-    this._canvas.height = this.backend.height;
+    this._canvas.width = this.localWidth;
+    this._canvas.height = this.localHeight;
     this._ctx = this._canvas.getContext('2d');
   }
 
@@ -87,6 +99,117 @@ class CanvasShape extends RenderShape {
       if(!Array.isArray(cpoints[i]) || cpoints[i].length<2) {
         throw new Error(`Invalid coordinate 'cpoints[${i}]'`);
       }
+    }
+  }
+
+  _calculateAABB() {
+    let D = this.pathdef;
+    switch(D.type) {
+      case 'line':
+        return new AABB({
+          min : Math.min(D.x1,D.x2),
+          max : Math.max(D.y1,D.y2)
+        });
+      case 'rect':
+        return new AABB({
+          min : [D.x,D.y],
+          max : [D.x+D.w,D.y+D.h]
+        });
+      case 'circle':
+        return new AABB({
+          min : [D.cx-D.r, D.cy-D.r],
+          max : [D.cx+D.r, D.cy+D.r]
+        });
+      case 'ellipse':
+        return new AABB({
+          min : [D.cx-D.rx, D.cy-D.ry],
+          max : [D.cx+D.rx, D.cy+D.ry]
+        });
+        break;
+      case 'qbez':
+        return new AABB({
+          min : vec2.low(D.cpoints),
+          max : vec2.high(D.cpoints)
+        });
+        break;
+      case 'cbez':
+        return new AABB({
+          min : vec2.low(D.cpoints),
+          max : vec2.high(D.cpoints)
+        });
+        break;
+      case 'path':
+        let xmin = Infinity;
+        let ymin = Infinity;
+        let xmax = -Infinity;
+        let ymax = -Infinity;
+        for(let i=0; i<D.curveseq.length; i++) {
+          let curvecmd = D.curveseq[i];
+          if(!Array.isArray(curvecmd)) {
+            throw new Error(
+              `Invalid curve command format at 'curveseq[${i}]'`);
+          }
+          let verb = curvecmd[0].toUpperCase();
+          switch(verb) {
+            case 'M':
+            {
+              let [_,x,y] = curvecmd;
+              xmin = Math.min(x, xmin);
+              xmax = Math.max(x, xmax);
+              ymin = Math.min(y, ymin);
+              ymax = Math.max(y, ymax);
+            }
+              break;
+            case 'L':
+            {
+              let [_,x,y] = curvecmd;
+              xmin = Math.min(x, xmin);
+              xmax = Math.max(x, xmax);
+              ymin = Math.min(y, ymin);
+              ymax = Math.max(y, ymax);
+            }
+              break;
+            case 'Q':
+            {
+              let [_,cpx,cpy,x,y] = curvecmd;
+              xmin = Math.min(x, cpx, xmin);
+              xmax = Math.max(x, cpx, xmax);
+              ymin = Math.min(y, cpy, ymin);
+              ymax = Math.max(y, cpy, ymax);
+            }
+              break;
+            case 'C':
+            {
+              let [_,cp1x,cp1y,cp2x,cp2y,x,y] = curvecmd;
+              xmin = Math.min(x, cp1x, cp2x, xmin);
+              xmax = Math.max(x, cp1x, cp2x, xmax);
+              ymin = Math.min(y, cp1y, cp2y, ymin);
+              ymax = Math.max(y, cp1y, cp2y, ymax);
+            }
+              break;
+            case 'E':
+            {
+              let [_,cx,cy,rx,ry,start,end,ccw] = curvecmd;
+              xmin = Math.min(cx-rx, xmin);
+              xmax = Math.max(cx-rx, xmax);
+              ymin = Math.min(cy-ry, ymin);
+              ymax = Math.max(cy-ry, ymax);
+            }
+              break;
+            case 'Z':
+            {
+            }
+              break;
+            default:
+              throw new Error(
+                `Invalid verb in curve command 'curveseq[${i}]]'`);
+          }
+        }
+        return new AABB({
+          min : [xmin,ymin], max : [xmax,ymax]
+        });
+      default:
+        throw new Error('Not implemented');
     }
   }
 
@@ -133,7 +256,6 @@ class CanvasShape extends RenderShape {
           break;
         case 'qbez':
           {
-
             CanvasShape._validateCPoints(D.cpoints, 3);
             this._ctx.beginPath();
             let [[x0,y0],[x1,y1],[x2,y2]] = D.cpoints;
@@ -143,7 +265,7 @@ class CanvasShape extends RenderShape {
           break;
         case 'cbez':
           {
-            this._validateCPoints(D.cpoints, 4);
+            CanvasShape._validateCPoints(D.cpoints, 4);
             this._ctx.beginPath();
             let [[x0,y0],[x1,y1],[x2,y2],[x3,y3]] = D.cpoints;
             this._ctx.moveTo(x0,y0);
@@ -163,35 +285,42 @@ class CanvasShape extends RenderShape {
                   `Invalid curve command format at 'curveseq[${i}]'`);
               }
               let verb = curvecmd[0].toUpperCase();
+              let xform = this.localTransform;
               switch(verb) {
                 case 'M':
                   {
                     let [_,x,y] = curvecmd;
-                    this._ctx.moveTo(x,y);
+                    this._ctx.moveTo(...xform.transformPoint([x,y]));
                   }
                   break;
                 case 'L':
                   {
                     let [_,x,y] = curvecmd;
-                    this._ctx.lineTo(x,y);
+                    this._ctx.lineTo(...xform.transformPoint([x,y]));
                   }
                   break;
                 case 'Q':
                   {
                     let [_,cpx,cpy,x,y] = curvecmd;
-                    this._ctx.quadraticCurveTo(cpx,cpy,x,y);
+                    this._ctx.quadraticCurveTo(
+                      ...xform.transformPoint([cpx,cpy]),
+                      ...xform.transformPoint([x,y]));
                   }
                   break;
                 case 'C':
                   {
                     let [_,cp1x,cp1y,cp2x,cp2y,x,y] = curvecmd;
-                    this._ctx.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,x,y);
+                    this._ctx.bezierCurveTo(
+                      ...xform.transformPoint([cp1x,cp1y]),
+                      ...xform.transformPoint([cp2x,cp2y]),
+                      ...xform.transformPoint([x,y]));
                   }
                   break;
                 case 'E':
                   {
                     let [_,cx,cy,rx,ry,start,end,ccw] = curvecmd;
-                    this._ctx.ellipse(cx,cy,rx,ry,0,start,end,ccw);
+                    this._ctx.ellipse(...xform.transformPoint([cx,cy]),
+                      rx,ry,0,start,end,ccw);
                   }
                   break;
                 case 'Z':
