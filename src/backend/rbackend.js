@@ -47,35 +47,10 @@ class RenderBackend {
   }
 
   /**
-   * Start render Loop
-   * If ontick callback is passed, it's invoked at every tick
-   * @param {ZCanvas~ontick} [onTick]
+   * Render
    */
-  render(onTick=null) {
-    let t=null;
-    let tstart=null;
-
-    let tick = (tstamp) => {
-      if(!tstart) { tstart = tstamp; }
-      if(!t) { t = tstart; }
-
-      if(this._needsRedraw) {
-        this._root.render();
-        this._needsRedraw = false;
-      }
-
-      let ev = {
-        delta : tstamp-t,
-        total : tstamp-tstart
-      };
-      if(onTick) {
-        onTick(ev);
-      }
-      t = tstamp;
-
-      requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
+  render() {
+    this._root.render();
   }
 
   /**
