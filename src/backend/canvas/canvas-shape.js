@@ -3,8 +3,9 @@ import RenderShape from '../rshape'
 import zdom from 'zdom'
 import {vec2, AABB, Transform} from 'zmath'
 
+const LOCAL_CANVAS_PADDING = 0;
+
 const IDENTITY = Transform.identity();
-const CANVAS_PADDING = 0;
 
 class CanvasShape extends RenderShape {
 
@@ -18,13 +19,13 @@ class CanvasShape extends RenderShape {
     
     let lineWidth = this.style['strokeWidth'] || 1;
     
-    let aabb = this._calculateAABB();
-    this.localWidth = aabb.width() + 2*lineWidth + 2*CANVAS_PADDING;
-    this.localHeight = aabb.height() + 2*lineWidth + 2*CANVAS_PADDING;
+    this.aabb = this._calculateAABB();
+    this.localWidth = this.aabb.width() + 2*lineWidth + 2*LOCAL_CANVAS_PADDING;
+    this.localHeight = this.aabb.height() + 2*lineWidth + 2*LOCAL_CANVAS_PADDING;
     
     this.localTransform = new Transform().translate(
-      vec2.mul(vec2.sub(aabb.min,
-        [lineWidth+CANVAS_PADDING, lineWidth+CANVAS_PADDING]), -1)
+      vec2.mul(vec2.sub(this.aabb.min,
+        [lineWidth+LOCAL_CANVAS_PADDING, lineWidth+LOCAL_CANVAS_PADDING]), -1)
     );
   }
 

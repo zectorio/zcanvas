@@ -105,6 +105,7 @@ function testBasicShapes() {
   let zc = new ZCanvas('canvas', WIDTH, HEIGHT);
   document.body.appendChild(zc.getDOMElement());
 
+  /*
   zc.root().add(new ZCanvas.RenderShape({
     type : 'rect',
     x:100,y:100,
@@ -158,18 +159,28 @@ function testBasicShapes() {
     stroke:'none',
     fill : '#f00'
   }));
+   */
 
   zc.root().add(new ZCanvas.RenderShape({
     type : 'path',
     curveseq : [
       ['M',400,200],
-      ['C',400,250,450,250,500,200],
+      ['C',400,250,450,250,500,200]
     ]
   },{
     stroke:'#000',
-    strokeWidth : 3,
+    strokeWidth : 15,
     fill : '#f70'
   }));
+  
+  let group1 = new ZCanvas.RenderGroup();
+  group1.add(new ZCanvas.RenderShape({
+    type : 'qbez',
+    cpoints : [[100,100],[150,200],[300,100]]
+  },{
+    stroke:'#000'
+  }));
+  zc.root().add(group1);
 
   zc.render();
 }
@@ -218,6 +229,5 @@ function testComplexShapes() {
 
 
 window.onload = function () {
-  setupFPSStats();
-  testComplexShapes();
+  testBasicShapes();
 };

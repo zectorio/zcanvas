@@ -1,6 +1,6 @@
 
 import RenderGroup from '../rgroup'
-import {Transform} from 'zmath'
+import {vec2, AABB, Transform} from 'zmath'
 import zdom from 'zdom'
 
 const IDENTITY = Transform.identity();
@@ -12,10 +12,38 @@ class CanvasGroup extends RenderGroup {
    */
   constructor(transform) {
     super(transform);
+    
+  }
+  
+  _updateLocalCanvasParameters() {
+
+    if(this.children.length > 0) {
+      this.aabb = new AABB({});
+      for(let child of this.children) {
+        this.aabb.merge(child.aabb);
+      }
+    } else {
+      this.aabb = new AABB({
+        min:[0,0], max:[this.backend.width,this.backend.height]
+      });
+    }
+    this.localWidth = this.aabb.width();
+    this.localHeight = this.aabb.height();
+    this.localTransform = new Transform()
+      .translate(vec2.mul(this.aabb.min, -1));
+    
+  }
+  
+  add(child) {
+    super.add(child);
+    this._updateLocalCanvasParameters();
   }
 
   _initCanvas() {
+    this._updateLocalCanvasParameters();
     this._canvas = zdom.createCanvas();
+    this._canvas.width = this.localWidth;
+    this._canvas.height = this.localHeight;
     this._canvas.width = this.backend.width;
     this._canvas.height = this.backend.height;
     this._ctx = this._canvas.getContext('2d');
@@ -56,6 +84,7 @@ class CanvasGroup extends RenderGroup {
       this._pushContext();
       this.children.forEach(child => {
         if(child.isVisible()) {
+          this._ctx.transform(...child.localTransform.inverse().toArray());
           this._ctx.drawImage(child._canvas,0,0);
         }
       });
