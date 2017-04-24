@@ -2,18 +2,6 @@
 import ZCanvas from '../src/zcanvas';
 import {vec2, geom, Transform, Rotation} from 'zmath'
 
-import Stats from 'stats.js'
-
-function setupFPSStats() {
-  window.fpsStats = new Stats();
-  window.fpsStats.setMode(0); // 0: fps, 1: ms, 2: mb
-
-  window.fpsStats.domElement.style.position = 'absolute';
-  window.fpsStats.domElement.style.left = '0px';
-  window.fpsStats.domElement.style.top = (window.innerHeight-50)+'px';
-
-  document.body.appendChild( window.fpsStats.domElement );
-}
 
 function testBlinking() {
 
@@ -161,6 +149,7 @@ function testBasicShapes() {
   }));
    */
 
+  /*
   zc.root().add(new ZCanvas.RenderShape({
     type : 'path',
     curveseq : [
@@ -174,14 +163,31 @@ function testBasicShapes() {
   }));
   
   let group1 = new ZCanvas.RenderGroup();
-  group1.add(new ZCanvas.RenderShape({
+  group1
+  // zc.root()
+    .add(new ZCanvas.RenderShape({
     type : 'qbez',
-    cpoints : [[100,100],[150,200],[300,100]]
+    cpoints : [[10,10],[15,10],[100,10]]
   },{
-    stroke:'#000'
+    stroke:'#000',
+    strokeWidth : 15
   }));
   zc.root().add(group1);
+  */
 
+  let group1 = new ZCanvas.RenderGroup();
+  group1.add(new ZCanvas.RenderShape({
+  //zc.root().add(new ZCanvas.RenderShape({
+    type : 'rect',
+    x:100,y:100,
+    w:200,h:200
+  },{
+    stroke:'#000',
+    fill : '#ffef3e',
+    strokeWidth : 2
+  }));
+  
+  zc.root().add(group1);
   zc.render();
 }
 
@@ -227,7 +233,93 @@ function testComplexShapes() {
   zc.render();
 }
 
+function testWithNoGroups() {
+
+  const WIDTH=1000;
+  const HEIGHT=800;
+  let zc = new ZCanvas('canvas', WIDTH, HEIGHT);
+  document.body.appendChild(zc.getDOMElement());
+  
+  let X = 50;
+  let Y = 50;
+  
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'line',
+    x1 : X,
+    y1 : Y,
+    x2 : X+50,
+    y2 : Y+50
+  }, {
+    stroke : '#000',
+    strokeWidth : 2
+  }));
+  
+  X += 100;
+  
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'rect',
+    x : X,
+    y : Y,
+    w : 50,
+    h : 50
+  }, {
+    stroke : '#000',
+    strokeWidth : 2
+  }));
+
+  X += 100;
+  
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'circle',
+    cx : X+25,
+    cy : Y+25,
+    r :25 
+  }, {
+    stroke : '#000',
+    strokeWidth : 2
+  }));
+
+  X += 100;
+  
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'ellipse',
+    cx : X+25,
+    cy : Y+25,
+    rx : 25,
+    ry : 20
+  }, {
+    stroke : '#000',
+    strokeWidth : 2
+  }));
+  
+  X += 100;
+  
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'qbez',
+    cpoints : [
+      [X,Y+50], [X+25,Y], [X+50,Y+50]
+    ]
+  }, {
+    stroke : '#000',
+    strokeWidth : 2
+  }));
+  
+  X += 100;
+  
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'cbez',
+    cpoints : [
+      [X,Y+50], [X+10,Y], [X+40,Y+50], [X+50,Y]
+    ]
+  }, {
+    stroke : '#000',
+    strokeWidth : 2
+  }));
+  
+  zc.render();
+}
+
 
 window.onload = function () {
-  testBasicShapes();
+  testWithNoGroups();
 };

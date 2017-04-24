@@ -44,8 +44,6 @@ class CanvasGroup extends RenderGroup {
     this._canvas = zdom.createCanvas();
     this._canvas.width = this.localWidth;
     this._canvas.height = this.localHeight;
-    this._canvas.width = this.backend.width;
-    this._canvas.height = this.backend.height;
     this._ctx = this._canvas.getContext('2d');
   }
 
@@ -58,7 +56,7 @@ class CanvasGroup extends RenderGroup {
   _clearCanvas() {
     this._ctx.save();
     this._ctx.setTransform(...IDENTITY.toArray());
-    this._ctx.clearRect(0,0,this.backend.width, this.backend.height);
+    this._ctx.clearRect(0,0,this.localWidth, this.localHeight);
     this._ctx.restore();
   }
 
@@ -84,8 +82,16 @@ class CanvasGroup extends RenderGroup {
       this._pushContext();
       this.children.forEach(child => {
         if(child.isVisible()) {
+          this._ctx.save();
+          
+          console.log('child transform', child.localTransform.toArray(), child.aabb.min,child.aabb.max);
+          
           this._ctx.transform(...child.localTransform.inverse().toArray());
           this._ctx.drawImage(child._canvas,0,0);
+          // this._ctx.fillStyle = '#9f9';
+          // this._ctx.fillRect(0,0,child.localWidth, child.localHeight);
+          
+          this._ctx.restore();
         }
       });
       this._popContext();
