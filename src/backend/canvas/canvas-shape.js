@@ -244,6 +244,7 @@ class CanvasShape extends RenderShape {
           this._ctx.lineTo(...xform.transformPoint([D.x+D.w,D.y+D.h]));
           this._ctx.lineTo(...xform.transformPoint([D.x,D.y+D.h]));
           this._ctx.lineTo(...xform.transformPoint([D.x,D.y]));
+          this._ctx.closePath();
           if(D.rx || D.ry) {
             console.warn('TODO: rounded rectangle');
           }

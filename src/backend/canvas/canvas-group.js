@@ -33,7 +33,11 @@ class CanvasGroup extends RenderGroup {
       .translate(vec2.mul(this.aabb.min, -1));
     
   }
-  
+
+  /**
+   * Append child to the list of children
+   * @param {Item} child - Can be RenderShape or RenderGroup
+   */
   add(child) {
     super.add(child);
     this._updateLocalCanvasParameters();
@@ -84,12 +88,12 @@ class CanvasGroup extends RenderGroup {
         if(child.isVisible()) {
           this._ctx.save();
           
-          console.log('child transform', child.localTransform.toArray(), child.aabb.min,child.aabb.max);
-          
           this._ctx.transform(...child.localTransform.inverse().toArray());
+          
+          this._ctx.fillStyle = '#ddd';
+          this._ctx.fillRect(0,0,child.localWidth, child.localHeight);
+          
           this._ctx.drawImage(child._canvas,0,0);
-          // this._ctx.fillStyle = '#9f9';
-          // this._ctx.fillRect(0,0,child.localWidth, child.localHeight);
           
           this._ctx.restore();
         }

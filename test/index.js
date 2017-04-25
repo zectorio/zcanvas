@@ -233,7 +233,7 @@ function testComplexShapes() {
   zc.render();
 }
 
-function testWithNoGroups() {
+function testWithNoGroups(style) {
 
   const WIDTH=1000;
   const HEIGHT=800;
@@ -242,6 +242,10 @@ function testWithNoGroups() {
   
   let X = 50;
   let Y = 50;
+
+  // ---
+  // Row 1
+  // ---
   
   zc.root().add(new ZCanvas.RenderShape({
     type : 'line',
@@ -249,10 +253,7 @@ function testWithNoGroups() {
     y1 : Y,
     x2 : X+50,
     y2 : Y+50
-  }, {
-    stroke : '#000',
-    strokeWidth : 2
-  }));
+  }, style));
   
   X += 100;
   
@@ -262,10 +263,7 @@ function testWithNoGroups() {
     y : Y,
     w : 50,
     h : 50
-  }, {
-    stroke : '#000',
-    strokeWidth : 2
-  }));
+  }, style));
 
   X += 100;
   
@@ -274,10 +272,7 @@ function testWithNoGroups() {
     cx : X+25,
     cy : Y+25,
     r :25 
-  }, {
-    stroke : '#000',
-    strokeWidth : 2
-  }));
+  }, style));
 
   X += 100;
   
@@ -287,10 +282,7 @@ function testWithNoGroups() {
     cy : Y+25,
     rx : 25,
     ry : 20
-  }, {
-    stroke : '#000',
-    strokeWidth : 2
-  }));
+  }, style));
   
   X += 100;
   
@@ -299,10 +291,7 @@ function testWithNoGroups() {
     cpoints : [
       [X,Y+50], [X+25,Y], [X+50,Y+50]
     ]
-  }, {
-    stroke : '#000',
-    strokeWidth : 2
-  }));
+  }, style));
   
   X += 100;
   
@@ -311,28 +300,25 @@ function testWithNoGroups() {
     cpoints : [
       [X,Y+50], [X+10,Y], [X+40,Y+50], [X+50,Y]
     ]
-  }, {
-    stroke : '#000',
-    strokeWidth : 2
-  }));
+  }, style));
 
   X = 50;
   Y += 100;
+
+  // ---
+  // Row 2
+  // ---
 
   {
     let earc = geom.EllipseArc.circularArcFrom3Points(
       [X,Y],[X+50,Y+25],[X,Y+50]);
     let {center:[cx,cy],rx,ry,start,end,ccw} = earc;
-    console.log(cx,cy,rx,ry,start,end,ccw);
     zc.root().add(new ZCanvas.RenderShape({
       type : 'path',
       curveseq : [
         ['E',cx,cy,rx,ry,start,end,ccw?1:0]
       ]
-    }, {
-      stroke : '#000',
-      strokeWidth : 2
-    }));
+    }, style));
   }
   
   X += 100;
@@ -346,10 +332,39 @@ function testWithNoGroups() {
       curveseq : [
         ['E',cx,cy,rx,ry,start,end,ccw?1:0]
       ]
-    }, {
-      stroke : '#000',
-      strokeWidth : 2 
-    }));
+    }, style));
+  }
+  
+  X += 100;
+
+  {
+    let earc = geom.EllipseArc.circularArcFrom3Points(
+      [X+50,Y],[X,Y+25],[X+50,Y+50]);
+    let {center:[cx,cy],rx,ry,start,end,ccw} = earc;
+    zc.root().add(new ZCanvas.RenderShape({
+      type : 'path',
+      curveseq : [
+        ['M',X+50,Y],
+        ['E',cx,cy,rx,ry,start,end,ccw?1:0],
+        ['Z']
+      ]
+    }, style));
+  }
+  
+  X += 100;
+
+  {
+    let earc = geom.EllipseArc.circularArcFrom3Points(
+      [X+50,Y],[X,Y+25],[X+50,Y+50]);
+    let {center:[cx,cy],rx,ry,start,end,ccw} = earc;
+    zc.root().add(new ZCanvas.RenderShape({
+      type : 'path',
+      curveseq : [
+        ['M',X+50,Y],
+        ['E',cx,cy,rx,ry,start,end,ccw?1:0],
+        ['L',X+50,Y]
+      ]
+    }, style));
   }
 
   X += 100;
@@ -367,10 +382,26 @@ function testWithNoGroups() {
         ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
         ['E',cx2,cy2,rx2,ry2,start2,end2,ccw2?1:0]
       ]
-    }, {
-      stroke : '#000',
-      strokeWidth : 2
-    }));
+    }, style));
+  }
+  
+  X += 100;
+
+  {
+    let earc1 = geom.EllipseArc.circularArcFrom3Points(
+      [X+50,Y],[X,Y+25],[X+50,Y+50]);
+    let {center:[cx1,cy1],rx:rx1,ry:ry1,start:start1,end:end1,ccw:ccw1} = earc1;
+    let earc2 = geom.EllipseArc.circularArcFrom3Points(
+      [X+50,Y+50],[X+25,Y+25],[X+50,Y]);
+    let {center:[cx2,cy2],rx:rx2,ry:ry2,start:start2,end:end2,ccw:ccw2} = earc2;
+    zc.root().add(new ZCanvas.RenderShape({
+      type : 'path',
+      curveseq : [
+        ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
+        ['E',cx2,cy2,rx2,ry2,start2,end2,ccw2?1:0],
+        ['Z']
+      ]
+    }, style));
   }
 
   X += 100;
@@ -388,10 +419,7 @@ function testWithNoGroups() {
         ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
         ['E',cx2,cy2,rx2,ry2,start2,end2,ccw2?1:0]
       ]
-    }, {
-      stroke : '#000',
-      strokeWidth : 2
-    }));
+    }, style));
   }
   
   X += 100;
@@ -409,10 +437,7 @@ function testWithNoGroups() {
         ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
         ['E',cx2,cy2,rx2,ry2,start2,end2,ccw2?1:0]
       ]
-    }, {
-      stroke : '#000',
-      strokeWidth : 2
-    }));
+    }, style));
   }
 
   X += 100;
@@ -430,15 +455,53 @@ function testWithNoGroups() {
         ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
         ['E',cx2,cy2,rx2,ry2,start2,end2,ccw2?1:0]
       ]
-    }, {
-      stroke : '#000',
-      strokeWidth : 2
-    }));
+    }, style));
+  }
+  
+  X = 50;
+  Y += 100;
+
+  // ---
+  // Row 3
+  // ---
+
+  {
+    let earc = geom.EllipseArc.circularArcFrom3Points(
+      [X,Y],[X+50,Y+25],[X,Y+50]);
+    let {center:[cx,cy],rx,ry,start,end,ccw} = earc;
+    zc.root().add(new ZCanvas.RenderShape({
+      type : 'path',
+      curveseq : [
+        ['M',X,Y+25],
+        ['L',X,Y],
+        ['E',cx,cy,rx,ry,start,end,ccw?1:0],
+        ['Q',X+20,Y+37.5,X,Y+25],
+        ['Z']
+      ]
+    }, style));
   }
   zc.render();
 }
 
 
 window.onload = function () {
-  testWithNoGroups();
+  switch(window.location.hash) {
+    case '#onlyshapes-stroke2':
+      testWithNoGroups({stroke:'#000', strokeWidth:2});
+      break;
+    case '#onlyshapes-stroke6':
+      testWithNoGroups({stroke:'#000', strokeWidth:6});
+      break;
+    case '#onlyshapes-fillnostroke':
+      testWithNoGroups({stroke:'none', fill:'#f88'});
+      break;
+  }
+  document.querySelector('select').value = window.location.hash.substr(1);
+  
+  document.querySelector('select').onchange = ev => {
+    let url =
+      window.location.origin+window.location.pathname+'#'+ev.target.value;
+    window.location.href = url;
+    window.location.reload();
+  }
 };
