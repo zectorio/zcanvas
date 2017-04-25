@@ -5,6 +5,8 @@ import {vec2, AABB, Transform} from 'zmath'
 
 const IDENTITY = Transform.identity();
 
+const PADDING = 2;
+
 class CanvasShape extends RenderShape {
 
   /**
@@ -18,11 +20,12 @@ class CanvasShape extends RenderShape {
     let lineWidth = this.style['strokeWidth'] || 1;
     
     this.aabb = this._calculateAABB();
-    this.localWidth = this.aabb.width() + lineWidth;
-    this.localHeight = this.aabb.height() + lineWidth;
+    this.localWidth = this.aabb.width() + lineWidth + PADDING;
+    this.localHeight = this.aabb.height() + lineWidth + PADDING;
     
     this.localTransform = new Transform().translate(
-      vec2.mul(vec2.sub(this.aabb.min, [lineWidth/2, lineWidth/2]), -1)
+      vec2.mul(vec2.sub(this.aabb.min,
+        [PADDING/2+lineWidth/2, PADDING/2+lineWidth/2]), -1)
     );
   }
 
