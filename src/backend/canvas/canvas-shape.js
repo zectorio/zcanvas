@@ -26,14 +26,10 @@ class CanvasShape extends RenderShape {
     let padding = lineWidth + PADDING;
     
     let aabb = this._calculateAABB();
-    this._canvasWidth = aabb.width() + padding;
-    this._canvasHeight = aabb.height() + padding;
-    this._canvasOffset = vec2.sub(aabb.min, [padding/2,padding/2]);
-    
-    // this.localTransform = new Transform().translate(
-    //   vec2.mul(vec2.sub(this.aabb.min,
-    //     [PADDING/2+lineWidth/2, PADDING/2+lineWidth/2]), -1)
-    // );
+    this.canvasWidth = aabb.width() + padding;
+    this.canvasHeight = aabb.height() + padding;
+    this.canvasOffset = vec2.sub(aabb.min, [padding/2,padding/2]);
+    this.aabb = aabb;
 
   }
 
@@ -79,14 +75,14 @@ class CanvasShape extends RenderShape {
   _clearCanvas() {
     this._ctx.save();
     this._ctx.setTransform(...IDENTITY.toArray());
-    this._ctx.clearRect(0,0,this._canvasWidth, this._canvasHeight);
+    this._ctx.clearRect(0,0,this.canvasWidth, this.canvasHeight);
     this._ctx.restore();
   }
 
   _initCanvas() {
     this._canvas = zdom.createCanvas();
-    this._canvas.width = this._canvasWidth;
-    this._canvas.height = this._canvasHeight;
+    this._canvas.width = this.canvasWidth;
+    this._canvas.height = this.canvasHeight;
     this._ctx = this._canvas.getContext('2d');
   }
 
@@ -228,7 +224,7 @@ class CanvasShape extends RenderShape {
   }
   
   _toLocalCanvas(coord) {
-    return vec2.sub(coord, this._canvasOffset); 
+    return vec2.sub(coord, this.canvasOffset); 
   }
 
   /**

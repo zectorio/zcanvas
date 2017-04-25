@@ -27,11 +27,9 @@ class CanvasGroup extends RenderGroup {
         min:[0,0], max:[this.backend.width,this.backend.height]
       });
     }
-    this._canvasWidth = this.aabb.width();
-    this._canvasHeight = this.aabb.height();
-    this.localTransform = new Transform()
-      .translate(vec2.mul(this.aabb.min, -1));
-    
+    this.canvasWidth = this.aabb.width();
+    this.canvasHeight = this.aabb.height();
+    this.canvasOffset = this.aabb.min;
   }
 
   /**
@@ -43,11 +41,17 @@ class CanvasGroup extends RenderGroup {
     // this._updateLocalCanvasParameters();
   }
 
-  _initCanvas(width, height) {
-    // this._updateLocalCanvasParameters();
+  _initCanvas(size) {
     this._canvas = zdom.createCanvas();
-    this._canvas.width = width || this._canvasWidth;
-    this._canvas.height = height || this._canvasHeight;
+    if(size) {
+      this._canvas.width = this.canvasWidth = size[0];
+      this._canvas.height = this.canvasHeight = size[1];
+      this.canvasOffset = [0,0];
+    } else {
+      this._updateLocalCanvasParameters();
+      this._canvas.width = this.canvasWidth;
+      this._canvas.height = this.canvasHeight;
+    }
     this._ctx = this._canvas.getContext('2d');
   }
 
@@ -60,7 +64,7 @@ class CanvasGroup extends RenderGroup {
   _clearCanvas() {
     this._ctx.save();
     this._ctx.setTransform(...IDENTITY.toArray());
-    this._ctx.clearRect(0,0,this._canvasWidth, this._canvasHeight);
+    this._ctx.clearRect(0,0,this.canvasWidth, this.canvasHeight);
     this._ctx.restore();
   }
 
@@ -88,20 +92,12 @@ class CanvasGroup extends RenderGroup {
         if(child.isVisible()) {
           this._ctx.save();
           
-          // this._ctx.transform(...child.localTransform.inverse().toArray());
+          let offset = vec2.sub(child.canvasOffset, this.canvasOffset);
+          this._ctx.transform(1,0,0,1,...offset);
           
-          // let childTranslation = child.localTransform.inverse().getTranslation();
-
-          // console.log('child', (child instanceof CanvasGroup)?'G':'S'+child.id,
-          //   child.localTransform.inverse().getTranslation(),
-          //   child.aabb.toString());
-
-          this._ctx.transform(1,0,0,1,...child._canvasOffset);
-          
-          // console.log('child', child.id,
-          //   child._canvasWidth, child._canvasHeight, child._canvasOffset);
+          // Debug
           this._ctx.fillStyle = '#ddd';
-          this._ctx.fillRect(0,0,child._canvasWidth, child._canvasHeight);
+          this._ctx.fillRect(0,0,child.canvasWidth, child.canvasHeight);
           
           this._ctx.drawImage(child._canvas,0,0);
           

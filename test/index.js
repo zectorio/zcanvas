@@ -493,7 +493,6 @@ function testGroups1Deep() {
   
   let X=0, Y=0;
 
-  /*
   group1.add(new ZCanvas.RenderShape({
     type : 'rect',
     x : X,
@@ -509,7 +508,6 @@ function testGroups1Deep() {
     w : 50,
     h : 50
   }, {fill:'#f33'}));
-  */
   
   X += 200;
   
@@ -522,7 +520,7 @@ function testGroups1Deep() {
     h : 50
   }, {fill:'#f33'}));
   
-  // zc.root().add(group1);
+  zc.root().add(group1);
   zc.root().add(group2);
   
   zc.render();
