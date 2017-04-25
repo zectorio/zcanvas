@@ -192,9 +192,9 @@ class CanvasShape extends RenderShape {
             {
               let [_,cx,cy,rx,ry,start,end,ccw] = curvecmd;
               xmin = Math.min(cx-rx, xmin);
-              xmax = Math.max(cx-rx, xmax);
+              xmax = Math.max(cx+rx, xmax);
               ymin = Math.min(cy-ry, ymin);
-              ymax = Math.max(cy-ry, ymax);
+              ymax = Math.max(cy+ry, ymax);
             }
               break;
             case 'Z':
@@ -235,7 +235,7 @@ class CanvasShape extends RenderShape {
         case 'line':
           this._ctx.beginPath();
           this._ctx.moveTo(...xform.transformPoint([D.x1, D.y1]));
-          this._ctx.lineTo(D.x2, D.y2);
+          this._ctx.lineTo(...xform.transformPoint([D.x2, D.y2]));
           break;
         case 'rect':
           this._ctx.beginPath();
