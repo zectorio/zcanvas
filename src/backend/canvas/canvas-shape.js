@@ -5,7 +5,7 @@ import {vec2, AABB, Transform} from 'zmath'
 
 const IDENTITY = Transform.identity();
 
-const PADDING = 2;
+const PADDING = 5;
 
 class CanvasShape extends RenderShape {
 
@@ -17,16 +17,24 @@ class CanvasShape extends RenderShape {
   constructor(pathdef, style, transform) {
     super(pathdef, style, transform);
     
-    let lineWidth = this.style['strokeWidth'] || 1;
+    let lineWidth;
+    if(this.style.hasOwnProperty('strokeWidth')) {
+      lineWidth = this.style['strokeWidth'];
+    } else {
+      lineWidth = 1; 
+    }
+    let padding = lineWidth + PADDING;
     
-    this.aabb = this._calculateAABB();
-    this.localWidth = this.aabb.width() + lineWidth + PADDING;
-    this.localHeight = this.aabb.height() + lineWidth + PADDING;
+    let aabb = this._calculateAABB();
+    this._canvasWidth = aabb.width() + padding;
+    this._canvasHeight = aabb.height() + padding;
+    this._canvasOffset = vec2.sub(aabb.min, [padding/2,padding/2]);
     
-    this.localTransform = new Transform().translate(
-      vec2.mul(vec2.sub(this.aabb.min,
-        [PADDING/2+lineWidth/2, PADDING/2+lineWidth/2]), -1)
-    );
+    // this.localTransform = new Transform().translate(
+    //   vec2.mul(vec2.sub(this.aabb.min,
+    //     [PADDING/2+lineWidth/2, PADDING/2+lineWidth/2]), -1)
+    // );
+
   }
 
   /**
@@ -71,14 +79,14 @@ class CanvasShape extends RenderShape {
   _clearCanvas() {
     this._ctx.save();
     this._ctx.setTransform(...IDENTITY.toArray());
-    this._ctx.clearRect(0,0,this.localWidth, this.localHeight);
+    this._ctx.clearRect(0,0,this._canvasWidth, this._canvasHeight);
     this._ctx.restore();
   }
 
   _initCanvas() {
     this._canvas = zdom.createCanvas();
-    this._canvas.width = this.localWidth;
-    this._canvas.height = this.localHeight;
+    this._canvas.width = this._canvasWidth;
+    this._canvas.height = this._canvasHeight;
     this._ctx = this._canvas.getContext('2d');
   }
 
@@ -103,6 +111,11 @@ class CanvasShape extends RenderShape {
     }
   }
 
+  /**
+   * AABB of this shape in global coordniates
+   * @returns {AABB}
+   * @private
+   */
   _calculateAABB() {
     let D = this.pathdef;
     switch(D.type) {
@@ -213,6 +226,10 @@ class CanvasShape extends RenderShape {
         throw new Error('Not implemented');
     }
   }
+  
+  _toLocalCanvas(coord) {
+    return vec2.sub(coord, this._canvasOffset); 
+  }
 
   /**
    * Render
@@ -229,21 +246,20 @@ class CanvasShape extends RenderShape {
 
       this._pushContext();
 
-      let xform = this.localTransform;
       let D = this.pathdef;
       switch(D.type) {
         case 'line':
           this._ctx.beginPath();
-          this._ctx.moveTo(...xform.transformPoint([D.x1, D.y1]));
-          this._ctx.lineTo(...xform.transformPoint([D.x2, D.y2]));
+          this._ctx.moveTo(...this._toLocalCanvas([D.x1, D.y1]));
+          this._ctx.lineTo(...this._toLocalCanvas([D.x2, D.y2]));
           break;
         case 'rect':
           this._ctx.beginPath();
-          this._ctx.moveTo(...xform.transformPoint([D.x,D.y]));
-          this._ctx.lineTo(...xform.transformPoint([D.x+D.w,D.y]));
-          this._ctx.lineTo(...xform.transformPoint([D.x+D.w,D.y+D.h]));
-          this._ctx.lineTo(...xform.transformPoint([D.x,D.y+D.h]));
-          this._ctx.lineTo(...xform.transformPoint([D.x,D.y]));
+          this._ctx.moveTo(...this._toLocalCanvas([D.x,D.y]));
+          this._ctx.lineTo(...this._toLocalCanvas([D.x+D.w,D.y]));
+          this._ctx.lineTo(...this._toLocalCanvas([D.x+D.w,D.y+D.h]));
+          this._ctx.lineTo(...this._toLocalCanvas([D.x,D.y+D.h]));
+          this._ctx.lineTo(...this._toLocalCanvas([D.x,D.y]));
           this._ctx.closePath();
           if(D.rx || D.ry) {
             console.warn('TODO: rounded rectangle');
@@ -251,22 +267,22 @@ class CanvasShape extends RenderShape {
           break;
         case 'circle':
           this._ctx.beginPath();
-          this._ctx.arc(...xform.transformPoint([D.cx,D.cy]), D.r, 0, 2*Math.PI);
+          this._ctx.arc(...this._toLocalCanvas([D.cx,D.cy]), D.r, 0, 2*Math.PI);
           break;
         case 'ellipse':
           this._ctx.beginPath();
           this._ctx.ellipse(
-            ...xform.transformPoint([D.cx,D.cy]),D.rx,D.ry,0,0,2*Math.PI,true);
+            ...this._toLocalCanvas([D.cx,D.cy]),D.rx,D.ry,0,0,2*Math.PI,true);
           break;
         case 'qbez':
           {
             CanvasShape._validateCPoints(D.cpoints, 3);
             this._ctx.beginPath();
             let [[x0,y0],[x1,y1],[x2,y2]] = D.cpoints;
-            this._ctx.moveTo(...xform.transformPoint([x0,y0]));
+            this._ctx.moveTo(...this._toLocalCanvas([x0,y0]));
             this._ctx.quadraticCurveTo(
-              ...xform.transformPoint([x1,y1]),
-              ...xform.transformPoint([x2,y2]));
+              ...this._toLocalCanvas([x1,y1]),
+              ...this._toLocalCanvas([x2,y2]));
           }
           break;
         case 'cbez':
@@ -274,11 +290,11 @@ class CanvasShape extends RenderShape {
             CanvasShape._validateCPoints(D.cpoints, 4);
             this._ctx.beginPath();
             let [[x0,y0],[x1,y1],[x2,y2],[x3,y3]] = D.cpoints;
-            this._ctx.moveTo(...xform.transformPoint([x0,y0]));
+            this._ctx.moveTo(...this._toLocalCanvas([x0,y0]));
             this._ctx.bezierCurveTo(
-              ...xform.transformPoint([x1,y1]),
-              ...xform.transformPoint([x2,y2]),
-              ...xform.transformPoint([x3,y3])
+              ...this._toLocalCanvas([x1,y1]),
+              ...this._toLocalCanvas([x2,y2]),
+              ...this._toLocalCanvas([x3,y3])
             );
           }
           break;
@@ -299,36 +315,36 @@ class CanvasShape extends RenderShape {
                 case 'M':
                   {
                     let [_,x,y] = curvecmd;
-                    this._ctx.moveTo(...xform.transformPoint([x,y]));
+                    this._ctx.moveTo(...this._toLocalCanvas([x,y]));
                   }
                   break;
                 case 'L':
                   {
                     let [_,x,y] = curvecmd;
-                    this._ctx.lineTo(...xform.transformPoint([x,y]));
+                    this._ctx.lineTo(...this._toLocalCanvas([x,y]));
                   }
                   break;
                 case 'Q':
                   {
                     let [_,cpx,cpy,x,y] = curvecmd;
                     this._ctx.quadraticCurveTo(
-                      ...xform.transformPoint([cpx,cpy]),
-                      ...xform.transformPoint([x,y]));
+                      ...this._toLocalCanvas([cpx,cpy]),
+                      ...this._toLocalCanvas([x,y]));
                   }
                   break;
                 case 'C':
                   {
                     let [_,cp1x,cp1y,cp2x,cp2y,x,y] = curvecmd;
                     this._ctx.bezierCurveTo(
-                      ...xform.transformPoint([cp1x,cp1y]),
-                      ...xform.transformPoint([cp2x,cp2y]),
-                      ...xform.transformPoint([x,y]));
+                      ...this._toLocalCanvas([cp1x,cp1y]),
+                      ...this._toLocalCanvas([cp2x,cp2y]),
+                      ...this._toLocalCanvas([x,y]));
                   }
                   break;
                 case 'E':
                   {
                     let [_,cx,cy,rx,ry,start,end,ccw] = curvecmd;
-                    this._ctx.ellipse(...xform.transformPoint([cx,cy]),
+                    this._ctx.ellipse(...this._toLocalCanvas([cx,cy]),
                       rx,ry,0,start,end,ccw);
                   }
                   break;

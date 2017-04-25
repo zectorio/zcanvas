@@ -483,9 +483,55 @@ function testWithNoGroups(style) {
   zc.render();
 }
 
+function testGroups1Deep() {
+  const WIDTH=1000;
+  const HEIGHT=800;
+  let zc = new ZCanvas('canvas', WIDTH, HEIGHT);
+  document.body.appendChild(zc.getDOMElement());
+
+  let group1 = new ZCanvas.RenderGroup();
+  
+  let X=0, Y=0;
+
+  /*
+  group1.add(new ZCanvas.RenderShape({
+    type : 'rect',
+    x : X,
+    y : Y,
+    w : 50,
+    h : 50
+  }, {fill:'#f33'}));
+  
+  group1.add(new ZCanvas.RenderShape({
+    type : 'rect',
+    x : X+100,
+    y : Y+100,
+    w : 50,
+    h : 50
+  }, {fill:'#f33'}));
+  */
+  
+  X += 200;
+  
+  let group2 = new ZCanvas.RenderGroup();
+  group2.add(new ZCanvas.RenderShape({
+    type : 'rect',
+    x : X,
+    y : Y,
+    w : 50,
+    h : 50
+  }, {fill:'#f33'}));
+  
+  // zc.root().add(group1);
+  zc.root().add(group2);
+  
+  zc.render();
+}
+
 
 window.onload = function () {
-  switch(window.location.hash) {
+  let choice = window.location.hash || '#onlyshapes-stroke2';
+  switch(choice) {
     case '#onlyshapes-stroke2':
       testWithNoGroups({stroke:'#000', strokeWidth:2});
       break;
@@ -495,8 +541,11 @@ window.onload = function () {
     case '#onlyshapes-fillnostroke':
       testWithNoGroups({stroke:'none', fill:'#f88'});
       break;
+    case '#groups-1deep':
+      testGroups1Deep();
+      break;
   }
-  document.querySelector('select').value = window.location.hash.substr(1);
+  document.querySelector('select').value = choice.substr(1);
   
   document.querySelector('select').onchange = ev => {
     let url =

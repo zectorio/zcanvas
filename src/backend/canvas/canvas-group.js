@@ -27,8 +27,8 @@ class CanvasGroup extends RenderGroup {
         min:[0,0], max:[this.backend.width,this.backend.height]
       });
     }
-    this.localWidth = this.aabb.width();
-    this.localHeight = this.aabb.height();
+    this._canvasWidth = this.aabb.width();
+    this._canvasHeight = this.aabb.height();
     this.localTransform = new Transform()
       .translate(vec2.mul(this.aabb.min, -1));
     
@@ -40,14 +40,14 @@ class CanvasGroup extends RenderGroup {
    */
   add(child) {
     super.add(child);
-    this._updateLocalCanvasParameters();
+    // this._updateLocalCanvasParameters();
   }
 
-  _initCanvas() {
-    this._updateLocalCanvasParameters();
+  _initCanvas(width, height) {
+    // this._updateLocalCanvasParameters();
     this._canvas = zdom.createCanvas();
-    this._canvas.width = this.localWidth;
-    this._canvas.height = this.localHeight;
+    this._canvas.width = width || this._canvasWidth;
+    this._canvas.height = height || this._canvasHeight;
     this._ctx = this._canvas.getContext('2d');
   }
 
@@ -60,7 +60,7 @@ class CanvasGroup extends RenderGroup {
   _clearCanvas() {
     this._ctx.save();
     this._ctx.setTransform(...IDENTITY.toArray());
-    this._ctx.clearRect(0,0,this.localWidth, this.localHeight);
+    this._ctx.clearRect(0,0,this._canvasWidth, this._canvasHeight);
     this._ctx.restore();
   }
 
@@ -84,20 +84,30 @@ class CanvasGroup extends RenderGroup {
       super.render();
 
       this._pushContext();
-      this.children.forEach(child => {
+      for(let child of this.children) {
         if(child.isVisible()) {
           this._ctx.save();
           
-          this._ctx.transform(...child.localTransform.inverse().toArray());
+          // this._ctx.transform(...child.localTransform.inverse().toArray());
           
+          // let childTranslation = child.localTransform.inverse().getTranslation();
+
+          // console.log('child', (child instanceof CanvasGroup)?'G':'S'+child.id,
+          //   child.localTransform.inverse().getTranslation(),
+          //   child.aabb.toString());
+
+          this._ctx.transform(1,0,0,1,...child._canvasOffset);
+          
+          // console.log('child', child.id,
+          //   child._canvasWidth, child._canvasHeight, child._canvasOffset);
           this._ctx.fillStyle = '#ddd';
-          this._ctx.fillRect(0,0,child.localWidth, child.localHeight);
+          this._ctx.fillRect(0,0,child._canvasWidth, child._canvasHeight);
           
           this._ctx.drawImage(child._canvas,0,0);
           
           this._ctx.restore();
         }
-      });
+      }
       this._popContext();
     }
   }
