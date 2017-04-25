@@ -95,9 +95,10 @@ class CanvasGroup extends RenderGroup {
           let offset = vec2.sub(child.canvasOffset, this.canvasOffset);
           this._ctx.transform(1,0,0,1,...offset);
           
-          // Debug
-          this._ctx.fillStyle = '#ddd';
-          this._ctx.fillRect(0,0,child.canvasWidth, child.canvasHeight);
+          if(this.backend._debugLocalCanvas) {
+            this._ctx.fillStyle = '#ddd';
+            this._ctx.fillRect(0,0,child.canvasWidth, child.canvasHeight);
+          }
           
           this._ctx.drawImage(child._canvas,0,0);
           

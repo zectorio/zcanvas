@@ -14,6 +14,8 @@ class CanvasBackend extends RenderBackend {
     this._root._setParent(this);
 
     this._root._initCanvas([width, height]);
+    
+    this._debugLocalCanvas = false;
 
     this.register(this._root);
   }

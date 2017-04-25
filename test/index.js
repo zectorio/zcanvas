@@ -518,10 +518,24 @@ function testGroups1Deep() {
     y : Y,
     w : 50,
     h : 50
-  }, {fill:'#f33'}));
+  }, {fill:'#3f3'}));
+  
+  X += 200;
+  let group3 = new ZCanvas.RenderGroup();
+  group3.add(new ZCanvas.RenderShape({
+    type : 'line',
+    x1 : X, y1 : Y,
+    x2 : X+200, y2 : Y+200
+  }, {stroke:'#f00', strokeWidth:2}));
+  group3.add(new ZCanvas.RenderShape({
+    type : 'line',
+    x1 : X+200, y1 : Y,
+    x2 : X, y2 : Y+200
+  }, {stroke:'#00f', strokeWidth:2}));
   
   zc.root().add(group1);
   zc.root().add(group2);
+  zc.root().add(group3);
   
   zc.render();
 }
