@@ -1,6 +1,6 @@
 
 import ZCanvas from '../src/zcanvas';
-import {vec2, geom, Transform, Rotation} from 'zmath'
+import {vec2, geom, toDeg, toRad, Transform, Rotation} from 'zmath'
 
 
 function testBlinking() {
@@ -315,7 +315,126 @@ function testWithNoGroups() {
     stroke : '#000',
     strokeWidth : 2
   }));
+
+  X = 50;
+  Y += 100;
+
+  {
+    let earc = geom.EllipseArc.circularArcFrom3Points(
+      [X,Y],[X+50,Y+25],[X,Y+50]);
+    let {center:[cx,cy],rx,ry,start,end,ccw} = earc;
+    console.log(cx,cy,rx,ry,start,end,ccw);
+    zc.root().add(new ZCanvas.RenderShape({
+      type : 'path',
+      curveseq : [
+        ['E',cx,cy,rx,ry,start,end,ccw?1:0]
+      ]
+    }, {
+      stroke : '#000',
+      strokeWidth : 2
+    }));
+  }
   
+  X += 100;
+  
+  {
+    let earc = geom.EllipseArc.circularArcFrom3Points(
+      [X+50,Y],[X,Y+25],[X+50,Y+50]);
+    let {center:[cx,cy],rx,ry,start,end,ccw} = earc;
+    zc.root().add(new ZCanvas.RenderShape({
+      type : 'path',
+      curveseq : [
+        ['E',cx,cy,rx,ry,start,end,ccw?1:0]
+      ]
+    }, {
+      stroke : '#000',
+      strokeWidth : 2 
+    }));
+  }
+
+  X += 100;
+
+  {
+    let earc1 = geom.EllipseArc.circularArcFrom3Points(
+      [X+50,Y],[X,Y+25],[X+50,Y+50]);
+    let {center:[cx1,cy1],rx:rx1,ry:ry1,start:start1,end:end1,ccw:ccw1} = earc1;
+    let earc2 = geom.EllipseArc.circularArcFrom3Points(
+      [X+50,Y+50],[X+25,Y+25],[X+50,Y]);
+    let {center:[cx2,cy2],rx:rx2,ry:ry2,start:start2,end:end2,ccw:ccw2} = earc2;
+    zc.root().add(new ZCanvas.RenderShape({
+      type : 'path',
+      curveseq : [
+        ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
+        ['E',cx2,cy2,rx2,ry2,start2,end2,ccw2?1:0]
+      ]
+    }, {
+      stroke : '#000',
+      strokeWidth : 2
+    }));
+  }
+
+  X += 100;
+
+  {
+    let earc1 = geom.EllipseArc.circularArcFrom3Points(
+      [X,Y],[X+50,Y+25],[X,Y+50]);
+    let {center:[cx1,cy1],rx:rx1,ry:ry1,start:start1,end:end1,ccw:ccw1} = earc1;
+    let earc2 = geom.EllipseArc.circularArcFrom3Points(
+      [X,Y+50],[X+25,Y+25],[X,Y]);
+    let {center:[cx2,cy2],rx:rx2,ry:ry2,start:start2,end:end2,ccw:ccw2} = earc2;
+    zc.root().add(new ZCanvas.RenderShape({
+      type : 'path',
+      curveseq : [
+        ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
+        ['E',cx2,cy2,rx2,ry2,start2,end2,ccw2?1:0]
+      ]
+    }, {
+      stroke : '#000',
+      strokeWidth : 2
+    }));
+  }
+  
+  X += 100;
+
+  {
+    let earc1 = geom.EllipseArc.circularArcFrom3Points(
+      [X,Y+50],[X+25,Y],[X+50,Y+50]);
+    let {center:[cx1,cy1],rx:rx1,ry:ry1,start:start1,end:end1,ccw:ccw1} = earc1;
+    let earc2 = geom.EllipseArc.circularArcFrom3Points(
+      [X+50,Y+50],[X+25,Y+25],[X,Y+50]);
+    let {center:[cx2,cy2],rx:rx2,ry:ry2,start:start2,end:end2,ccw:ccw2} = earc2;
+    zc.root().add(new ZCanvas.RenderShape({
+      type : 'path',
+      curveseq : [
+        ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
+        ['E',cx2,cy2,rx2,ry2,start2,end2,ccw2?1:0]
+      ]
+    }, {
+      stroke : '#000',
+      strokeWidth : 2
+    }));
+  }
+
+  X += 100;
+
+  {
+    let earc1 = geom.EllipseArc.circularArcFrom3Points(
+      [X,Y],[X+25,Y+50],[X+50,Y]);
+    let {center:[cx1,cy1],rx:rx1,ry:ry1,start:start1,end:end1,ccw:ccw1} = earc1;
+    let earc2 = geom.EllipseArc.circularArcFrom3Points(
+      [X+50,Y],[X+25,Y+25],[X,Y]);
+    let {center:[cx2,cy2],rx:rx2,ry:ry2,start:start2,end:end2,ccw:ccw2} = earc2;
+    zc.root().add(new ZCanvas.RenderShape({
+      type : 'path',
+      curveseq : [
+        ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
+        ['E',cx2,cy2,rx2,ry2,start2,end2,ccw2?1:0]
+      ]
+    }, {
+      stroke : '#000',
+      strokeWidth : 2
+    }));
+  }
   zc.render();
 }
 
