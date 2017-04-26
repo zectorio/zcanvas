@@ -241,6 +241,8 @@ function testWithNoGroups(style) {
   const HEIGHT=800;
   let zc = new ZCanvas('canvas', WIDTH, HEIGHT);
   document.body.appendChild(zc.getDOMElement());
+
+  drawGrid(zc);
   
   let X = 50;
   let Y = 50;
@@ -540,6 +542,39 @@ function testGroups1Deep() {
   zc.root().add(group3);
   
   zc.render();
+  
+  drawGrid(zc);
+}
+
+function drawGrid(zc) {
+  // Draw grid
+  /*
+  let patternShape = new ZCanvas.RenderShape({
+    type : 'rect', x:0, y:0, w:100, h:100
+  },{stroke:'#999', strokeWidth:1});
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'rect', x:0, y:0, w:1000, h:800
+  }, {fill:patternShape}));
+  */
+  
+  let ctx = zc.root()._ctx;
+  ctx.save();
+  
+  ctx.globalCompositeOperation = 'destination-over';
+  
+  ctx.strokeStyle = '#000';
+  ctx.strokeWidth = '#000';
+  for(let x=0; x<=ctx.canvas.width; x+=100) {
+    ctx.moveTo(x,0);
+    ctx.lineTo(x,ctx.canvas.height);
+    ctx.stroke();
+  }
+  for(let y=0; y<=ctx.canvas.height; y+=100) {
+    ctx.moveTo(0,y); 
+    ctx.lineTo(ctx.canvas.width,y);
+    ctx.stroke();
+  }
+  ctx.restore();
 }
 
 function testShapeTransformation() {
@@ -548,12 +583,12 @@ function testShapeTransformation() {
   let zc = new ZCanvas('canvas', WIDTH, HEIGHT);
   document.body.appendChild(zc.getDOMElement());
   
+
   zc.root().add(new ZCanvas.RenderShape({
-    type : 'rect',
-    x : 100, y : 100, w : 100, h : 100
+    type : 'rect', x : 100, y : 100, w : 100, h : 100
   }, {
     fill : '#f00'
-  }, new Transform().translate(100,0)));
+  }, new Transform().translate(200,0)));
 
   zc.root().add(new ZCanvas.RenderShape({
     type : 'rect',
@@ -561,7 +596,7 @@ function testShapeTransformation() {
   }, {
     fill : '#0f0'
   }, Transform.rotateAround(toRad(45),[0,0])));
-  
+
   zc.root().add(new ZCanvas.RenderShape({
     type : 'rect',
     x : 300, y : 300, w : 100, h : 100
@@ -570,6 +605,9 @@ function testShapeTransformation() {
   }, Transform.rotateAround(toRad(45),[150,150])));
   
   zc.render();
+
+  drawGrid(zc);
+
 }
 
 
