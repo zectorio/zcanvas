@@ -10,7 +10,20 @@
 
   <p>
     <span>
-      Angle <input title="Angle" name="angle" type="range" min="-45" max="45" step="1" value="0"/>
+      Angle <input title="Angle" name="angle" type="range" min="-180" max="180" step="1" value="0"/>
+    </span>
+    <span>
+      Move X <input title="MoveX" name="movex" type="range" min="0" max="400" step="1" value="0"/>
+    </span>
+    <span>
+      Move Y <input title="MoveY" name="movey" type="range" min="0" max="400" step="1" value="0"/>
+    </span>
+    <br/>
+    <span>
+      Pivot
+      <input type="radio" name="pivot" value="self" checked> Self
+      <input type="radio" name="pivot" value="origin"> Origin
+      <input type="radio" name="pivot" value="center"> Center
     </span>
   </p>
 

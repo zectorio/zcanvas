@@ -383,6 +383,8 @@ const root2 = Math.sqrt(2);
 const PI = Math.PI;
 
 let rotationAngle = 0;
+let pivot = [150,150];
+let movement = [0,0];
 
 function redraw(ctx) {
   ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
@@ -397,7 +399,6 @@ function redraw(ctx) {
   ctx.fill();
   ctx.restore();
 
-
   ctx.save();
   ctx.fillStyle = 'rgba(100,100,100,0.3)';
   let w = root2*110*Math.cos((45+rotationAngle)*PI/180);
@@ -405,8 +406,10 @@ function redraw(ctx) {
   ctx.fillRect(0,0,w,h);
   ctx.restore();
 
-
-  let xform = Transform.rotateAround(Math.PI*rotationAngle/180, [0,0]);
+  let translation = new Transform().translate(...movement);
+  let rotation = Transform.rotateAround(Math.PI*rotationAngle/180, pivot);
+  
+  let xform = translation.mul(rotation);
   
   drawShape(ctx, xform);
 }
@@ -422,6 +425,29 @@ window.onload = () => {
     rotationAngle = parseFloat(ev.target.value);
     redraw(ctx);
   };
+  document.querySelector('input[name=movex]').onmousemove = ev => {
+    movement[0] = parseFloat(ev.target.value);
+    redraw(ctx);
+  };
+  document.querySelector('input[name=movey]').onmousemove = ev => {
+    movement[1] = parseFloat(ev.target.value);
+    redraw(ctx);
+  };
+  for(let radioElem of document.querySelectorAll('input[name=pivot]')) {
+    radioElem.onclick = ev => {
+      switch(ev.target.value) {
+        case 'origin':
+          pivot = [0,0];
+          break;
+        case 'self':
+          pivot = [150,150];
+          break;
+        case 'center':
+          pivot = [300,300];
+          break;
+      }
+    };
+  }
   
   
 };
