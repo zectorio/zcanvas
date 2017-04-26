@@ -21,8 +21,6 @@
     "babel-core": "^6.22.1",
     "babel-loader": "^6.2.10",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.22.0",
-    "broadcode": "github:zectorio/broadcode",
-    "stats.js": "^0.17.0",
     "webpack": "^2.2.1"
   },
   "babel": {
@@ -31,6 +29,7 @@
     ]
   },
   "dependencies": {
+    "zbits": "github:jay3sh/zbits",
     "zdom": "github:zectorio/zdom",
     "zmath": "github:jay3sh/zmath"
   }

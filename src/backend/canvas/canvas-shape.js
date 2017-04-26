@@ -2,6 +2,7 @@
 import RenderShape from '../rshape'
 import zdom from 'zdom'
 import {vec2, AABB, Transform} from 'zmath'
+import {Gradient} from '../../gradient' 
 
 const IDENTITY = Transform.identity();
 
@@ -46,7 +47,11 @@ class CanvasShape extends RenderShape {
       if(key === 'stroke') {
         this._ctx.strokeStyle = this.style.stroke;
       } else if(key === 'fill') {
-        this._ctx.fillStyle = this.style.fill;
+        if(this.style.fill instanceof Gradient) {
+          this._ctx.fillStyle = this.style.fill.toCanvas(this._ctx); 
+        } else {
+          this._ctx.fillStyle = this.style.fill;
+        }
       } else if(key === 'strokeWidth') {
         this._ctx.lineWidth = this.style.strokeWidth;
       }

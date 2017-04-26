@@ -1,6 +1,8 @@
 
 import ZCanvas from '../src/zcanvas';
+import {GradientStopList, LinearGradient, RadialGradient} from '../src'
 import {vec2, geom, toDeg, toRad, Transform, Rotation} from 'zmath'
+import {Kolor} from 'zbits'
 
 
 function testBlinking() {
@@ -553,6 +555,16 @@ window.onload = function () {
     case '#onlyshapes-fillnostroke':
       testWithNoGroups({stroke:'none', fill:'#f88'});
       break;
+    case '#onlyshapes-lingrad':
+      let lingrad = new LinearGradient(
+        new GradientStopList(Kolor.RED, Kolor.BLUE), [0,0],[0,50]);
+      testWithNoGroups({stroke:'none', fill:lingrad});
+      break;
+    case '#onlyshapes-radgrad':
+      let radgrad = new RadialGradient(
+        new GradientStopList(Kolor.RED, Kolor.BLUE), [25,25],50);
+      testWithNoGroups({stroke:'none', fill:radgrad});
+      break;
     case '#groups-1deep':
       testGroups1Deep();
       break;
@@ -560,9 +572,8 @@ window.onload = function () {
   document.querySelector('select').value = choice.substr(1);
   
   document.querySelector('select').onchange = ev => {
-    let url =
+    window.location.href =
       window.location.origin+window.location.pathname+'#'+ev.target.value;
-    window.location.href = url;
     window.location.reload();
   }
 };
