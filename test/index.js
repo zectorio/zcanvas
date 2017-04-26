@@ -542,6 +542,36 @@ function testGroups1Deep() {
   zc.render();
 }
 
+function testShapeTransformation() {
+  const WIDTH=1000;
+  const HEIGHT=800;
+  let zc = new ZCanvas('canvas', WIDTH, HEIGHT);
+  document.body.appendChild(zc.getDOMElement());
+  
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'rect',
+    x : 100, y : 100, w : 100, h : 100
+  }, {
+    fill : '#f00'
+  }, new Transform().translate(100,0)));
+
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'rect',
+    x : 100, y : 100, w : 100, h : 100
+  }, {
+    fill : '#0f0'
+  }, Transform.rotateAround(toRad(45),[0,0])));
+  
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'rect',
+    x : 300, y : 300, w : 100, h : 100
+  }, {
+    fill : '#00f'
+  }, Transform.rotateAround(toRad(45),[150,150])));
+  
+  zc.render();
+}
+
 
 window.onload = function () {
   let choice = window.location.hash || '#onlyshapes-stroke2';
@@ -564,6 +594,9 @@ window.onload = function () {
       let radgrad = new RadialGradient(
         new GradientStopList(Kolor.RED, Kolor.BLUE), [25,25],50);
       testWithNoGroups({stroke:'none', fill:radgrad});
+      break;
+    case '#shape-transformation':
+      testShapeTransformation();
       break;
     case '#groups-1deep':
       testGroups1Deep();

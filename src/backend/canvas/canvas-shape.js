@@ -58,12 +58,6 @@ class CanvasShape extends RenderShape {
     }
   }
 
-  _applyTransform() {
-    if(!this.transform.isIdentity()) {
-      this._ctx.transform(...this.transform.toArray());
-    }
-  }
-
   _paint() {
     if(this.style.hasOwnProperty('fill') &&
       this.style['fill'] !== 'none')
@@ -94,7 +88,6 @@ class CanvasShape extends RenderShape {
   _pushContext() {
     this._ctx.save();
     this._applyStyle();
-    this._applyTransform();
   }
 
   _popContext() {

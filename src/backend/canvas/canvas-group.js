@@ -93,7 +93,10 @@ class CanvasGroup extends RenderGroup {
           this._ctx.save();
           
           let offset = vec2.sub(child.canvasOffset, this.canvasOffset);
-          this._ctx.transform(1,0,0,1,...offset);
+          
+          let transform = new Transform().translate(offset).mul(child.transform);
+          
+          this._ctx.transform(...transform.toArray());
           
           if(this.backend._debugLocalCanvas) {
             this._ctx.fillStyle = '#ddd';
