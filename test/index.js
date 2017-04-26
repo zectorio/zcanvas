@@ -595,14 +595,14 @@ function testShapeTransformation() {
     x : 100, y : 100, w : 100, h : 100
   }, {
     fill : '#0f0'
-  }, Transform.rotateAround(toRad(45),[0,0])));
+  }, Transform.rotateAround(toRad(45),[50,50])));
 
   zc.root().add(new ZCanvas.RenderShape({
     type : 'rect',
-    x : 300, y : 300, w : 100, h : 100
+    x : 400, y : 400, w : 100, h : 100
   }, {
     fill : '#00f'
-  }, Transform.rotateAround(toRad(45),[150,150])));
+  }, Transform.rotateAround(toRad(45),[0,0])));
   
   zc.render();
 

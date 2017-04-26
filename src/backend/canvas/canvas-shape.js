@@ -23,7 +23,12 @@ class CanvasShape extends RenderShape {
     if(this.style.hasOwnProperty('strokeWidth')) {
       lineWidth = this.style['strokeWidth'];
     } else {
-      lineWidth = 1; 
+      if(this.style.hasOwnProperty('stroke') && this.style['stroke'] !== 'none')
+      {
+        lineWidth = 1; 
+      } else {
+        lineWidth = 0; 
+      }
     }
     let padding = lineWidth + PADDING;
     
