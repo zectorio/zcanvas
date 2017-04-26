@@ -1,5 +1,6 @@
 
 import RenderShape from '../rshape'
+import Item from '../item'
 import zdom from 'zdom'
 import {vec2, AABB, Transform} from 'zmath'
 import {Gradient} from '../../gradient' 
@@ -48,7 +49,11 @@ class CanvasShape extends RenderShape {
         this._ctx.strokeStyle = this.style.stroke;
       } else if(key === 'fill') {
         if(this.style.fill instanceof Gradient) {
-          this._ctx.fillStyle = this.style.fill.toCanvas(this._ctx); 
+          this._ctx.fillStyle = this.style.fill.toCanvas(this._ctx);
+        } else if(this.style.fill instanceof Item) {
+          this.style.fill.render(false);
+          this._ctx.fillStyle =
+            this._ctx.createPattern(this.style.fill._canvas,'repeat');
         } else {
           this._ctx.fillStyle = this.style.fill;
         }
@@ -228,7 +233,13 @@ class CanvasShape extends RenderShape {
   /**
    * Render
    */
-  render() {
+  render(withpadding=true) {
+    
+    if(!withpadding) {
+      this.canvasWidth = this.aabb.width();
+      this.canvasHeight = this.aabb.height();
+      this.canvasOffset = [0,0];
+    }
 
     if(!this._canvas) {
       this._initCanvas();
