@@ -331,8 +331,9 @@ class Transform {
   }
 
   toString() {
-    return `a:${this.a},b:${this.b},c:${this.c},`+
-      `d:${this.d},e:${this.e},f:${this.f}`;
+    return `a:${this.a.toFixed(2)}  b:${this.b.toFixed(2)}  `+
+      `c:${this.c.toFixed(2)}  d:${this.d.toFixed(2)}  `+
+      `e:${this.e.toFixed(2)}  f:${this.f.toFixed(2)}`;
   }
 
   /**
@@ -371,7 +372,7 @@ function drawShape(targetCtx, xform) {
   let shapeCtx = shapeCanvas.getContext('2d');
   
   shapeCtx.fillStyle = '#f00';
-  shapeCtx.fillRect(10,10,80,80);
+  shapeCtx.fillRect(PADDING,PADDING,100-2*PADDING,100-2*PADDING);
   
   targetCtx.save();
   targetCtx.setTransform(...xform.toArray());
@@ -379,6 +380,7 @@ function drawShape(targetCtx, xform) {
   targetCtx.restore();
 }
 
+const PADDING = 20;
 const root2 = Math.sqrt(2);
 const PI = Math.PI;
 
@@ -401,8 +403,9 @@ function redraw(ctx) {
 
   ctx.save();
   ctx.fillStyle = 'rgba(100,100,100,0.3)';
-  let w = root2*110*Math.cos((45+rotationAngle)*PI/180);
-  let h = root2*110*Math.sin((45+rotationAngle)*PI/180);
+  let DIAGONAL = 100 + PADDING;
+  let w = root2*DIAGONAL*Math.cos((45+rotationAngle)*PI/180);
+  let h = root2*DIAGONAL*Math.sin((45+rotationAngle)*PI/180);
   ctx.fillRect(0,0,w,h);
   ctx.restore();
 
@@ -410,6 +413,8 @@ function redraw(ctx) {
   let rotation = Transform.rotateAround(Math.PI*rotationAngle/180, pivot);
   
   let xform = translation.mul(rotation);
+  
+  document.querySelector('#output').textContent = xform.toString();
   
   drawShape(ctx, xform);
 }
