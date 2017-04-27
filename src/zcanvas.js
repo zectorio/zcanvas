@@ -1,19 +1,33 @@
 
-import choice from './backend'
-import constants from './constants'
+
+import RenderGroup from './rdrgroup'
+import {Transform} from 'zmath'
 
 class ZCanvas {
 
   /**
-   * @param {string=} backend
    * @param {number=} width
    * @param {number=} height
    */
-  constructor(backend='svg', width=640, height=480) {
-    let {RenderBackend,RenderGroup,RenderShape} = choice(backend);
-    this.backend = new RenderBackend(width, height);
-    ZCanvas.RenderGroup = RenderGroup;
-    ZCanvas.RenderShape = RenderShape;
+  constructor(width=640, height=480) {
+    /**
+     * @type {number}
+     */
+    this.width = width;
+    /**
+     * @type {number}
+     */
+    this.height = height;
+
+    /**
+     * @type {RenderGroup}
+     */
+    this.root = new RenderGroup();
+
+    /**
+     * @type {Transform} transform View transform
+     */
+    this.transform = new Transform();
   }
 
   /**
@@ -21,15 +35,7 @@ class ZCanvas {
    * @returns {Element}
    */
   getDOMElement() {
-    return this.backend.getDOMElement();
-  }
-
-  /**
-   * Return root item
-   * @returns {RenderGroup}
-   */
-  root() {
-    return this.backend.root();
+    return this.root.getDOMElement();
   }
 
   /**

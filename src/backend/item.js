@@ -19,6 +19,7 @@ class Item {
      */
     this.parent = null;
   }
+  
   _assignId(id) {
     this.id = id;
   }

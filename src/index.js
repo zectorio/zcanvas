@@ -1,15 +1,13 @@
+
 /**
  * @module zcanvas
  */
+
 import ZCanvas from './zcanvas';
-import {GradientStopList, Gradient, LinearGradient, RadialGradient}
-  from './gradient'
+import RenderGroup from './rdrgroup'
+import RenderShape from './rdrshape'
 
 
-export default ZCanvas;
 export {
-  GradientStopList,
-  Gradient,
-  LinearGradient,
-  RadialGradient
+  ZCanvas, RenderGroup, RenderShape
 }

@@ -1,5 +1,5 @@
 
-import ZCanvas from '../src/zcanvas';
+import {ZCanvas,RenderGroup,RenderShape} from '../src';
 import {GradientStopList, LinearGradient, RadialGradient} from '../src'
 import {vec2, geom, toDeg, toRad, Transform, Rotation} from 'zmath'
 import {Kolor} from 'zbits'
@@ -239,10 +239,10 @@ function testWithNoGroups(style) {
 
   const WIDTH=1000;
   const HEIGHT=800;
-  let zc = new ZCanvas('canvas', WIDTH, HEIGHT);
+  let zc = new ZCanvas(WIDTH, HEIGHT);
   document.body.appendChild(zc.getDOMElement());
 
-  drawGrid(zc);
+  // drawGrid(zc);
   
   let X = 50;
   let Y = 50;
@@ -251,7 +251,7 @@ function testWithNoGroups(style) {
   // Row 1
   // ---
   
-  zc.root().add(new ZCanvas.RenderShape({
+  zc.root.add(new RenderShape({
     type : 'line',
     x1 : X,
     y1 : Y,
@@ -261,7 +261,7 @@ function testWithNoGroups(style) {
   
   X += 100;
   
-  zc.root().add(new ZCanvas.RenderShape({
+  zc.root.add(new RenderShape({
     type : 'rect',
     x : X,
     y : Y,
@@ -271,7 +271,7 @@ function testWithNoGroups(style) {
 
   X += 100;
   
-  zc.root().add(new ZCanvas.RenderShape({
+  zc.root.add(new RenderShape({
     type : 'circle',
     cx : X+25,
     cy : Y+25,
@@ -280,7 +280,7 @@ function testWithNoGroups(style) {
 
   X += 100;
   
-  zc.root().add(new ZCanvas.RenderShape({
+  zc.root.add(new RenderShape({
     type : 'ellipse',
     cx : X+25,
     cy : Y+25,
@@ -290,7 +290,7 @@ function testWithNoGroups(style) {
   
   X += 100;
   
-  zc.root().add(new ZCanvas.RenderShape({
+  zc.root.add(new RenderShape({
     type : 'qbez',
     cpoints : [
       [X,Y+50], [X+25,Y], [X+50,Y+50]
@@ -299,7 +299,7 @@ function testWithNoGroups(style) {
   
   X += 100;
   
-  zc.root().add(new ZCanvas.RenderShape({
+  zc.root.add(new RenderShape({
     type : 'cbez',
     cpoints : [
       [X,Y+50], [X+10,Y], [X+40,Y+50], [X+50,Y]
@@ -317,7 +317,7 @@ function testWithNoGroups(style) {
     let earc = geom.EllipseArc.circularArcFrom3Points(
       [X,Y],[X+50,Y+25],[X,Y+50]);
     let {center:[cx,cy],rx,ry,start,end,ccw} = earc;
-    zc.root().add(new ZCanvas.RenderShape({
+    zc.root.add(new RenderShape({
       type : 'path',
       curveseq : [
         ['E',cx,cy,rx,ry,start,end,ccw?1:0]
@@ -331,7 +331,7 @@ function testWithNoGroups(style) {
     let earc = geom.EllipseArc.circularArcFrom3Points(
       [X+50,Y],[X,Y+25],[X+50,Y+50]);
     let {center:[cx,cy],rx,ry,start,end,ccw} = earc;
-    zc.root().add(new ZCanvas.RenderShape({
+    zc.root.add(new RenderShape({
       type : 'path',
       curveseq : [
         ['E',cx,cy,rx,ry,start,end,ccw?1:0]
@@ -345,7 +345,7 @@ function testWithNoGroups(style) {
     let earc = geom.EllipseArc.circularArcFrom3Points(
       [X+50,Y],[X,Y+25],[X+50,Y+50]);
     let {center:[cx,cy],rx,ry,start,end,ccw} = earc;
-    zc.root().add(new ZCanvas.RenderShape({
+    zc.root.add(new RenderShape({
       type : 'path',
       curveseq : [
         ['M',X+50,Y],
@@ -361,7 +361,7 @@ function testWithNoGroups(style) {
     let earc = geom.EllipseArc.circularArcFrom3Points(
       [X+50,Y],[X,Y+25],[X+50,Y+50]);
     let {center:[cx,cy],rx,ry,start,end,ccw} = earc;
-    zc.root().add(new ZCanvas.RenderShape({
+    zc.root.add(new RenderShape({
       type : 'path',
       curveseq : [
         ['M',X+50,Y],
@@ -380,7 +380,7 @@ function testWithNoGroups(style) {
     let earc2 = geom.EllipseArc.circularArcFrom3Points(
       [X+50,Y+50],[X+25,Y+25],[X+50,Y]);
     let {center:[cx2,cy2],rx:rx2,ry:ry2,start:start2,end:end2,ccw:ccw2} = earc2;
-    zc.root().add(new ZCanvas.RenderShape({
+    zc.root.add(new RenderShape({
       type : 'path',
       curveseq : [
         ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
@@ -398,7 +398,7 @@ function testWithNoGroups(style) {
     let earc2 = geom.EllipseArc.circularArcFrom3Points(
       [X+50,Y+50],[X+25,Y+25],[X+50,Y]);
     let {center:[cx2,cy2],rx:rx2,ry:ry2,start:start2,end:end2,ccw:ccw2} = earc2;
-    zc.root().add(new ZCanvas.RenderShape({
+    zc.root.add(new RenderShape({
       type : 'path',
       curveseq : [
         ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
@@ -417,7 +417,7 @@ function testWithNoGroups(style) {
     let earc2 = geom.EllipseArc.circularArcFrom3Points(
       [X,Y+50],[X+25,Y+25],[X,Y]);
     let {center:[cx2,cy2],rx:rx2,ry:ry2,start:start2,end:end2,ccw:ccw2} = earc2;
-    zc.root().add(new ZCanvas.RenderShape({
+    zc.root.add(new RenderShape({
       type : 'path',
       curveseq : [
         ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
@@ -435,7 +435,7 @@ function testWithNoGroups(style) {
     let earc2 = geom.EllipseArc.circularArcFrom3Points(
       [X+50,Y+50],[X+25,Y+25],[X,Y+50]);
     let {center:[cx2,cy2],rx:rx2,ry:ry2,start:start2,end:end2,ccw:ccw2} = earc2;
-    zc.root().add(new ZCanvas.RenderShape({
+    zc.root.add(new RenderShape({
       type : 'path',
       curveseq : [
         ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
@@ -453,7 +453,7 @@ function testWithNoGroups(style) {
     let earc2 = geom.EllipseArc.circularArcFrom3Points(
       [X+50,Y],[X+25,Y+25],[X,Y]);
     let {center:[cx2,cy2],rx:rx2,ry:ry2,start:start2,end:end2,ccw:ccw2} = earc2;
-    zc.root().add(new ZCanvas.RenderShape({
+    zc.root.add(new RenderShape({
       type : 'path',
       curveseq : [
         ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
@@ -473,7 +473,7 @@ function testWithNoGroups(style) {
     let earc = geom.EllipseArc.circularArcFrom3Points(
       [X,Y],[X+50,Y+25],[X,Y+50]);
     let {center:[cx,cy],rx,ry,start,end,ccw} = earc;
-    zc.root().add(new ZCanvas.RenderShape({
+    zc.root.add(new RenderShape({
       type : 'path',
       curveseq : [
         ['M',X,Y+25],
