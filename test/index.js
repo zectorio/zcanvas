@@ -610,6 +610,70 @@ function testShapeTransformation() {
 
 }
 
+function testShapeScaling() {
+  const WIDTH=1000;
+  const HEIGHT=800;
+  let zc = new ZCanvas('canvas', WIDTH, HEIGHT);
+  document.body.appendChild(zc.getDOMElement());
+
+  // zc.root()._ctx.imageSmoothingEnabled = true;
+  // zc.root()._ctx.imageSmoothingQuality = 'high';
+
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'rect',
+    x : 300, y : 300,
+    w : 100, h : 100
+  }, {stroke: '#000', strokeWidth:2},
+  new Transform().scale(3,3)));
+  
+  zc.root().add(new ZCanvas.RenderShape({
+      type : 'rect',
+      x : 300, y : 300,
+      w : 100, h : 100
+    }, {stroke: '#000', strokeWidth:2},
+    new Transform().scale(6,6).translate(-50,-50)));
+  
+  zc.root().add(new ZCanvas.RenderShape({
+      type : 'rect',
+      x : 100, y : 100,
+      w : 300, h : 300
+    }, {stroke: '#000', strokeWidth:6}));
+  
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'rect',
+    x : 50, y : 50,
+    w : 600, h : 600
+  }, {stroke: '#000', strokeWidth:12}));
+  
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'circle',
+    cx : 250, cy : 250,
+    r : 50
+  }, {stroke: '#000', strokeWidth:12}));
+  
+  zc.render();
+}
+
+function testLotsOfShapes() {
+  let SIZE = 35;
+  let STEP = 35;
+  const WIDTH=1000;
+  const HEIGHT=800;
+  let zc = new ZCanvas('canvas', WIDTH, HEIGHT);
+  document.body.appendChild(zc.getDOMElement());
+  
+  for(let i=0; i<WIDTH; i+=STEP) {
+    for(let j=0; j<HEIGHT; j+=STEP) {
+      zc.root().add(new ZCanvas.RenderShape({
+        type : 'rect',
+        x : i+0.2*SIZE, y : j+0.2*SIZE,
+        w : 0.6*SIZE, h : 0.6*SIZE
+      }, {fill: i%2 ? '#f00' : '#00f'}));
+    }
+  }
+  
+  zc.render();
+}
 
 window.onload = function () {
   let choice = window.location.hash || '#onlyshapes-stroke2';
@@ -638,6 +702,12 @@ window.onload = function () {
       break;
     case '#groups-1deep':
       testGroups1Deep();
+      break;
+    case '#lots-of-shapes':
+      testLotsOfShapes();
+      break;
+    case '#shape-scaling':
+      testShapeScaling();
       break;
   }
   document.querySelector('select').value = choice.substr(1);
