@@ -1,5 +1,6 @@
 
 import {Transform} from 'zmath'
+import zdom from 'zdom'
 
 export default class RenderItem {
 
@@ -7,7 +8,12 @@ export default class RenderItem {
    * @param {Transform} [transform]
    */
   constructor(transform) {
-    this.transform = transform || new Transform();
+
+    /**
+     * @type {Transform}
+     * @private
+     */
+    this._transform = transform || new Transform();
 
     /**
      * @type {RenderGroup}
@@ -38,10 +44,31 @@ export default class RenderItem {
      * @private
      */
     this._canvas = null
+
+    /**
+      * @type {number}
+     */
+    this.id = -1;
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this._dirty = true;
   }
   
   getDOMElement() {
     return this._elem;
+  }
+  
+  _assignId(id) {
+    this.id = id;
+  }
+  
+  _initRenderBackend() {
+    this._elem = zdom.createCanvas(
+      this._canvas.width, this._canvas.height);
+    this._ctx = this._elem.getContext('2d');
   }
 
   /**
@@ -80,11 +107,29 @@ export default class RenderItem {
    * @param {Transform} transform
    */
   setTransform(transform) {
-    this.transform = transform;
+    this._transform = transform;
     this._markDirty();
     if(this._parent) {
       this._parent._markDirty();
     }
+  }
+  
+  _clearCanvas() {
+    this._ctx.save();
+    this._ctx.setTransform(1,0,0,1,0,0); // Identity
+    this._ctx.clearRect(0,0,this._width, this._height);
+    this._ctx.restore();
+  }
+
+  _pushContext() {
+    this._ctx.save();
+  }
+
+  _popContext() {
+    this._ctx.restore();
+  }
+  
+  _markDirty() {
   }
 
   /**

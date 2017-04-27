@@ -235,6 +235,21 @@ function testComplexShapes() {
   zc.render();
 }
 
+function testBasicRect() {
+
+  const WIDTH=1000;
+  const HEIGHT=800;
+  let zc = new ZCanvas(WIDTH, HEIGHT);
+  document.body.appendChild(zc.getDOMElement());
+  
+  zc.root.insertAtTop(new RenderShape({
+    type : 'rect',
+    x:100, y:100, w:100, h:100
+  }));
+  
+  zc.render();
+}
+
 function testWithNoGroups(style) {
 
   const WIDTH=1000;
@@ -676,7 +691,7 @@ function testLotsOfShapes() {
 }
 
 window.onload = function () {
-  let choice = window.location.hash || '#onlyshapes-stroke2';
+  let choice = window.location.hash;
   switch(choice) {
     case '#onlyshapes-stroke2':
       testWithNoGroups({stroke:'#000', strokeWidth:2});
@@ -709,6 +724,11 @@ window.onload = function () {
     case '#shape-scaling':
       testShapeScaling();
       break;
+    default:
+      testBasicRect();
+      break;
+    
+      
   }
   document.querySelector('select').value = choice.substr(1);
   

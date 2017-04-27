@@ -20,14 +20,26 @@ class ZCanvas {
     this.height = height;
 
     /**
-     * @type {RenderGroup}
+     * @type {number}
+     * @private
      */
-    this.root = new RenderGroup();
+    this._idCounter = 0;
+    this._items = [];
 
     /**
      * @type {Transform} transform View transform
      */
-    this.transform = new Transform();
+    this._viewTransform = new Transform();
+    
+    /**
+     * @type {RenderGroup}
+     */
+    this.root = new RenderGroup();
+    this.register(this.root);
+    this.root._setCanvas(this);
+    this.root._initRenderBackend();
+
+
   }
 
   /**
@@ -39,12 +51,9 @@ class ZCanvas {
   }
 
   /**
-   * Start render Loop
-   * If ontick callback is passed, it's invoked at every tick
-   * @param {ZCanvas~ontick} [ontick]
    */
-  render(ontick=null) {
-    this.backend.render(ontick);
+  render() {
+    this.root.render();
   }
 
   /**
@@ -54,6 +63,21 @@ class ZCanvas {
    */
   resize(width, height) {
     this.backend.resize(width, height);
+  }
+  
+  /**
+   * Register item to this canvas backend, by assigning a new id to it
+   * and tracking it
+   * @param item
+   */
+  register(item) {
+    let id = this._generateId();
+    this._items[id] = item;
+    item._assignId(id);
+  }
+
+  _generateId() {
+    return this._idCounter++;
   }
 
   /**
