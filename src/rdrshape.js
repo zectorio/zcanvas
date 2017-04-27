@@ -17,6 +17,7 @@ export default class RenderShape extends RenderItem {
      * @type {ZCanvas~PathDefinition}
      * @private
      */
+    this._validatePathDef(pathdef);
     this._pathdef = pathdef;
     
     /**
@@ -28,6 +29,37 @@ export default class RenderShape extends RenderItem {
     
     this._markDirty();
   }
+
+  /**
+   * @param {ZCanvas~PathDefinition} D
+   * @private
+   */
+  _validatePathDef(D) {
+    switch(D.type) {
+      case 'rect':
+        if(
+          !D.hasOwnProperty('x') ||
+          !D.hasOwnProperty('y') ||
+          !D.hasOwnProperty('w') ||
+          !D.hasOwnProperty('h')
+        ) {
+          throw new Error('PathDef incomplete');
+        }
+        break;
+      case 'circle':
+        if(
+          !D.hasOwnProperty('cx') ||
+          !D.hasOwnProperty('cy') ||
+          !D.hasOwnProperty('r')
+        ) {
+          throw new Error('PathDef incomplete');
+        }
+        break;
+      default:
+        throw new Error('Unknown PathDef type');
+    }
+
+  }
   
   _applyStyle() {
     let style = this._style;
@@ -37,7 +69,7 @@ export default class RenderShape extends RenderItem {
       } else if(key === 'fill') {
         if(style.fill instanceof Gradient) {
           this._ctx.fillStyle = style.fill.toCanvas(this._ctx);
-        } else if(style.fill instanceof Item) {
+        } else if(style.fill instanceof RenderItem) {
           style.fill.render(false);
           this._ctx.fillStyle =
             this._ctx.createPattern(style.fill._canvas,'repeat');
@@ -74,8 +106,12 @@ export default class RenderShape extends RenderItem {
       let D = this._pathdef;
       switch(D.type) {
         case 'rect':
-          console.log('drawing rect');
           this._ctx.rect(D.x,D.y,D.w,D.h);
+          break;
+        case 'circle':
+          this._ctx.beginPath();
+          this._ctx.arc(D.cx,D.cy, D.r, 0, 2*Math.PI);
+          this._ctx.closePath();
           break;
       }
       this._paint();

@@ -235,7 +235,7 @@ function testComplexShapes() {
   zc.render();
 }
 
-function testBasicRect() {
+function testBasicRectCircle() {
 
   const WIDTH=1000;
   const HEIGHT=800;
@@ -245,7 +245,12 @@ function testBasicRect() {
   zc.root.insertAtTop(new RenderShape({
     type : 'rect',
     x:100, y:100, w:100, h:100
-  }));
+  }, {fill:'#f00'}));
+  
+  zc.root.insertAtTop(new RenderShape({
+    type : 'circle',
+    cx:300, cy:300, r:50
+  }, {strokeWidth:3, stroke:'#000'} ));
   
   zc.render();
 }
@@ -725,7 +730,7 @@ window.onload = function () {
       testShapeScaling();
       break;
     default:
-      testBasicRect();
+      testBasicRectCircle();
       break;
     
       
