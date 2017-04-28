@@ -27,7 +27,8 @@ class ZCanvas {
     this._items = [];
 
     /**
-     * @type {Transform} transform View transform
+     * @type {Transform} View transform
+     * @private
      */
     this._viewTransform = new Transform();
     
@@ -39,7 +40,18 @@ class ZCanvas {
     this.root._setCanvas(this);
     this.root._initRenderBackend();
 
-
+  }
+  
+  setViewTransform(xform) {
+    this._viewTransform = xform;
+  }
+  
+  translateView(dx,dy) {
+    this._viewTransform.translate(dx, dy);
+  }
+  
+  scaleView(scale) {
+    this._viewTransform.scale(scale, scale);
   }
 
   /**

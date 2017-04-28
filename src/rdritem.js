@@ -123,10 +123,6 @@ export default class RenderItem {
 
   _pushContext() {
     this._ctx.save();
-    this._applyStyle();
-  }
-  
-  _applyStyle() {
   }
 
   _popContext() {

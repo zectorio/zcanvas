@@ -3,6 +3,7 @@ import {ZCanvas,RenderGroup,RenderShape} from '../src';
 import {GradientStopList, LinearGradient, RadialGradient} from '../src'
 import {vec2, geom, toDeg, toRad, Transform, Rotation} from 'zmath'
 import {Kolor} from 'zbits'
+import zdom from 'zdom'
 
 
 function testBlinking() {
@@ -695,8 +696,57 @@ function testLotsOfShapes() {
   zc.render();
 }
 
+function redrawVectorTransform(zc) {
+
+  zc.render();
+}
+
+function testVectorTransform() {
+  const WIDTH=1000;
+  const HEIGHT=800;
+  let zc = new ZCanvas(WIDTH, HEIGHT);
+  document.body.appendChild(zc.getDOMElement());
+  
+  zc.root.insertAtTop(new RenderShape({
+    type : 'rect',
+    x:100, y:100, w:100, h:100
+  }, {fill:'#f00'}));
+
+  zc.root.insertAtTop(new RenderShape({
+    type : 'circle',
+    cx:300, cy:300, r:50
+  }, {strokeWidth:3, stroke:'#000'} ));
+
+
+  zc.render();
+
+  zdom.add(document.body, zdom.create(`
+    <p id="controls">
+      <b>ViewTransform</b>
+      dx <input type="range" min="-500" max="500" step="10" value="0" name="dx"/>
+      dy <input type="range" min="-500" max="500" step="10" value="0" name="dy"/>
+      scale <input type="range" min="0.1" max="4" step="0.2" value="1" name="scale"/>
+    </p>
+  `));
+  
+  zdom('#controls>input[name=dx]').onmousemove = ev => {
+    zc.translateView(parseFloat(ev.target.value), 0);
+  };
+  zdom('#controls>input[name=dy]').onmousemove = ev => {
+    zc.translateView(0, parseFloat(ev.target.value));
+  };
+  zdom('#controls>input[name=scale]').onmousemove = ev => {
+    zc.scaleView(parseFloat(ev.target.value));
+  };
+
+}
+
 window.onload = function () {
   let choice = window.location.hash;
+  let controlsEl = document.querySelector('#controls');
+  if(controlsEl) {
+    zdom.empty(controlsEl);
+  }
   switch(choice) {
     case '#onlyshapes-stroke2':
       testWithNoGroups({stroke:'#000', strokeWidth:2});
@@ -726,8 +776,8 @@ window.onload = function () {
     case '#lots-of-shapes':
       testLotsOfShapes();
       break;
-    case '#shape-scaling':
-      testShapeScaling();
+    case '#vector-transform':
+      testVectorTransform();
       break;
     default:
       testBasicRectCircle();

@@ -12,12 +12,12 @@ export default class RenderShape extends RenderItem {
   constructor(pathdef, style, transform) {
     super(transform);
 
+    this._validatePathDef(pathdef);
     /**
      * Path definition
      * @type {ZCanvas~PathDefinition}
      * @private
      */
-    this._validatePathDef(pathdef);
     this._pathdef = pathdef;
     
     /**
@@ -26,6 +26,20 @@ export default class RenderShape extends RenderItem {
      * @private
      */
     this._style = style || {stroke:'#000'};
+
+    /**
+     * Transformed Path Definition
+     * @type {ZCanvas~PathDefinition}
+     * @private
+     */
+    this._xpathdef = null;
+
+    /**
+     * Transformed Style
+     * @type {ZCanvas~Style}
+     * @private
+     */
+    this._xstyle = null;
     
     this._markDirty();
   }
@@ -60,6 +74,50 @@ export default class RenderShape extends RenderItem {
     }
 
   }
+
+  _applyTransform() {
+    let D = this.pathdef;
+    let style = this.style;
+    let xD, xstyle;
+
+    let xform = this._canvas._viewTransform.inverse().mul(this._transform);
+    
+    // Apply transform to some of the style attributes
+    let styleUpdate = {};
+    if(this._hasStroke()) {
+      let strokeWidth = 1;
+      if(style.hasOwnProperty('strokeWidth')) {
+        strokeWidth = style['strokeWidth'];
+      }
+      styleUpdate = { strokeWidth : strokeWidth * xform.getScale()[0] };
+    }
+    xstyle = Object.assign(style, styleUpdate);
+    
+    // Apply transform to path definition
+    switch(D.type) {
+      case 'rect':
+        let [xx,xy] = xform.transformPoint([D.x,D.y]);
+        let scale = xform.getScale()[0];
+        break;
+      case 'circle':
+        break;
+      default:
+        throw new Error('Not implemented');
+    }
+    
+    this._xpathdef = xD;
+    this._xstyle = xstyle;
+  }
+  
+  _hasFill() {
+    let style = this._style;
+    return style.hasOwnProperty('fill') && style['fill'] !== 'none';
+  }
+  
+  _hasStroke() {
+    let style = this._style;
+    return style.hasOwnProperty('stroke') && style['stroke'] !== 'none';
+  }
   
   _applyStyle() {
     let style = this._style;
@@ -83,15 +141,28 @@ export default class RenderShape extends RenderItem {
   }
 
   _paint() {
-    let style = this._style;
-    if(style.hasOwnProperty('fill') && style['fill'] !== 'none') {
+    if(this._hasFill()) {
       this._ctx.fill();
     }
-    if(style.hasOwnProperty('stroke') && style['stroke'] !== 'none') {
+    if(this._hasStroke()) {
       this._ctx.stroke();
     }
   }
   
+  _drawPath() {
+    let D = this._pathdef;
+    switch(D.type) {
+      case 'rect':
+        this._ctx.rect(D.x,D.y,D.w,D.h);
+        break;
+      case 'circle':
+        this._ctx.beginPath();
+        this._ctx.arc(D.cx,D.cy, D.r, 0, 2*Math.PI);
+        this._ctx.closePath();
+        break;
+    }
+  }
+
   render() {
     
     if(!this._elem) {
@@ -102,18 +173,12 @@ export default class RenderShape extends RenderItem {
     
     if(this._isVisible) {
       this._pushContext();
+
+      this._applyTransform();
+      this._applyStyle();
       
-      let D = this._pathdef;
-      switch(D.type) {
-        case 'rect':
-          this._ctx.rect(D.x,D.y,D.w,D.h);
-          break;
-        case 'circle':
-          this._ctx.beginPath();
-          this._ctx.arc(D.cx,D.cy, D.r, 0, 2*Math.PI);
-          this._ctx.closePath();
-          break;
-      }
+      this._drawPath();
+      
       this._paint();
       
       this._popContext();
