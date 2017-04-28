@@ -57,6 +57,27 @@ class SVGShape extends RenderShape {
       zdom.hide(this._elem);
     }
   }
+  
+  _pathCommandsToPathData(pathcmds) {
+    let pathdata = '';
+    console.log(this.id);
+    for(let pathcmd of pathcmds) {
+      if(pathcmd[0] === 'E') {
+        let [_,cx,cy,rx,ry,start,end,ccw] = pathcmd;
+        console.log(cx,cy,rx,ry,start,end,ccw);
+        let x = cx + rx * Math.cos(end);
+        let y = cy + ry * Math.sin(end);
+        let fA = (Math.abs(end-start) > Math.PI) ? 1 : 0;
+        fA = ccw ? fA : (1-fA);
+        let fS = (end-start > 0) ? 1 : 0;
+        fS = ccw ? fS : (1-fS);
+        pathdata += `A ${rx},${ry} 0 ${fA} ${fS} ${x},${y} `;
+      } else {
+        pathdata += pathcmd.join(' ')+' ';
+      }
+    }
+    return pathdata; 
+  }
 
   /**
    * Render
@@ -79,7 +100,11 @@ class SVGShape extends RenderShape {
           this._elem = zdom.createEllipse(D.cx,D.cy,D.rx,D.ry,this._stylestr);
           break;
         case 'qbez':
-          throw new Error('Not implemented');
+        {
+          let [[x0,y0],[x1,y1],[x2,y2]] = D.cpoints;
+          let pathdata = `M ${x0},${y0} Q ${x1},${y1} ${x2},${y2}`;
+          this._elem = zdom.createPath(pathdata, this._stylestr);
+        }
           break;
         case 'cbez':
         {
@@ -90,16 +115,14 @@ class SVGShape extends RenderShape {
           break;
         case 'path':
         {
-          let pathdata = '';
-          for(let pathcmd of D.curveseq) {
-            pathdata += pathcmd.join(' ')+' ';
-          }
+          let pathdata = this._pathCommandsToPathData(D.curveseq);
           this._elem = zdom.createPath(pathdata, this._stylestr);
         }
           break;
         default:
           throw new Error("Unknown type");
       }
+      zdom.set(this._elem, 'style', this._stylestr);
       zdom.set(this._elem, 'transform', this._transformstr);
       zdom.id(this._elem, `zci${this.id}`);
       zdom.add(this.parent._elem, this._elem);
@@ -138,10 +161,7 @@ class SVGShape extends RenderShape {
           break;
         case 'path':
         {
-          let pathdata = '';
-          for(let pathcmd of D.curveseq) {
-            pathdata += pathcmd.join(' ')+' ';
-          }
+          let pathdata = this._pathCommandsToPathData(D.curveseq);
           zdom.set(this._elem, 'd', pathdata);
         }
           break;

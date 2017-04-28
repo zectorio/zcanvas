@@ -239,10 +239,8 @@ function testWithNoGroups(style) {
 
   const WIDTH=1000;
   const HEIGHT=800;
-  let zc = new ZCanvas('canvas', WIDTH, HEIGHT);
+  let zc = new ZCanvas('svg', WIDTH, HEIGHT);
   document.body.appendChild(zc.getDOMElement());
-
-  drawGrid(zc);
   
   let X = 50;
   let Y = 50;
@@ -320,6 +318,7 @@ function testWithNoGroups(style) {
     zc.root().add(new ZCanvas.RenderShape({
       type : 'path',
       curveseq : [
+        ['M',X,Y],
         ['E',cx,cy,rx,ry,start,end,ccw?1:0]
       ]
     }, style));
@@ -334,6 +333,7 @@ function testWithNoGroups(style) {
     zc.root().add(new ZCanvas.RenderShape({
       type : 'path',
       curveseq : [
+        ['M',X+50,Y],
         ['E',cx,cy,rx,ry,start,end,ccw?1:0]
       ]
     }, style));
@@ -383,6 +383,7 @@ function testWithNoGroups(style) {
     zc.root().add(new ZCanvas.RenderShape({
       type : 'path',
       curveseq : [
+        ['M',X+50,Y],
         ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
         ['E',cx2,cy2,rx2,ry2,start2,end2,ccw2?1:0]
       ]
@@ -401,6 +402,7 @@ function testWithNoGroups(style) {
     zc.root().add(new ZCanvas.RenderShape({
       type : 'path',
       curveseq : [
+        ['M',X+50,Y],
         ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
         ['E',cx2,cy2,rx2,ry2,start2,end2,ccw2?1:0],
         ['Z']
@@ -420,6 +422,7 @@ function testWithNoGroups(style) {
     zc.root().add(new ZCanvas.RenderShape({
       type : 'path',
       curveseq : [
+        ['M',X,Y],
         ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
         ['E',cx2,cy2,rx2,ry2,start2,end2,ccw2?1:0]
       ]
@@ -438,6 +441,7 @@ function testWithNoGroups(style) {
     zc.root().add(new ZCanvas.RenderShape({
       type : 'path',
       curveseq : [
+        ['M',X,Y+50],
         ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
         ['E',cx2,cy2,rx2,ry2,start2,end2,ccw2?1:0]
       ]
@@ -456,6 +460,7 @@ function testWithNoGroups(style) {
     zc.root().add(new ZCanvas.RenderShape({
       type : 'path',
       curveseq : [
+        ['M',X,Y],
         ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
         ['E',cx2,cy2,rx2,ry2,start2,end2,ccw2?1:0]
       ]
@@ -679,10 +684,10 @@ window.onload = function () {
   let choice = window.location.hash || '#onlyshapes-stroke2';
   switch(choice) {
     case '#onlyshapes-stroke2':
-      testWithNoGroups({stroke:'#000', strokeWidth:2});
+      testWithNoGroups({stroke:'#000', strokeWidth:2, fill:'none'});
       break;
     case '#onlyshapes-stroke6':
-      testWithNoGroups({stroke:'#000', strokeWidth:6});
+      testWithNoGroups({stroke:'#000', strokeWidth:6, fill:'none'});
       break;
     case '#onlyshapes-fillnostroke':
       testWithNoGroups({stroke:'none', fill:'#f88'});
