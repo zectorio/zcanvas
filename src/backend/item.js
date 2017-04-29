@@ -11,22 +11,50 @@ class Item {
      * Transform
      * @type {Transform}
      */
-    this.transform = transform || Transform.identity();
+    this.transform = transform || new Transform();
+
+    /**
+     * @type {boolean}
+     * @private
+     */
     this._isVisible = true;
 
     /**
-     * @member {?Item} zcanvas.Item#parent
+     * @member {RenderGroup} 
      */
     this.parent = null;
+
+    /**
+     * @type {number}
+     */
+    this.id = -1;
+
+    /**
+     * @type {RenderBackend}
+     */
+    this.backend = null;
   }
+
+  /**
+   * @param {number} id
+   * @private
+   */
   _assignId(id) {
     this.id = id;
   }
 
+  /**
+   * @param {RenderBackend} backend
+   * @private
+   */
   _setBackend(backend) {
     this.backend = backend;
   }
 
+  /**
+   * @param {RenderGroup} parent
+   * @private
+   */
   _setParent(parent) {
     this.parent = parent;
   }

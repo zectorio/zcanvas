@@ -58,10 +58,11 @@ class SVGShape extends RenderShape {
     }
   }
   
-  _pathCommandsToPathData(pathcmds) {
+  static _pathCommandsToPathData(pathcmds) {
     let pathdata = '';
     for(let pathcmd of pathcmds) {
       if(pathcmd[0] === 'E') {
+        // Ref: https://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes
         let [_,cx,cy,rx,ry,start,end,ccw] = pathcmd;
         let x = cx + rx * Math.cos(end);
         let y = cy + ry * Math.sin(end);
@@ -113,7 +114,7 @@ class SVGShape extends RenderShape {
           break;
         case 'path':
         {
-          let pathdata = this._pathCommandsToPathData(D.curveseq);
+          let pathdata = SVGShape._pathCommandsToPathData(D.curveseq);
           this._elem = zdom.createPath(pathdata, this._stylestr);
         }
           break;
@@ -159,7 +160,7 @@ class SVGShape extends RenderShape {
           break;
         case 'path':
         {
-          let pathdata = this._pathCommandsToPathData(D.curveseq);
+          let pathdata = SVGShape._pathCommandsToPathData(D.curveseq);
           zdom.set(this._elem, 'd', pathdata);
         }
           break;
