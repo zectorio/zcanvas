@@ -10,6 +10,9 @@ class SVGBackend extends RenderBackend {
     super(width, height);
 
     this._elem = zdom.createSVG(width, height);
+    this._defs = zdom.createSVGElement('defs');
+    zdom.add(this._elem, this._defs);
+    
     this._root = new SVGGroup();
     this._root._setBackend(this);
     this._root._setParent(this);

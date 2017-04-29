@@ -586,12 +586,12 @@ window.onload = function () {
       break;
     case '#onlyshapes-lingrad':
       let lingrad = new LinearGradient(
-        new GradientStopList(Kolor.RED, Kolor.BLUE), [0,0],[0,50]);
+        new GradientStopList(Kolor.RED, Kolor.BLUE), [0,0],[0,500]);
       testWithNoGroups({stroke:'none', fill:lingrad});
       break;
     case '#onlyshapes-radgrad':
       let radgrad = new RadialGradient(
-        new GradientStopList(Kolor.RED, Kolor.BLUE), [25,25],50);
+        new GradientStopList(Kolor.RED, Kolor.BLUE), [300,100],500);
       testWithNoGroups({stroke:'none', fill:radgrad});
       break;
     case '#shape-transformation':

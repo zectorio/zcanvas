@@ -1,18 +1,7 @@
 
 import RenderShape from '../rshape'
+import {Gradient} from '../../gradient'
 import zdom from 'zdom'
-import {Transform} from 'zmath'
-
-function stringifyStyle(obj) {
-  let strings = [];
-  for(let key of Object.keys(obj)) {
-    let value = obj[key];
-    // change key from camel case to hyphenated
-    let hyphenKey = key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-    strings.push(hyphenKey+':'+value);
-  }
-  return strings.join(';');
-}
 
 class SVGShape extends RenderShape {
 
@@ -25,7 +14,6 @@ class SVGShape extends RenderShape {
     super(pathdef, style, transform);
 
     this._transformstr = this.transform.toAttributeString();
-    this._stylestr = stringifyStyle(this.style);
   }
 
   /**
@@ -34,8 +22,31 @@ class SVGShape extends RenderShape {
    */
   updateStyle(style) {
     super.updateStyle(style);
-    this._stylestr = stringifyStyle(this.style);
+    this._stylestr = this.stringifyStyle(this.style);
   }
+  
+  makeStyleReference(value) {
+    if(value instanceof Gradient) {
+      let id = 'grad-'+this.id;
+      let lingradelem = value.toDOM(id);
+      zdom.add(this.backend._defs, lingradelem);
+      return `url(#${id})`;
+    } else {
+      return value;
+    }
+  }
+  
+  stringifyStyle(obj) {
+    let strings = [];
+    for(let key of Object.keys(obj)) {
+      let value = obj[key];
+      // change key from camel case to hyphenated
+      let hyphenKey = key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+      strings.push(hyphenKey+':'+this.makeStyleReference(value));
+    }
+    return strings.join(';');
+  }
+
 
   /**
    * Set Transform
@@ -83,6 +94,9 @@ class SVGShape extends RenderShape {
    */
   render() {
     if(!this._elem) {
+      if(!this._stylestr) {
+        this._stylestr = this.stringifyStyle(this.style);
+      }
       let D = this.pathdef;
       switch(D.type) {
         case 'line':

@@ -1,6 +1,8 @@
 
 import Gradient from './gradbase'
 import GradientStopList from './gradstoplist'
+import zdom from 'zdom'
+import {Transform} from 'zmath'
 
 export default class RadialGradient extends Gradient {
   constructor(gradstoplist, center, radius) {
@@ -8,15 +10,18 @@ export default class RadialGradient extends Gradient {
     this.stoplist = gradstoplist;
     this.center = center;
     this.radius = radius;
+
+    this.rotation = 0;
+    this.scale = [1,1];
   }
 
   toMemento() {
     return {
       stoplist : this.stoplist.toMemento(),
       center : this.center,
-      rx : this.rx,
-      ry : this.ry,
-      rotation : this.rotation
+      radius : this.radius,
+      rotation : this.rotation,
+      scale : this.scale
     };
   }
 
@@ -27,6 +32,27 @@ export default class RadialGradient extends Gradient {
   toString() {
     return `radgrad center:${vec2.format(this.center)}`+
       `rx:${this.rx},ry:${this.ry} stops:${this.stoplist.toString()}`;
+  }
+  
+  toDOM(id) {
+    let radgradelem = zdom.createSVGElement('radialGradient');
+    zdom.id(radgradelem, id);
+    for(let stop of this.stoplist.getStops()) {
+      let stopelem = zdom.createSVGElement('stop');
+      zdom.set(stopelem, 'offset', stop.position);
+      zdom.set(stopelem, 'stop-color', stop.kolor.toCSSHex());
+      zdom.set(stopelem, 'stop-opacity', stop.kolor.alpha());
+      zdom.add(radgradelem, stopelem);
+    }
+    zdom.set(radgradelem, 'gradientUnits', 'userSpaceOnUse');
+    zdom.set(radgradelem, 'cx', this.center[0]);
+    zdom.set(radgradelem, 'cy', this.center[1]);
+    zdom.set(radgradelem, 'r', this.radius);
+
+    let xform = Transform.rotateAndScaleAround(
+      this.rotation, this.scale, this.center);
+    zdom.set(radgradelem, 'gradientTransform', xform.toAttributeString());
+    return radgradelem;
   }
 
   /**
