@@ -60,17 +60,15 @@ class SVGShape extends RenderShape {
   
   _pathCommandsToPathData(pathcmds) {
     let pathdata = '';
-    console.log(this.id);
     for(let pathcmd of pathcmds) {
       if(pathcmd[0] === 'E') {
         let [_,cx,cy,rx,ry,start,end,ccw] = pathcmd;
-        console.log(cx,cy,rx,ry,start,end,ccw);
         let x = cx + rx * Math.cos(end);
         let y = cy + ry * Math.sin(end);
         let fA = (Math.abs(end-start) > Math.PI) ? 1 : 0;
-        fA = ccw ? fA : (1-fA);
+        fA = ccw ? (1-fA) : fA;
         let fS = (end-start > 0) ? 1 : 0;
-        fS = ccw ? fS : (1-fS);
+        fS = ccw ? (1-fS) : fS;
         pathdata += `A ${rx},${ry} 0 ${fA} ${fS} ${x},${y} `;
       } else {
         pathdata += pathcmd.join(' ')+' ';
