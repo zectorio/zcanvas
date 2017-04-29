@@ -8,6 +8,7 @@ import {Gradient} from '../../gradient'
 const IDENTITY = Transform.identity();
 
 const PADDING = 5;
+const TRIMMED_CANVAS = false;
 
 class CanvasShape extends RenderShape {
 
@@ -32,11 +33,14 @@ class CanvasShape extends RenderShape {
     }
     let padding = lineWidth + PADDING;
     
-    let aabb = this._calculateAABB();
-    this.canvasWidth = aabb.width() + padding;
-    this.canvasHeight = aabb.height() + padding;
-    this.canvasOffset = vec2.sub(aabb.min, [padding/2,padding/2]);
-    this.aabb = aabb;
+    if(TRIMMED_CANVAS) {
+      let aabb = this._calculateAABB();
+      this.canvasWidth = aabb.width() + padding;
+      this.canvasHeight = aabb.height() + padding;
+      this.canvasOffset = vec2.sub(aabb.min, [padding/2,padding/2]);
+      this.aabb = aabb;
+    } else {
+    }
 
   }
 
@@ -240,10 +244,17 @@ class CanvasShape extends RenderShape {
    */
   render(withpadding=true) {
     
-    if(!withpadding) {
-      this.canvasWidth = this.aabb.width();
-      this.canvasHeight = this.aabb.height();
+    if(TRIMMED_CANVAS) {
+      if(!withpadding) {
+        this.canvasWidth = this.aabb.width();
+        this.canvasHeight = this.aabb.height();
+        this.canvasOffset = [0,0];
+      }
+    } else {
+      this.canvasWidth = this.backend.width;
+      this.canvasHeight = this.backend.height;
       this.canvasOffset = [0,0];
+      this.aabb = {min:[0,0], max:[this.backend.width,this.backend.height]};
     }
 
     if(!this._canvas) {
