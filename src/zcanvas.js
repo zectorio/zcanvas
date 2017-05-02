@@ -110,15 +110,14 @@ class ZCanvas {
    *           // with control point at [x1,y1]
    * ['C',x1,y1,x2,y2,x3,y3] // Cubic bezier curve from current point to [x3,y3]
    *           // with control points at [x1,y1] and [x2,y2]
-   * ['E',cx,cy,rx,ry, xrot, start,end,ccw] // Elliptical arc with center at [cx,cy],
+   * ['E',cx,cy,rx,ry, start,end,ccw] // Elliptical arc with center at [cx,cy],
    *           // of radius rx,ry, from angle start to end (in radians) in
    *           // counter-clockwise or clockwise sense (boolean).It's the caller's
    *           // responsibility to make sure that `start` evaluates to current
    *           // point of the context and `end` corresponds to the point at
    *           // which context will move to before processing next curve command.
    *           // If that's not the case, there won't be any error, but the
-   *           // rendered output won't be desirable. xrotation give rotation of
-   *           // the ellipse in relation to global X-axis
+   *           // rendered output won't be desirable. 
    * ['Z']     // End Curve Sequence
    */
 }
