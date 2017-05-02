@@ -174,7 +174,7 @@ function testWithNoGroups(style) {
       type : 'path',
       curveseq : [
         ['M',X,Y],
-        ['E',cx,cy,rx,ry,start,end,ccw?1:0]
+        ['E',cx,cy,rx,ry,0,start,end,ccw?1:0]
       ]
     }, style));
   }
@@ -189,7 +189,7 @@ function testWithNoGroups(style) {
       type : 'path',
       curveseq : [
         ['M',X+50,Y],
-        ['E',cx,cy,rx,ry,start,end,ccw?1:0]
+        ['E',cx,cy,rx,ry,0,start,end,ccw?1:0]
       ]
     }, style));
   }
@@ -199,12 +199,12 @@ function testWithNoGroups(style) {
   {
     let earc = geom.EllipseArc.circularArcFrom3Points(
       [X+50,Y],[X,Y+25],[X+50,Y+50]);
-    let {center:[cx,cy],rx,ry,start,end,ccw} = earc;
+    let {center:[cx,cy],rx,ry,xrot,start,end,ccw} = earc;
     zc.root().add(new ZCanvas.RenderShape({
       type : 'path',
       curveseq : [
         ['M',X+50,Y],
-        ['E',cx,cy,rx,ry,start,end,ccw?1:0],
+        ['E',cx,cy,rx,ry,xrot,start,end,ccw?1:0],
         ['Z']
       ]
     }, style));
@@ -215,12 +215,12 @@ function testWithNoGroups(style) {
   {
     let earc = geom.EllipseArc.circularArcFrom3Points(
       [X+50,Y],[X,Y+25],[X+50,Y+50]);
-    let {center:[cx,cy],rx,ry,start,end,ccw} = earc;
+    let {center:[cx,cy],rx,ry,xrot,start,end,ccw} = earc;
     zc.root().add(new ZCanvas.RenderShape({
       type : 'path',
       curveseq : [
         ['M',X+50,Y],
-        ['E',cx,cy,rx,ry,start,end,ccw?1:0],
+        ['E',cx,cy,rx,ry,xrot,start,end,ccw?1:0],
         ['L',X+50,Y]
       ]
     }, style));
@@ -231,16 +231,20 @@ function testWithNoGroups(style) {
   {
     let earc1 = geom.EllipseArc.circularArcFrom3Points(
       [X+50,Y],[X,Y+25],[X+50,Y+50]);
-    let {center:[cx1,cy1],rx:rx1,ry:ry1,start:start1,end:end1,ccw:ccw1} = earc1;
+    let {center:[cx1,cy1],rx:rx1,ry:ry1,start:start1,end:end1,
+      ccw:ccw1,xrot:xrot1} = earc1;
+    
     let earc2 = geom.EllipseArc.circularArcFrom3Points(
       [X+50,Y+50],[X+25,Y+25],[X+50,Y]);
-    let {center:[cx2,cy2],rx:rx2,ry:ry2,start:start2,end:end2,ccw:ccw2} = earc2;
+    let {center:[cx2,cy2],rx:rx2,ry:ry2,start:start2,end:end2,
+      ccw:ccw2,xrot:xrot2} = earc2;
+    
     zc.root().add(new ZCanvas.RenderShape({
       type : 'path',
       curveseq : [
         ['M',X+50,Y],
-        ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
-        ['E',cx2,cy2,rx2,ry2,start2,end2,ccw2?1:0]
+        ['E',cx1,cy1,rx1,ry1,xrot1,start1,end1,ccw1?1:0],
+        ['E',cx2,cy2,rx2,ry2,xrot2,start2,end2,ccw2?1:0]
       ]
     }, style));
   }
@@ -250,16 +254,20 @@ function testWithNoGroups(style) {
   {
     let earc1 = geom.EllipseArc.circularArcFrom3Points(
       [X+50,Y],[X,Y+25],[X+50,Y+50]);
-    let {center:[cx1,cy1],rx:rx1,ry:ry1,start:start1,end:end1,ccw:ccw1} = earc1;
+    let {center:[cx1,cy1],rx:rx1,ry:ry1,start:start1,
+      end:end1,ccw:ccw1,xrot:xrot1} = earc1;
+    
     let earc2 = geom.EllipseArc.circularArcFrom3Points(
       [X+50,Y+50],[X+25,Y+25],[X+50,Y]);
-    let {center:[cx2,cy2],rx:rx2,ry:ry2,start:start2,end:end2,ccw:ccw2} = earc2;
+    let {center:[cx2,cy2],rx:rx2,ry:ry2,start:start2,
+      end:end2,ccw:ccw2,xrot:xrot2} = earc2;
+    
     zc.root().add(new ZCanvas.RenderShape({
       type : 'path',
       curveseq : [
         ['M',X+50,Y],
-        ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
-        ['E',cx2,cy2,rx2,ry2,start2,end2,ccw2?1:0],
+        ['E',cx1,cy1,rx1,ry1,xrot1,start1,end1,ccw1?1:0],
+        ['E',cx2,cy2,rx2,ry2,xrot2,start2,end2,ccw2?1:0],
         ['Z']
       ]
     }, style));
@@ -270,16 +278,20 @@ function testWithNoGroups(style) {
   {
     let earc1 = geom.EllipseArc.circularArcFrom3Points(
       [X,Y],[X+50,Y+25],[X,Y+50]);
-    let {center:[cx1,cy1],rx:rx1,ry:ry1,start:start1,end:end1,ccw:ccw1} = earc1;
+    let {center:[cx1,cy1],rx:rx1,ry:ry1,start:start1,end:end1,
+      xrot:xrot1,ccw:ccw1} = earc1;
+    
     let earc2 = geom.EllipseArc.circularArcFrom3Points(
       [X,Y+50],[X+25,Y+25],[X,Y]);
-    let {center:[cx2,cy2],rx:rx2,ry:ry2,start:start2,end:end2,ccw:ccw2} = earc2;
+    let {center:[cx2,cy2],rx:rx2,ry:ry2,start:start2,end:end2,
+      xrot:xrot2,ccw:ccw2} = earc2;
+    
     zc.root().add(new ZCanvas.RenderShape({
       type : 'path',
       curveseq : [
         ['M',X,Y],
-        ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
-        ['E',cx2,cy2,rx2,ry2,start2,end2,ccw2?1:0]
+        ['E',cx1,cy1,rx1,ry1,xrot1,start1,end1,ccw1?1:0],
+        ['E',cx2,cy2,rx2,ry2,xrot2,start2,end2,ccw2?1:0]
       ]
     }, style));
   }
@@ -289,16 +301,18 @@ function testWithNoGroups(style) {
   {
     let earc1 = geom.EllipseArc.circularArcFrom3Points(
       [X,Y+50],[X+25,Y],[X+50,Y+50]);
-    let {center:[cx1,cy1],rx:rx1,ry:ry1,start:start1,end:end1,ccw:ccw1} = earc1;
+    let {center:[cx1,cy1],rx:rx1,ry:ry1,start:start1,end:end1,
+      xrot:xrot1,ccw:ccw1} = earc1;
     let earc2 = geom.EllipseArc.circularArcFrom3Points(
       [X+50,Y+50],[X+25,Y+25],[X,Y+50]);
-    let {center:[cx2,cy2],rx:rx2,ry:ry2,start:start2,end:end2,ccw:ccw2} = earc2;
+    let {center:[cx2,cy2],rx:rx2,ry:ry2,start:start2,end:end2,
+      xrot:xrot2,ccw:ccw2} = earc2;
     zc.root().add(new ZCanvas.RenderShape({
       type : 'path',
       curveseq : [
         ['M',X,Y+50],
-        ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
-        ['E',cx2,cy2,rx2,ry2,start2,end2,ccw2?1:0]
+        ['E',cx1,cy1,rx1,ry1,xrot1,start1,end1,ccw1?1:0],
+        ['E',cx2,cy2,rx2,ry2,xrot2,start2,end2,ccw2?1:0]
       ]
     }, style));
   }
@@ -308,16 +322,18 @@ function testWithNoGroups(style) {
   {
     let earc1 = geom.EllipseArc.circularArcFrom3Points(
       [X,Y],[X+25,Y+50],[X+50,Y]);
-    let {center:[cx1,cy1],rx:rx1,ry:ry1,start:start1,end:end1,ccw:ccw1} = earc1;
+    let {center:[cx1,cy1],rx:rx1,ry:ry1,start:start1,end:end1,
+      xrot:xrot1,ccw:ccw1} = earc1;
     let earc2 = geom.EllipseArc.circularArcFrom3Points(
       [X+50,Y],[X+25,Y+25],[X,Y]);
-    let {center:[cx2,cy2],rx:rx2,ry:ry2,start:start2,end:end2,ccw:ccw2} = earc2;
+    let {center:[cx2,cy2],rx:rx2,ry:ry2,start:start2,end:end2,
+      xrot:xrot2,ccw:ccw2} = earc2;
     zc.root().add(new ZCanvas.RenderShape({
       type : 'path',
       curveseq : [
         ['M',X,Y],
-        ['E',cx1,cy1,rx1,ry1,start1,end1,ccw1?1:0],
-        ['E',cx2,cy2,rx2,ry2,start2,end2,ccw2?1:0]
+        ['E',cx1,cy1,rx1,ry1,xrot1,start1,end1,ccw1?1:0],
+        ['E',cx2,cy2,rx2,ry2,xrot2,start2,end2,ccw2?1:0]
       ]
     }, style));
   }
@@ -338,7 +354,7 @@ function testWithNoGroups(style) {
       curveseq : [
         ['M',X,Y+25],
         ['L',X,Y],
-        ['E',cx,cy,rx,ry,start,end,ccw?1:0],
+        ['E',cx,cy,rx,ry,0,start,end,ccw?1:0],
         ['Q',X+20,Y+37.5,X,Y+25],
         ['Z']
       ]
@@ -372,7 +388,7 @@ function testWithNoGroups(style) {
 
         // Semicircular hole
         ['M',X+70,Y+90],
-        ['E',earc.center[0],earc.center[1],earc.rx,earc.ry,
+        ['E',earc.center[0],earc.center[1],earc.rx,earc.ry, earc.xrot,
           earc.start, earc.end, earc.ccw?1:0],
         ['Z']
       ]

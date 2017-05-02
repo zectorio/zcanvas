@@ -73,7 +73,7 @@ class SVGShape extends RenderShape {
     for(let pathcmd of pathcmds) {
       if(pathcmd[0] === 'E') {
         // Ref: https://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes
-        let [_,cx,cy,rx,ry,start,end,ccw] = pathcmd;
+        let [_,cx,cy,rx,ry,xrot,start,end,ccw] = pathcmd;
         let x = cx + rx * Math.cos(end);
         let y = cy + ry * Math.sin(end);
         
@@ -130,7 +130,7 @@ class SVGShape extends RenderShape {
          */
         let fS = ccw ? 0 : 1;
         
-        pathdata += `A ${rx},${ry} 0 ${fA} ${fS} ${x},${y} `;
+        pathdata += `A ${rx},${ry} ${xrot} ${fA} ${fS} ${x},${y} `;
       } else {
         pathdata += pathcmd.join(' ')+' ';
       }
