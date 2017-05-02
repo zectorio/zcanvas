@@ -47,7 +47,6 @@ class SVGShape extends RenderShape {
     return strings.join(';');
   }
 
-
   /**
    * Set Transform
    * @param {Transform} transform
@@ -77,10 +76,60 @@ class SVGShape extends RenderShape {
         let [_,cx,cy,rx,ry,start,end,ccw] = pathcmd;
         let x = cx + rx * Math.cos(end);
         let y = cy + ry * Math.sin(end);
-        let fA = (Math.abs(end-start) > Math.PI) ? 1 : 0;
-        fA = ccw ? (1-fA) : fA;
-        let fS = (end-start > 0) ? 1 : 0;
-        fS = ccw ? (1-fS) : fS;
+        
+        /**
+         *                                ---> cw
+         *
+         *
+         *  (A)     T(1)        S           T(2)           E          T(3)
+         *
+         *     |---------------------------------------------------------|
+         *     0                           PI                           2*PI
+         *
+         *  (B)     T(1)        E           T(2)           S          T(3)
+         *
+         *
+         *                                <--- ccw
+         */
+
+        /**
+         * large-arc-flag (fA)
+         * "Of the four candidate arc sweeps, two will represent an arc sweep
+         * of greater than or equal to 180 degrees (the "large-arc"), and two
+         * will represent an arc sweep of less than or equal to 180 degrees
+         * (the "small-arc"). If large-arc-flag is '1', then one of the two
+         * larger arc sweeps will be chosen; otherwise, if large-arc-flag is
+         * '0', one of the smaller arc sweeps will be chosen" - SVG Spec
+         */
+        let span;
+        if(start < end) {
+          if(ccw) {
+            span = 2*Math.PI - (end-start);
+          } else {
+            span = end-start;
+          }
+        } else {
+          if(ccw) {
+            span = start-end;
+          } else {
+            span = 2*Math.PI - (start-end);
+          }
+        }
+        let fA = span > Math.PI ? 1 : 0;
+
+        /**
+         * sweep-flag (fS)
+         * "If sweep-flag is '1', then the arc will be drawn in a
+         * "positive-angle" direction (i.e., the ellipse formula
+         * x=cx+rx*cos(theta) and y=cy+ry*sin(theta) is evaluated such that
+         * theta starts at an angle corresponding to the current point and
+         * increases positively until the arc reaches (x,y)). A value of 0
+         * causes the arc to be drawn in a "negative-angle" direction (i.e.,
+         * theta starts at an angle value corresponding to the current point
+         * and decreases until the arc reaches (x,y))." - SVG Spec
+         */
+        let fS = ccw ? 0 : 1;
+        
         pathdata += `A ${rx},${ry} 0 ${fA} ${fS} ${x},${y} `;
       } else {
         pathdata += pathcmd.join(' ')+' ';
