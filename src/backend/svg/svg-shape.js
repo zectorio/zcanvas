@@ -74,8 +74,10 @@ class SVGShape extends RenderShape {
       if(pathcmd[0] === 'E') {
         // Ref: https://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes
         let [_,cx,cy,rx,ry,xrot,start,end,ccw] = pathcmd;
-        let x = cx + rx * Math.cos(end);
-        let y = cy + ry * Math.sin(end);
+        let x = cx + rx * Math.cos(end) * Math.cos(xrot)
+          - ry * Math.sin(end) * Math.sin(xrot);
+        let y = cy + ry * Math.cos(end) * Math.sin(xrot)
+          + ry * Math.sin(end) * Math.cos(xrot);
         
         /**
          *                                ---> cw
