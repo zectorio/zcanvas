@@ -29,8 +29,8 @@
     ]
   },
   "dependencies": {
-    "zbits": "github:jay3sh/zbits",
+    "zbits": "github:zectorio/zbits",
     "zdom": "github:zectorio/zdom",
-    "zmath": "github:jay3sh/zmath"
+    "zmath": "github:zectorio/zmath"
   }
 }
