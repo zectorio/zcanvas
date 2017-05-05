@@ -1,6 +1,6 @@
 {
   "name": "zcanvas",
-  "version": "0.0.12",
+  "version": "0.1.0",
   "description": "2D Canvas for Zector Apps",
   "main": "src/index.js",
   "scripts": {
