@@ -158,6 +158,15 @@ function testWithNoGroups(style) {
       [X,Y+50], [X+10,Y], [X+40,Y+50], [X+50,Y]
     ]
   }, style));
+  
+  X += 100;
+
+  zc.root().add(new ZCanvas.RenderShape({
+    type : 'polyline',
+    points : [
+      [X,Y+50], [X+10,Y], [X+40,Y+50], [X+50,Y]
+    ]
+  }, style));
 
   X = 50;
   Y += 100;

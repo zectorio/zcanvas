@@ -274,6 +274,15 @@ class CanvasShape extends RenderShape {
           this._ctx.moveTo(...this._toLocalCanvas([D.x1, D.y1]));
           this._ctx.lineTo(...this._toLocalCanvas([D.x2, D.y2]));
           break;
+        case 'polyline':
+          this._ctx.beginPath();
+          if(D.points.length > 1) {
+            this._ctx.moveTo(...D.points[0]);
+            for(let i=1; i<D.points.length; i++) {
+              this._ctx.lineTo(...D.points[i]);
+            }
+          }
+          break;
         case 'rect':
           this._ctx.beginPath();
           this._ctx.moveTo(...this._toLocalCanvas([D.x,D.y]));

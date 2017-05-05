@@ -151,6 +151,14 @@ class SVGShape extends RenderShape {
         case 'line':
           this._elem = zdom.createLine(D.x1,D.y1,D.x2,D.y2,this._stylestr);
           break;
+        case 'polyline':
+          this._elem = zdom.createSVGElement('polyline');
+          let str='';
+          for(let i=0; i<D.points.length; i++) {
+            str += D.points[i][0]+','+D.points[i][1]+' ';
+          }
+          zdom.set(this._elem, 'points', str);
+          break;
         case 'rect':
           this._elem = zdom.createRect(D.x,D.y,D.w,D.h,D.rx||0,D.ry||0,
             this._stylestr);
