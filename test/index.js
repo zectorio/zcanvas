@@ -94,7 +94,7 @@ function testWithNoGroups(style) {
 
   const WIDTH=1000;
   const HEIGHT=800;
-  let zc = new ZCanvas('canvas', WIDTH, HEIGHT);
+  let zc = new ZCanvas('svg', WIDTH, HEIGHT);
   document.body.appendChild(zc.getDOMElement());
   
   let X = 50;
